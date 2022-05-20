@@ -41,10 +41,23 @@ Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween::Wgt_CalculationSideTria
     Name_Layout->addWidget(MainLabel);
     Name_Layout->addStretch();
     //-------------
+    //-------------------
+    auto Radio_WGT = new QWidget(this);
+    Radio_DEG = new QRadioButton(Radio_WGT);
+    Radio_DEG->setText("DEG");
+    Radio_DEG->setChecked(true);
+    Radio_RAD = new QRadioButton(Radio_WGT);
+    Radio_RAD->setText("RAD");
+    auto Radio_Layout = new QHBoxLayout(Radio_WGT);
+    Radio_Layout->addStretch();
+    Radio_Layout->addWidget(Radio_DEG);
+    Radio_Layout->addWidget(Radio_RAD);
+    Radio_Layout->addStretch();
+    //---------------
     //-------------
     auto INPUT_WGT = new QWidget(this);
 
-    QRegularExpression rx("-?\\d*");
+    QRegularExpression rx("\\d*+\\.+\\d*");
     auto validator = new QRegularExpressionValidator(rx, INPUT_WGT);
 
     auto wgt_a = new QWidget(INPUT_WGT);
@@ -80,19 +93,6 @@ Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween::Wgt_CalculationSideTria
     ABC_Layout->addWidget(wgt_b);
     ABC_Layout->addWidget(wgt_c);
     //-----------------
-    //-------------------
-    auto Radio_WGT = new QWidget(this);
-    Radio_DEG = new QRadioButton(Radio_WGT);
-    Radio_DEG->setText("DEG");
-    Radio_DEG->setChecked(true);
-    Radio_RAD = new QRadioButton(Radio_WGT);
-    Radio_RAD->setText("RAD");
-    auto Radio_Layout = new QHBoxLayout(Radio_WGT);
-    Radio_Layout->addStretch();
-    Radio_Layout->addWidget(Radio_DEG);
-    Radio_Layout->addWidget(Radio_RAD);
-    Radio_Layout->addStretch();
-    //---------------
     //-------------
     auto ButtAndRes_WGT = new QWidget(this);
     font.setPixelSize(16);
@@ -115,8 +115,8 @@ Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween::Wgt_CalculationSideTria
 
     auto V_Layout = new QVBoxLayout(this);
     V_Layout->addWidget(Name_WGT);
-    V_Layout->addWidget(INPUT_WGT);
     V_Layout->addWidget(Radio_WGT);
+    V_Layout->addWidget(INPUT_WGT);
     V_Layout->addWidget(ButtAndRes_WGT);
 
 
@@ -135,22 +135,33 @@ void Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween::Calculating_machin
     auto c = LineEdit_B->text().toFloat();
     auto angel = LineEdit_C->text().toFloat();
 
-    if(b == 0 || c == 0 || angel >= 180 ){
+    if(b == 0 || c == 0){
         Result_message = "The triangle does not exist";
         Result_massege_Label->setText(Result_message);
     }
 
     else{
         if(Radio_DEG->isChecked()){
-            auto res = qSqrt( (b*b) + (c*c) - ( 2 * b * c * qCos(angel * M_PI / 180) ) );
-            Result_message = "a=";
-            Result_message += std::to_string(res).c_str();
+            if(angel >= 180){
+                Result_message = "The triangle does not exist";
+                Result_massege_Label->setText(Result_message);
+                return;
+            }
+
         }
         if(Radio_RAD->isChecked()){
-            auto res = qSqrt( (b*b) + (c*c) - ( 2 * b * c * qCos(angel) ) );
-            Result_message = "a=";
-            Result_message += std::to_string(res).c_str();
+            if(angel >= M_PI){
+                Result_message = "The triangle does not exist";
+                Result_massege_Label->setText(Result_message);
+                return;
+            }
+            angel = qRadiansToDegrees(LineEdit_C->text().toFloat());
+
         }
+
+        auto res = qSqrt( (b*b) + (c*c) - ( 2 * b * c * qCos(angel * M_PI / 180) ) );
+        Result_message = "a=";
+        Result_message += std::to_string(res).c_str();
 
         Result_massege_Label->setText(Result_message);
     }
