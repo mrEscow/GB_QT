@@ -9,12 +9,14 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween.cpp \
     Wgt_RootQuadraticEquationSecondDegree.cpp \
     main.cpp \
     MainWindow.cpp
 
 HEADERS += \
     MainWindow.h \
+    Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween.h \
     Wgt_RootQuadraticEquationSecondDegree.h
 
 FORMS += \
