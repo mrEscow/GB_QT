@@ -122,5 +122,8 @@ void Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween::Calculating_machin
 
     auto res = qSqrt((b*b) + (c*c) - ((2*b*c)*qCos(angel)));
 
-    qDebug() << "Result:" << res;
+    Result_message = "a=";
+    Result_message += std::to_string(res).c_str();
+    Result_massege_Label->setText(Result_message);
+
 }
