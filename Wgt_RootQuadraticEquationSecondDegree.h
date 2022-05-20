@@ -1,8 +1,10 @@
 #ifndef WGT_ROOTQUADRATICEQUATIONSECONDDEGREE_H
 #define WGT_ROOTQUADRATICEQUATIONSECONDDEGREE_H
 
+
 #include <QWidget>
 #include <QLineEdit>
+#include <QLabel>
 
 class Wgt_RootQuadraticEquationSecondDegree : public QWidget
 {
@@ -12,8 +14,7 @@ public:
 private slots:
     void Calculating_machine();
 private:
-    QString Result_message;
-
+    QLabel *Result_massege_Label;
     QLineEdit *LineEdit_A;
     QLineEdit *LineEdit_B;
     QLineEdit *LineEdit_C;

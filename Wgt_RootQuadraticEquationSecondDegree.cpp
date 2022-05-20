@@ -12,7 +12,7 @@
     https://drive.google.com/file/d/1NZ4SnBaaFlIN2XzM5MiCfJV0uGZrae5X/view?usp=sharing
 */
 
-#include <QLabel>
+
 #include <QLayout>
 #include <QPushButton>
 #include <QGroupBox>
@@ -91,15 +91,15 @@ Wgt_RootQuadraticEquationSecondDegree::Wgt_RootQuadraticEquationSecondDegree(QWi
     Res_button->setText("Result");
     Res_button->setFont(font);
 
-    auto Res_Label = new QLabel(ButtAndRes_WGT);
-    Res_Label->setText("Result");
-    Res_Label->setFont(font);
+    Result_massege_Label = new QLabel(ButtAndRes_WGT);
+    Result_massege_Label->setText("Result");
+    Result_massege_Label->setFont(font);
 
     auto ButtAndRes_Layout = new QHBoxLayout(ButtAndRes_WGT);
     ButtAndRes_Layout->addStretch();
     ButtAndRes_Layout->addWidget(Res_button);
     ButtAndRes_Layout->addStretch();
-    ButtAndRes_Layout->addWidget(Res_Label);
+    ButtAndRes_Layout->addWidget(Result_massege_Label);
     ButtAndRes_Layout->addStretch();
     //-------------
 
@@ -118,11 +118,48 @@ Wgt_RootQuadraticEquationSecondDegree::Wgt_RootQuadraticEquationSecondDegree(QWi
 
 void Wgt_RootQuadraticEquationSecondDegree::Calculating_machine(){
 
-    //Result_message;
+    QString Result_message;
+    auto a = LineEdit_A->text().toInt();
+    auto b = LineEdit_B->text().toInt();
+    auto c = LineEdit_C->text().toInt();
 
-    auto res = LineEdit_A->text().toInt() +
-               LineEdit_B->text().toInt() +
-               LineEdit_C->text().toInt();
-    qDebug()<< "CONECT OK TEST RESULT: " << res;
+    double d = b * b - 4 * a * c; // Дискриминант
+    double q = b >= 0 ? (-b - sqrt(d)) / 2  : (-b + sqrt(d)) / 2;
+    // Здесь узнается наше родное `-b +- sqrt(d) / 2 * a`,
+    // но пока что без `a` в знаменателе
+    double x1 = q / a;
+    double x2 = c / q;
+
+
+
+    if((qIsNaN(x1) || qIsInf(x1)) && (qIsNaN(x2) || qIsInf(x2)))
+        Result_message = "NAN";
+    else if((qIsNaN(x1) || qIsInf(x1)) && !(qIsNaN(x2) || qIsInf(x2))){
+        Result_message = "x=";
+        Result_message += std::to_string(x2).c_str();
+    }
+
+    else if(!(qIsNaN(x1) || qIsInf(x1)) && (qIsNaN(x2) || qIsInf(x2))){
+        Result_message = "x=";
+        Result_message += std::to_string(x2).c_str();
+    }
+    else if(!(qIsNaN(x1) || qIsInf(x1)) && !(qIsNaN(x2) || qIsInf(x2))){
+        if(x1 != x2){
+            Result_message = "x1=";
+            Result_message += std::to_string(x1).c_str();
+            Result_message += " x2=";
+            Result_message += std::to_string(x2).c_str();
+        }
+        else{
+            Result_message = "x=";
+            Result_message += std::to_string(x2).c_str();
+        }
+    }
+    else{
+        qDebug()<< "error";
+    }
+
+
+    Result_massege_Label->setText(Result_message);
 
 }
