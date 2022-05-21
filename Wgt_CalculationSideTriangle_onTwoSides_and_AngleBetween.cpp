@@ -139,7 +139,6 @@ void Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween::Calculating_machin
         Result_message = "The triangle does not exist";
         Result_massege_Label->setText(Result_message);
     }
-
     else{
         if(Radio_DEG->isChecked()){
             if(angel >= 180){
@@ -147,7 +146,6 @@ void Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween::Calculating_machin
                 Result_massege_Label->setText(Result_message);
                 return;
             }
-
         }
         if(Radio_RAD->isChecked()){
             if(angel >= M_PI){
@@ -156,7 +154,6 @@ void Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween::Calculating_machin
                 return;
             }
             angel = qRadiansToDegrees(LineEdit_C->text().toFloat());
-
         }
 
         auto res = qSqrt( (b*b) + (c*c) - ( 2 * b * c * qCos(angel * M_PI / 180) ) );
