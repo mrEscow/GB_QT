@@ -20,12 +20,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     auto FirstTask = new Wgt_RootQuadraticEquationSecondDegree(MAIN_WGT);
     auto SecondTask = new Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween(MAIN_WGT);
-    auto TheeTask = new Wgt_Two_TextEditors_with_html(this);
+    auto ThirdTask = new Wgt_Two_TextEditors_with_html(MAIN_WGT);
 
     auto Vertical_Layout = new QVBoxLayout(MAIN_WGT);
     Vertical_Layout->addWidget(FirstTask);
     Vertical_Layout->addWidget(SecondTask);
-    Vertical_Layout->addWidget(TheeTask);
+    Vertical_Layout->addWidget(ThirdTask);
 
 }
 

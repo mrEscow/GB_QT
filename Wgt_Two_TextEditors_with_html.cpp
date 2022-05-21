@@ -23,18 +23,19 @@ Wgt_Two_TextEditors_with_html::Wgt_Two_TextEditors_with_html(QWidget * parent)
     auto PlainText_WGT = new QWidget(this);
     PlainTextOne = new QPlainTextEdit(PlainText_WGT);
     PlainTextTwo = new QPlainTextEdit(PlainText_WGT);
+
     auto PlainLayout = new QHBoxLayout(PlainText_WGT);
     PlainLayout->addWidget(PlainTextOne);
     PlainLayout->addWidget(PlainTextTwo);
 
     auto Buttons_WGT = new QWidget(this);
-    auto Add_Button = new QPushButton("AddText",Buttons_WGT);
-    auto Replay_Button = new QPushButton(Buttons_WGT);
-    auto HTML_Button = new QPushButton(Buttons_WGT);
-    auto ButtonsLayout = new QHBoxLayout(Buttons_WGT);
+    auto Add_Button = new QPushButton("Add Text",Buttons_WGT);
+    auto Replace_Button = new QPushButton("Replace Text",Buttons_WGT);
+    auto HTML_Button = new QPushButton("Set HTML",Buttons_WGT);
 
+    auto ButtonsLayout = new QHBoxLayout(Buttons_WGT);
     ButtonsLayout->addWidget(Add_Button);
-    ButtonsLayout->addWidget(Replay_Button);
+    ButtonsLayout->addWidget(Replace_Button);
     ButtonsLayout->addWidget(HTML_Button);
 
 
@@ -48,9 +49,23 @@ Wgt_Two_TextEditors_with_html::Wgt_Two_TextEditors_with_html(QWidget * parent)
     this->resize(600,300);
 
     connect(Add_Button,SIGNAL(clicked()),this,SLOT(AddText()));
+    connect(Replace_Button,SIGNAL(clicked()),this,SLOT(ReplaceText()));
+    connect(HTML_Button,SIGNAL(clicked()),this,SLOT(SetHTML()));
 }
 
 void  Wgt_Two_TextEditors_with_html::AddText(){
-    qDebug()<< "AddText";
     PlainTextTwo->insertPlainText(PlainTextOne->toPlainText());
+    PlainTextOne->clear();
+}
+
+void  Wgt_Two_TextEditors_with_html::ReplaceText(){
+    PlainTextTwo->clear();
+    PlainTextTwo->appendPlainText(PlainTextOne->toPlainText());
+    PlainTextOne->clear();
+}
+
+void  Wgt_Two_TextEditors_with_html::SetHTML(){
+    PlainTextTwo->clear();
+    PlainTextTwo->appendHtml(PlainTextOne->toPlainText());
+    //PlainTextOne->clear();
 }

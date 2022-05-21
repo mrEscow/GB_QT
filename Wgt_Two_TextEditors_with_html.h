@@ -11,6 +11,8 @@ public:
     Wgt_Two_TextEditors_with_html(QWidget * parent = nullptr);
 private slots:
     void AddText();
+    void ReplaceText();
+    void SetHTML();
 private:
     QPlainTextEdit *PlainTextOne;
     QPlainTextEdit *PlainTextTwo;
