@@ -12,7 +12,7 @@
 #include <QGroupBox>
 #include <QSpacerItem>
 #include <QLabel>
-#include <QPlainTextEdit>
+
 
 Wgt_Two_TextEditors_with_html::Wgt_Two_TextEditors_with_html(QWidget * parent)
     : QWidget(parent)
@@ -21,19 +21,20 @@ Wgt_Two_TextEditors_with_html::Wgt_Two_TextEditors_with_html(QWidget * parent)
     GroupBox->setTitle("Wgt_Two_TextEditors_with_html:");
 
     auto PlainText_WGT = new QWidget(this);
-    auto PlainTextOne = new QPlainTextEdit(PlainText_WGT);
-    auto PlainTextTwo = new QPlainTextEdit(PlainText_WGT);
+    PlainTextOne = new QPlainTextEdit(PlainText_WGT);
+    PlainTextTwo = new QPlainTextEdit(PlainText_WGT);
     auto PlainLayout = new QHBoxLayout(PlainText_WGT);
     PlainLayout->addWidget(PlainTextOne);
     PlainLayout->addWidget(PlainTextTwo);
 
     auto Buttons_WGT = new QWidget(this);
+    auto Add_Button = new QPushButton("AddText",Buttons_WGT);
     auto Replay_Button = new QPushButton(Buttons_WGT);
-    auto Add_Button = new QPushButton(Buttons_WGT);
     auto HTML_Button = new QPushButton(Buttons_WGT);
     auto ButtonsLayout = new QHBoxLayout(Buttons_WGT);
-    ButtonsLayout->addWidget(Replay_Button);
+
     ButtonsLayout->addWidget(Add_Button);
+    ButtonsLayout->addWidget(Replay_Button);
     ButtonsLayout->addWidget(HTML_Button);
 
 
@@ -45,4 +46,11 @@ Wgt_Two_TextEditors_with_html::Wgt_Two_TextEditors_with_html(QWidget * parent)
 
     this->move(10,10);
     this->resize(600,300);
+
+    connect(Add_Button,SIGNAL(clicked()),this,SLOT(AddText()));
+}
+
+void  Wgt_Two_TextEditors_with_html::AddText(){
+    qDebug()<< "AddText";
+    PlainTextTwo->insertPlainText(PlainTextOne->toPlainText());
 }
