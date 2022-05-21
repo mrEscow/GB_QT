@@ -11,13 +11,15 @@ CONFIG += c++17
 SOURCES += \
     Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween.cpp \
     Wgt_RootQuadraticEquationSecondDegree.cpp \
+    Wgt_Two_TextEditors_with_html.cpp \
     main.cpp \
     MainWindow.cpp
 
 HEADERS += \
     MainWindow.h \
     Wgt_CalculationSideTriangle_onTwoSides_and_AngleBetween.h \
-    Wgt_RootQuadraticEquationSecondDegree.h
+    Wgt_RootQuadraticEquationSecondDegree.h \
+    Wgt_Two_TextEditors_with_html.h
 
 FORMS += \
     MainWindow.ui
