@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
+#include "checktext.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,7 +17,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_textEdit_textChanged();
+
 private:
     Ui::MainWindow *ui;
+    QString textFromEditor;
+    QString textOld;
+    CheckText *checkText;
+    bool isCheck{false};
 };
 #endif // MAINWINDOW_H
