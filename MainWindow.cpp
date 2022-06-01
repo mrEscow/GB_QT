@@ -18,23 +18,46 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    itemModel = new QStandardItemModel  (this);
+    itemModel->appendRow(
+                new QStandardItem(QIcon(QApplication::style()->standardIcon(QStyle::SP_FileIcon)),
+                "Строка с файлом"));
+    itemModel->appendRow(
+                new QStandardItem(QIcon(QApplication::style()->standardIcon(QStyle::SP_MediaPlay)),
+                "Медиа"));
+    itemModel->appendRow(
+                new QStandardItem(QIcon("./demo.png"),
+                "Из файла"));
+
+
 
     strModel  = new QStringListModel    (this);
-
-    itemModel = new QStandardItemModel  (this);
-
     QStringList list;
-
-
     list << "Строка 1" << "Строка 2" << "Строка 3" << "Строка 4";
-
     strModel->setStringList(list);
 
+    //ui->listView->setViewMode();
+
+    ui->checkBox->setText("QStringListModel");
     ui->listView->setModel(strModel);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+
+void MainWindow::on_checkBox_clicked(bool checked)
+{
+    if(!checked){
+        ui->listView->setModel(strModel);
+        ui->checkBox->setText("QStringListModel");
+    }
+    else{
+        ui->listView->setModel(itemModel);
+        ui->checkBox->setText("QStandardItemModel");
+    }
+
 }
 
