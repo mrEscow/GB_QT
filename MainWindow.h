@@ -3,6 +3,16 @@
 
 #include <QMainWindow>
 
+/*
+    Создать таблицу со столбцами: No, Имя компьютера, IP адрес, MAC адрес.
+    Заполнить таблицу данными.
+    Предусмотреть возможность нескольких строк в таблице (они могут идти не подряд).
+    Для выделенных строк, по нажатию на кнопку покрасить задний фон в другой цвет.
+*/
+#include "MyTableViewModel.h"
+#include "computerdata.h"
+
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -17,5 +27,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    MyTableViewModel *model;
+    QList<ComputerData> *values;
+
 };
 #endif // MAINWINDOW_H
