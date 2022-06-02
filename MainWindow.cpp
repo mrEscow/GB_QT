@@ -22,7 +22,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     itemModel = new QStandardItemModel  (this);
 
-
     itemModel->appendRow(new QStandardItem(QIcon(":images/C++.png"),       "C++"));
     itemModel->appendRow(new QStandardItem(QIcon(":images/Python.png"),    "Python"));
     itemModel->appendRow(new QStandardItem(QIcon(":images/Java.png"),      "Java"));
@@ -30,10 +29,16 @@ MainWindow::MainWindow(QWidget *parent)
     itemModel->appendRow(new QStandardItem(QIcon(":images/PHP.png"),       "PHP"));
     itemModel->appendRow(new QStandardItem(QIcon(":images/JavaScript.png"),"JavaScript"));
 
+    ui->checkBox->setText("QListView::ListMode");
 
-    ui->listView->setViewMode(QListView::IconMode);
-    ui->checkBox->setText("QListView::IconMode");
+    ui->listView->setViewMode(QListView::ListMode);
     ui->listView->setModel(itemModel);
+    ui->listView->setStyleSheet("background-color: #8B008B");
+
+    ui->listView->setDragEnabled(true);
+    ui->listView->setDropIndicatorShown(true);
+    ui->listView->setDragDropMode(QAbstractItemView:: InternalMove);
+    //ui->listView->setDragDropMode(QAbstractItemView:: DragDrop);
 
     setWindowTitle("Lesson2");
 }
@@ -46,7 +51,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_checkBox_clicked(bool checked)
 {
-    if(!checked){
+    if(checked){
         ui->listView->setViewMode(QListView::IconMode);
         ui->checkBox->setText("QListView::IconMode");
     }
