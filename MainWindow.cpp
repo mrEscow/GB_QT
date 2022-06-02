@@ -4,7 +4,9 @@
     Создать список с названиями языков программирования (С++, Python, Java, C#, PHP, JavaScript).
     Для каждого элемента списка рядом отобразить иконку с логотипом языка программирования.
     Предусмотреть возможно изменения текста в каждом элементе списка.
+
     Добавить возможность перемещения элементов в списке.
+
     Создать кнопку для добавления нового языка программирования в список.
     Иконку для него поставить любую (по-умолчанию).
     Создать кнопку для удаления элемента из списка (в этом случае элемент должен быть выбран).
@@ -19,27 +21,21 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     itemModel = new QStandardItemModel  (this);
-    itemModel->appendRow(
-                new QStandardItem(QIcon(QApplication::style()->standardIcon(QStyle::SP_FileIcon)),
-                "Строка с файлом"));
-    itemModel->appendRow(
-                new QStandardItem(QIcon(QApplication::style()->standardIcon(QStyle::SP_MediaPlay)),
-                "Медиа"));
-    itemModel->appendRow(
-                new QStandardItem(QIcon("./demo.png"),
-                "Из файла"));
 
 
+    itemModel->appendRow(new QStandardItem(QIcon(":images/C++.png"),       "C++"));
+    itemModel->appendRow(new QStandardItem(QIcon(":images/Python.png"),    "Python"));
+    itemModel->appendRow(new QStandardItem(QIcon(":images/Java.png"),      "Java"));
+    itemModel->appendRow(new QStandardItem(QIcon(":images/C#.png"),        "C#"));
+    itemModel->appendRow(new QStandardItem(QIcon(":images/PHP.png"),       "PHP"));
+    itemModel->appendRow(new QStandardItem(QIcon(":images/JavaScript.png"),"JavaScript"));
 
-    strModel  = new QStringListModel    (this);
-    QStringList list;
-    list << "Строка 1" << "Строка 2" << "Строка 3" << "Строка 4";
-    strModel->setStringList(list);
 
-    //ui->listView->setViewMode();
+    ui->listView->setViewMode(QListView::IconMode);
+    ui->checkBox->setText("QListView::IconMode");
+    ui->listView->setModel(itemModel);
 
-    ui->checkBox->setText("QStringListModel");
-    ui->listView->setModel(strModel);
+    setWindowTitle("Lesson2");
 }
 
 MainWindow::~MainWindow()
@@ -51,13 +47,31 @@ MainWindow::~MainWindow()
 void MainWindow::on_checkBox_clicked(bool checked)
 {
     if(!checked){
-        ui->listView->setModel(strModel);
-        ui->checkBox->setText("QStringListModel");
+        ui->listView->setViewMode(QListView::IconMode);
+        ui->checkBox->setText("QListView::IconMode");
     }
     else{
-        ui->listView->setModel(itemModel);
-        ui->checkBox->setText("QStandardItemModel");
+        ui->listView->setViewMode(QListView::ListMode);
+        ui->checkBox->setText("QListView::ListMode");
+    }
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    if(!ui->lineEdit->text().isEmpty()){
+        itemModel->appendRow(new QStandardItem(QIcon(":images/New.png"),ui->lineEdit->text()));
+        ui->lineEdit->clear();
     }
 
+}
+
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    if(ui->listView->selectionModel()->hasSelection()){
+        if(ui->listView->selectionModel()->currentIndex().isValid())
+            itemModel->removeRow(ui->listView->selectionModel()->currentIndex().row());
+    }
 }
 

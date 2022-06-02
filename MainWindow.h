@@ -20,9 +20,14 @@ public:
 private slots:
     void on_checkBox_clicked(bool checked);
 
+    void on_pushButton_clicked();
+
+    void on_pushButton_3_clicked();
+
 private:
     Ui::MainWindow *ui;
-    QStringListModel *strModel;
+
     QStandardItemModel *itemModel;
+    QList<QStandardItem> itemList;
 };
 #endif // MAINWINDOW_H
