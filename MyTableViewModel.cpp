@@ -6,6 +6,11 @@ MyTableViewModel::MyTableViewModel(QObject *parent)
     values = new QList<ComputerData>();
 }
 
+MyTableViewModel::~MyTableViewModel()
+{
+    delete values;
+}
+
 int MyTableViewModel::rowCount(const QModelIndex &) const
 {
     return values->count();
@@ -76,4 +81,44 @@ QVariant MyTableViewModel::headerData(int section, Qt::Orientation orientation, 
         }
     }
     return QVariant();
+}
+
+void MyTableViewModel::append(ComputerData value)
+{
+    int newRow = this->values->count()+1;
+
+    this->beginInsertRows(QModelIndex(), newRow, newRow);
+        values->append(value);
+    endInsertRows();
+}
+
+void MyTableViewModel::update(int idx, ComputerData value)
+{
+    (*this->values)[idx] = value;
+
+    QModelIndex item_idx_s = this->index(idx,0);
+    QModelIndex item_idx_e = this->index(idx,this->columnCount(QModelIndex()));
+
+    emit this->dataChanged(item_idx_s ,item_idx_e );
+}
+
+void MyTableViewModel::deleteRow(int idx)
+{
+    this->beginRemoveRows(QModelIndex(), idx,idx);
+
+        (*this->values).removeAt(idx);
+
+    this->endRemoveRows();
+}
+
+void MyTableViewModel::insertAt(int idx, ComputerData value)
+{
+
+    int newRow = idx;
+
+    this->beginInsertRows(QModelIndex(), newRow, newRow);
+
+        values->insert(newRow,value);
+
+    endInsertRows();
 }

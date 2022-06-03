@@ -28,13 +28,30 @@ MainWindow::MainWindow(QWidget *parent)
     model->populate(values);
     this->ui->tableView->setModel(model);
 
-
-
-
 }
 
 MainWindow::~MainWindow()
 {
+    values->clear();
     delete ui;
 }
 
+void MainWindow::on_pushButton_clicked()
+{
+    model->append(ComputerData("new", "new", "new"));
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    model->update(ui->tableView->currentIndex().row(), ComputerData("66", "Japan", "japan.png"));
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    model->deleteRow(0);
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    model->insertAt(0, ComputerData("66", "Japan", "japan.png"));
+}
