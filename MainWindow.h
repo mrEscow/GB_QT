@@ -35,5 +35,8 @@ private slots:
     void onDel();
     void onEdit();
     void onAddTo();
+private slots:
+    void onSpan();
+    void onColor();
 };
 #endif // MAINWINDOW_H

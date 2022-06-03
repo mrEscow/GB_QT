@@ -76,6 +76,20 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="SpanButton">
+        <property name="text">
+         <string>Span</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="ColorButton">
+        <property name="text">
+         <string>Color</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>

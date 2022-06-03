@@ -32,6 +32,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->DelButton,  SIGNAL(clicked()),this, SLOT(onDel()));
     connect(ui->EditButton, SIGNAL(clicked()),this, SLOT(onEdit()));
     connect(ui->AddToButton,SIGNAL(clicked()),this, SLOT(onAddTo()));
+
+    connect(ui->SpanButton, SIGNAL(clicked()),this, SLOT(onSpan()));
+    connect(ui->ColorButton,SIGNAL(clicked()),this, SLOT(onColor()));
 }
 
 MainWindow::~MainWindow()
@@ -58,4 +61,14 @@ void MainWindow::onEdit()
 void MainWindow::onAddTo()
 {
     model->insertAt(ui->tableView->currentIndex().row(), ComputerData("new2", "new2", "new2"));
+}
+
+void MainWindow::onSpan()
+{
+    //ui->tableView->setSpan(0, 2, 3,1); // объединение строк в 3 столбце
+}
+
+void MainWindow::onColor()
+{
+
 }
