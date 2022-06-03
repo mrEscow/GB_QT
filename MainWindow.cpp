@@ -26,8 +26,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     model = new MyTableViewModel();
     model->populate(values);
-    this->ui->tableView->setModel(model);
+    ui->tableView->setModel(model);
 
+    connect(ui->AddButton,  SIGNAL(clicked()),this, SLOT(onAdd()));
+    connect(ui->DelButton,  SIGNAL(clicked()),this, SLOT(onDel()));
+    connect(ui->EditButton, SIGNAL(clicked()),this, SLOT(onEdit()));
+    connect(ui->AddToButton,SIGNAL(clicked()),this, SLOT(onAddTo()));
 }
 
 MainWindow::~MainWindow()
@@ -36,22 +40,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::onAdd()
 {
     model->append(ComputerData("new", "new", "new"));
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::onDel()
 {
-    model->update(ui->tableView->currentIndex().row(), ComputerData("66", "Japan", "japan.png"));
+    model->deleteRow(ui->tableView->currentIndex().row());
 }
 
-void MainWindow::on_pushButton_3_clicked()
+void MainWindow::onEdit()
 {
-    model->deleteRow(0);
+    model->update(ui->tableView->currentIndex().row(),ComputerData("new3", "new3", "new3"));
 }
 
-void MainWindow::on_pushButton_4_clicked()
+void MainWindow::onAddTo()
 {
-    model->insertAt(0, ComputerData("66", "Japan", "japan.png"));
+    model->insertAt(ui->tableView->currentIndex().row(), ComputerData("new2", "new2", "new2"));
 }
