@@ -70,25 +70,35 @@ void MainWindow::onSpan()
     if(selection_model->hasSelection()){
         auto selected_indexes = selection_model->selectedIndexes();
 
+        std::sort(selected_indexes.begin(),selected_indexes.end());
+
         int r{selected_indexes[0].row()};
         int c{selected_indexes[0].column()};
-        int rs{selected_indexes[0].row()};
-        int cs{selected_indexes[0].column()};
 
-        if(selected_indexes.size() >1 ){
+        int rs{1};
+        int cs{1};
+
+        int oldR{r};
+        int oldC{c};
+
+        if(selected_indexes.size() > 1 ){
             for(auto index : selected_indexes){
 
                 if(r > index.row())
                     r = index.row();
                 if(c > index.column())
-                    c =index.column();
+                    c = index.column();
 
-                if(rs < index.row())
-                    rs = index.row();
-                if(cs < index.column())
-                    cs =index.column();
+                if(oldR < index.row()){
+                    rs++;
+                    oldR++;
+                }
+                if(oldC < index.column()){
+                    cs++;
+                    oldC++;
+                }
             }
-            ui->tableView->setSpan(r, c, rs + 1, cs + 1);
+            ui->tableView->setSpan(r,c,rs,cs);
         }
     }
 }
@@ -97,41 +107,5 @@ void MainWindow::onColor()
 {
 
 
-    //auto x = ui->tableView->itemDelegate();
 
-    //auto x = ui->tableView->currentIndex();
-    //auto y = ui->tableView->selectionBehavior();
-
-    //auto z = ui->tableView->SelectedClicked;
-
-
-//    int row = ui->tableView->currentIndex().row();
-//    int column = ui->tableView->currentIndex().column();
-
-//    qDebug() << row << column;// << x << y;
-
-//    //ui->tableView->setSpan(row, column, 0,0);
-//    qDebug() << ui->tableView->rowSpan(row, column);
-
-
-//    QPalette p;
-//    QColor color(123,45,234);
-//    ColorRole x;
-//    p.setColor(x,color);
-//    ui->tableView->setPalette(p);
-
-
-    //QItemSelectionModel *c = ui->tableView->selectionModel();
-    //c->selectedIndexes()
-//    ui->tableView->setSpan(
-//                ui->tableView->currentIndex().column(),
-//                ui->tableView->currentIndex().row(),
-//                ui->tableView->currentIndex().column(),
-//                ui->tableView->currentIndex().row());
-
-    //QModelIndexList indexes =
-    //model.sel
-            //ui->tableView->selectAll();//->selectedRows();
-    //auto selectedList = ui->tableView->selectionBehavior();
-    //qDebug() << selectedList;
 }
