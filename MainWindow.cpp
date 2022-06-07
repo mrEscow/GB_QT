@@ -66,36 +66,28 @@ void MainWindow::onAddTo()
 
 void MainWindow::onSpan()
 {
-    //QTableView::seleselectionModel();
-    //QItemSelectionModel *c = ui->tableView->selectionModel();
-    //ui->tableView->setSpan(c.);
-
-    //ui->tableView->setSpan(0, 2, 3,1); // объединение строк в 3 столбце
-
     auto selection_model = ui->tableView->selectionModel();
     if(selection_model->hasSelection()){
-        auto selected_indexes =selection_model->selectedIndexes();
-        int r{0};
-        int c{0};
-        int rs{0};
-        int cs{0};
-        qDebug() << "Size"<< selected_indexes.size();
-        if(selected_indexes.size()>1){
+        auto selected_indexes = selection_model->selectedIndexes();
+
+        int r{selected_indexes[0].row()};
+        int c{selected_indexes[0].column()};
+        int rs{selected_indexes[0].row()};
+        int cs{selected_indexes[0].column()};
+
+        if(selected_indexes.size() >1 ){
             for(auto index : selected_indexes){
 
-                if(r >= index.row())
+                if(r > index.row())
                     r = index.row();
-                if(c >= index.column())
+                if(c > index.column())
                     c =index.column();
 
-                if(rs <= index.row())
+                if(rs < index.row())
                     rs = index.row();
-                if(cs <= index.column())
+                if(cs < index.column())
                     cs =index.column();
-                qDebug() << r << c;
-                qDebug() << rs << cs;
             }
-
             ui->tableView->setSpan(r, c, rs + 1, cs + 1);
         }
     }
