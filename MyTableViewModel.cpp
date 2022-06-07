@@ -4,6 +4,7 @@ MyTableViewModel::MyTableViewModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     values = new QList<ComputerData>();
+
 }
 
 MyTableViewModel::~MyTableViewModel()
