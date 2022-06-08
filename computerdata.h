@@ -20,6 +20,7 @@ public:
     QString getMac() const;
     void setMac(const QString &value);
 
+
 private:
     QString m_name;
     QString m_ip_addres;

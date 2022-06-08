@@ -41,3 +41,5 @@ void ComputerData::setMac(const QString &value)
 {
     m_mac_addres = value;
 }
+
+

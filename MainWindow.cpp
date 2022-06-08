@@ -105,7 +105,13 @@ void MainWindow::onSpan()
 
 void MainWindow::onColor()
 {
+    QColor color(123,43,66);
 
-
-
+    auto selection_model = ui->tableView->selectionModel();
+    if(selection_model->hasSelection()){
+        auto selected_indexes = selection_model->selectedIndexes();
+        for(auto index : selected_indexes){
+            model->updateColor(index);
+        }
+    }
 }

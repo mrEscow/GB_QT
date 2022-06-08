@@ -19,11 +19,12 @@ public:
 public:
     void append(ComputerData value);
     void update(int idx, ComputerData value);
+    void updateColor(const QModelIndex &index);
     void deleteRow(int idx);
     void insertAt(int idx, ComputerData value);
 private:
     QList<ComputerData> *values;
-
+    QList<QModelIndex> indexesList;
 };
 
 #endif // MYTABLEVIEWMODEL_H

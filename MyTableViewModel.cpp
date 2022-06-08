@@ -1,4 +1,6 @@
 #include "MyTableViewModel.h"
+#include "qbrush.h"
+#include "qcolor.h"
 
 MyTableViewModel::MyTableViewModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -27,36 +29,54 @@ QVariant MyTableViewModel::data( const QModelIndex &index, int role ) const
 
     QVariant value;
 
-        switch ( role )
-        {
-            case Qt::DisplayRole: //string
-            {
-                switch (index.column()) {
-                    case 0: {
-                        value = this->values->at(index.row()).getName();
-                        break;
-                    }
-                    case 1: {
-                        value = this->values->at(index.row()).getIp();
-                        break;
-                    }
-                    case 2: {
-                        value = this->values->at(index.row()).getMac();
-                        break;
-                    }
-                }
-            }
+    switch ( role )
+    {
+    case Qt::DisplayRole: //string
+    {
+        switch (index.column()) {
+        case 0: {
+            value = this->values->at(index.row()).getName();
             break;
-
-            case Qt::UserRole: //data
-            {
-                value = this->values->at(index.row()).getName();
-            }
-            break;
-
-            default:
-                break;
         }
+        case 1: {
+            value = this->values->at(index.row()).getIp();
+            break;
+        }
+        case 2: {
+            value = this->values->at(index.row()).getMac();
+            break;
+        }
+        }
+    }
+        break;
+
+    case Qt::UserRole: //data
+    {
+        value = this->values->at(index.row()).getName();
+    }
+        break;
+
+   case Qt::BackgroundRole:
+    {
+        for(auto &ind: indexesList)
+        if(ind == index){
+            switch (index.column()) {
+            case 0: {
+                return QVariant(QBrush (QColor(Qt::yellow)));
+            }
+            case 1: {
+                return QVariant(QBrush (QColor(Qt::yellow)));
+            }
+            case 2: {
+                return QVariant(QBrush (QColor(Qt::yellow)));
+            }
+            }
+        }
+
+    }
+    default:
+        break;
+    }
 
     return value;
 }
@@ -101,6 +121,12 @@ void MyTableViewModel::update(int idx, ComputerData value)
     QModelIndex item_idx_e = this->index(idx,this->columnCount(QModelIndex()));
 
     emit this->dataChanged(item_idx_s ,item_idx_e );
+}
+
+void MyTableViewModel::updateColor(const QModelIndex &index)
+{
+    //qDebug() << index.column() + (index.row() * 3);
+    indexesList.append(index);
 }
 
 void MyTableViewModel::deleteRow(int idx)
