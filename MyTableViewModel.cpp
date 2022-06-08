@@ -6,7 +6,6 @@ MyTableViewModel::MyTableViewModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     values = new QList<ComputerData>();
-
 }
 
 MyTableViewModel::~MyTableViewModel()
@@ -26,7 +25,6 @@ int MyTableViewModel::columnCount(const QModelIndex &) const
 
 QVariant MyTableViewModel::data( const QModelIndex &index, int role ) const
 {
-
     QVariant value;
 
     switch ( role )
@@ -34,49 +32,49 @@ QVariant MyTableViewModel::data( const QModelIndex &index, int role ) const
     case Qt::DisplayRole: //string
     {
         switch (index.column()) {
-        case 0: {
-            value = this->values->at(index.row()).getName();
-            break;
-        }
-        case 1: {
-            value = this->values->at(index.row()).getIp();
-            break;
-        }
-        case 2: {
-            value = this->values->at(index.row()).getMac();
-            break;
-        }
+            case 0: {
+                value = this->values->at(index.row()).getName();
+                break;
+            }
+            case 1: {
+                value = this->values->at(index.row()).getIp();
+                break;
+            }
+            case 2: {
+                value = this->values->at(index.row()).getMac();
+                break;
+            }
         }
     }
-        break;
+    break;
 
-    case Qt::UserRole: //data
+    case Qt::UserRole:
     {
         value = this->values->at(index.row()).getName();
     }
-        break;
+    break;
 
-   case Qt::BackgroundRole:
+    case Qt::BackgroundRole:
     {
         for(auto &ind: indexesList)
-        if(ind == index){
-            switch (index.column()) {
-            case 0: {
-                return QVariant(QBrush (QColor(Qt::yellow)));
+            if(ind == index){
+                switch (index.column()) {
+                    case 0: {
+                        return QVariant(QBrush (QColor(Qt::yellow)));
+                    }
+                    case 1: {
+                        return QVariant(QBrush (QColor(Qt::yellow)));
+                    }
+                    case 2: {
+                        return QVariant(QBrush (QColor(Qt::yellow)));
+                    }
+                }
             }
-            case 1: {
-                return QVariant(QBrush (QColor(Qt::yellow)));
-            }
-            case 2: {
-                return QVariant(QBrush (QColor(Qt::yellow)));
-            }
-            }
-        }
 
-    }
-    default:
-        break;
-    }
+     }
+     default:
+         break;
+     }
 
     return value;
 }
@@ -107,7 +105,6 @@ QVariant MyTableViewModel::headerData(int section, Qt::Orientation orientation, 
 void MyTableViewModel::append(ComputerData value)
 {
     int newRow = this->values->count()+1;
-
     this->beginInsertRows(QModelIndex(), newRow, newRow);
         values->append(value);
     endInsertRows();
@@ -125,27 +122,20 @@ void MyTableViewModel::update(int idx, ComputerData value)
 
 void MyTableViewModel::updateColor(const QModelIndex &index)
 {
-    //qDebug() << index.column() + (index.row() * 3);
     indexesList.append(index);
 }
 
 void MyTableViewModel::deleteRow(int idx)
 {
     this->beginRemoveRows(QModelIndex(), idx,idx);
-
-        (*this->values).removeAt(idx);
-
+    (*this->values).removeAt(idx);
     this->endRemoveRows();
 }
 
 void MyTableViewModel::insertAt(int idx, ComputerData value)
 {
-
     int newRow = idx;
-
     this->beginInsertRows(QModelIndex(), newRow, newRow);
-
-        values->insert(newRow,value);
-
+    values->insert(newRow,value);
     endInsertRows();
 }
