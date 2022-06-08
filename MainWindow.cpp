@@ -112,4 +112,5 @@ void MainWindow::onColor()
             model->updateColor(index);
         }
     }
+    ui->tableView->clearSelection();
 }
