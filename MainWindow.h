@@ -13,6 +13,7 @@
 #include "computerdata.h"
 
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -27,9 +28,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
-
     MyTableViewModel *model;
     QList<ComputerData> *values;
+
 private slots:
     void onAdd();
     void onDel();

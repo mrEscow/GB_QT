@@ -3,6 +3,7 @@
 
 #include <QModelIndex>
 #include "computerdata.h"
+#include "RecordForm.h"
 
 class MyTableViewModel : public QAbstractListModel
 {
@@ -25,6 +26,7 @@ public:
 private:
     QList<ComputerData> *values;
     QList<QModelIndex> indexesList;
+    RecordForm *recordForm;
 };
 
 #endif // MYTABLEVIEWMODEL_H

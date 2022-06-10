@@ -36,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->SpanButton, SIGNAL(clicked()),this, SLOT(onSpan()));
     connect(ui->ColorButton,SIGNAL(clicked()),this, SLOT(onColor()));
+
+
 }
 
 MainWindow::~MainWindow()

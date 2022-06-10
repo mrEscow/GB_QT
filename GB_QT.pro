@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     MyTableViewModel.cpp \
+    RecordForm.cpp \
     computerdata.cpp \
     main.cpp \
     MainWindow.cpp
@@ -17,10 +18,12 @@ SOURCES += \
 HEADERS += \
     MainWindow.h \
     MyTableViewModel.h \
+    RecordForm.h \
     computerdata.h
 
 FORMS += \
-    MainWindow.ui
+    MainWindow.ui \
+    RecordForm.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

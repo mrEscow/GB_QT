@@ -6,10 +6,15 @@ MyTableViewModel::MyTableViewModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     values = new QList<ComputerData>();
+
+    recordForm = new RecordForm();
+    //recordForm->setParent(this, Qt::Window);
+    recordForm->setModel(this);
 }
 
 MyTableViewModel::~MyTableViewModel()
 {
+    delete recordForm;
     delete values;
 }
 
@@ -104,10 +109,18 @@ QVariant MyTableViewModel::headerData(int section, Qt::Orientation orientation, 
 
 void MyTableViewModel::append(ComputerData value)
 {
-    int newRow = this->values->count()+1;
-    this->beginInsertRows(QModelIndex(), newRow, newRow);
-        values->append(value);
+    int newRow = this->values->count() + 1;
+
+    //QModelIndex *newIndex = new QModelIndex;
+    beginInsertRows(QModelIndex(), newRow, newRow);
+    values->append(value);
     endInsertRows();
+
+    recordForm->getMapper()->setCurrentModelIndex(index(1));
+
+    recordForm->show();
+//    recordForm->getMapper()->submit();
+//    qDebug() << values->back().getName();
 }
 
 void MyTableViewModel::update(int idx, ComputerData value)
