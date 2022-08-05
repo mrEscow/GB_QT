@@ -13,6 +13,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     filter = "Текстовый файл(*.txt);";
 
+    connect(ui->helpButton,SIGNAL(clicked()),this,SLOT(help()));
+
+
 }
 
 MainWindow::~MainWindow()
@@ -56,5 +59,10 @@ void MainWindow::openFile()
             }
         }
     }
+}
+
+void MainWindow::help()
+{
+    qDebug() << "HELP";
 }
 

@@ -17,6 +17,7 @@ public:
 private slots:
     void saveFile();
     void openFile();
+    void help();
 
 private:
     Ui::MainWindow *ui;
