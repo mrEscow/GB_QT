@@ -2,6 +2,7 @@
 #include "ui_MainWindow.h"
 #include <QFileDialog>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -14,8 +15,6 @@ MainWindow::MainWindow(QWidget *parent)
     filter = "Текстовый файл(*.txt);";
 
     connect(ui->helpButton,SIGNAL(clicked()),this,SLOT(help()));
-
-
 }
 
 MainWindow::~MainWindow()
@@ -63,6 +62,16 @@ void MainWindow::openFile()
 
 void MainWindow::help()
 {
-    qDebug() << "HELP";
+    QFile file(":/HelpText.txt");
+    QString help;
+
+    if (file.open(QIODevice::ReadOnly)){
+        QTextStream stream(&file);
+        help = stream.readAll();
+        file.close();
+    }
+
+    label.setText(help);
+    label.show();
 }
 
