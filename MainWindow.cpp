@@ -11,12 +11,18 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    filter = "Текстовый файл(*.txt);";
+
     connect(ui->saveButton,SIGNAL(clicked()),this,SLOT(saveFile()));
     connect(ui->openButton,SIGNAL(clicked()),this,SLOT(openFile()));
 
-    filter = "Текстовый файл(*.txt);";
-
     connect(ui->helpButton,SIGNAL(clicked()),this,SLOT(help()));
+
+    connect(ui->menuSave, SIGNAL(triggered(bool)), this, SLOT(saveFile()));
+    connect(ui->menuOpen, SIGNAL(triggered(bool)), this, SLOT(openFile()));
+
+    connect(ui->helpAboutProgramm,SIGNAL(triggered(bool)),this,SLOT(help()));
+
 }
 
 MainWindow::~MainWindow()

@@ -86,32 +86,63 @@
     <property name="title">
      <string>Меню</string>
     </property>
-    <addaction name="save"/>
-    <addaction name="save_as"/>
-    <addaction name="open"/>
-    <addaction name="open_as"/>
+    <addaction name="menuSave"/>
+    <addaction name="menuSave_as"/>
+    <addaction name="menuOpen"/>
+    <addaction name="menuOpen_as"/>
+    <addaction name="separator"/>
+    <addaction name="menuExit"/>
+   </widget>
+   <widget class="QMenu" name="tools">
+    <property name="title">
+     <string>Инструменты</string>
+    </property>
+    <addaction name="toolsParametrs"/>
+   </widget>
+   <widget class="QMenu" name="help">
+    <property name="title">
+     <string>Справка</string>
+    </property>
+    <addaction name="helpAboutProgramm"/>
    </widget>
    <addaction name="menu"/>
+   <addaction name="tools"/>
+   <addaction name="help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="save">
+  <action name="menuSave">
    <property name="text">
     <string>Сохранить</string>
    </property>
   </action>
-  <action name="save_as">
+  <action name="menuSave_as">
    <property name="text">
     <string>Сохранить как...</string>
    </property>
   </action>
-  <action name="open">
+  <action name="menuOpen">
    <property name="text">
     <string>Открыть</string>
    </property>
   </action>
-  <action name="open_as">
+  <action name="menuOpen_as">
    <property name="text">
     <string>Открыть как...</string>
+   </property>
+  </action>
+  <action name="menuExit">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+  </action>
+  <action name="toolsParametrs">
+   <property name="text">
+    <string>Параметры</string>
+   </property>
+  </action>
+  <action name="helpAboutProgramm">
+   <property name="text">
+    <string>О программе</string>
    </property>
   </action>
  </widget>
