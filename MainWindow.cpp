@@ -165,9 +165,8 @@ void MainWindow::help()
 
     qDebug() << helpText;
     helpWidget.setWindowTitle(tr("Справка"));
-    helpWidget.setLabelText(tr("Справка"));
+    helpWidget.setLabelText(tr("О программе !"));
     helpWidget.setText(tr(helpText.toStdString().c_str()));
     helpWidget.show();
-
 }
 

@@ -7,6 +7,7 @@ FileCreatorWidget::FileCreatorWidget(QWidget *parent) :
     ui(new Ui::FileCreatorWidget)
 {
     ui->setupUi(this);
+    this->setWindowTitle(tr("Создать фаил"));
 
     connect(ui->createButton,SIGNAL(clicked()),this, SLOT(create()));
     connect(ui->cancelButton,SIGNAL(clicked()),this, SLOT(cancel()));
