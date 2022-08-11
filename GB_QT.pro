@@ -11,18 +11,21 @@ CONFIG += c++17
 SOURCES += \
     FileCreatorWidget.cpp \
     HelpWidget.cpp \
+    ParametersWidget.cpp \
     main.cpp \
     MainWindow.cpp
 
 HEADERS += \
     FileCreatorWidget.h \
     HelpWidget.h \
-    MainWindow.h
+    MainWindow.h \
+    ParametersWidget.h
 
 FORMS += \
     FileCreatorWidget.ui \
     HelpWidget.ui \
-    MainWindow.ui
+    MainWindow.ui \
+    ParametersWidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

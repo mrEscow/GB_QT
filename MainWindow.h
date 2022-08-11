@@ -5,6 +5,7 @@
 #include <QLabel>
 #include "HelpWidget.h"
 #include "FileCreatorWidget.h"
+#include "ParametersWidget.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -39,5 +40,6 @@ private:
     HelpWidget helpWidget;
     FileCreatorWidget fileCreatorWidget;
     QString fileName;
+    ParametersWidget parametersWidget;
 };
 #endif // MAINWINDOW_H

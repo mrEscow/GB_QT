@@ -148,7 +148,7 @@ void MainWindow::exit()
 
 void MainWindow::parametrs()
 {
-    qDebug() << "PARAMETRS";
+    parametersWidget.show();
 }
 
 void MainWindow::help()
