@@ -2,4 +2,8 @@
     <qresource prefix="/">
         <file>HelpText.txt</file>
     </qresource>
+    <qresource prefix="/languages">
+        <file>QtLanguage_ja.ts</file>
+        <file>QtLanguage_ru.ts</file>
+    </qresource>
 </RCC>

@@ -71,7 +71,7 @@ void MainWindow::help()
         file.close();
     }
 
-    label.setText(help);
+    label.setText(tr(help.toStdString().c_str()));
     label.show();
 }
 

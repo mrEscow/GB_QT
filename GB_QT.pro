@@ -25,3 +25,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     Resources.qrc
+
+TRANSLATIONS += QtLanguage_ru.ts QtLanguage_ja.ts
+
+CODECFORSRC = UTF-8
