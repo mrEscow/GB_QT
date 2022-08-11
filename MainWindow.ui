@@ -86,6 +86,8 @@
     <property name="title">
      <string>Меню</string>
     </property>
+    <addaction name="menuCreateNewFile"/>
+    <addaction name="separator"/>
     <addaction name="menuSave"/>
     <addaction name="menuSave_as"/>
     <addaction name="menuOpen"/>
@@ -143,6 +145,11 @@
   <action name="helpAboutProgramm">
    <property name="text">
     <string>О программе</string>
+   </property>
+  </action>
+  <action name="menuCreateNewFile">
+   <property name="text">
+    <string>Создать новый файл</string>
    </property>
   </action>
  </widget>
