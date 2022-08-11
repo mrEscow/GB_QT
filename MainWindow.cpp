@@ -41,7 +41,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::runFileCreator()
 {
-    this->setEnabled(false);
     fileCreatorWidget.show();
 }
 
@@ -54,7 +53,6 @@ void MainWindow::createFile(QString fileName)
         ui->textEdit->setEnabled(true);
     }
 
-    this->setEnabled(true);
     ui->menuSave->setEnabled(true);
     ui->menuCloseFile->setEnabled(true);
 }
@@ -91,19 +89,11 @@ void MainWindow::saveFile_as()
 {
     QString fileNameTemp =
             QFileDialog::getSaveFileName
-            (this, tr("Сохранить как"), QDir::current().path(), filter);
+            (this, tr("Сохранить как..."), QDir::current().path(), filter);
 
-    if (fileNameTemp.length() > 0){
-        QString ext = QString(&(fileNameTemp.data()[fileNameTemp.length() - 4]));
-        if (ext == ".txt"){
-            QFile file(fileNameTemp);
-            if (file.open(QFile::WriteOnly /* | QFile::NewOnly */)){
-                QTextStream stream(&file);
-                stream << ui->textEdit->toPlainText();
-                fileName = fileNameTemp;
-                file.close();
-            }
-        }
+    if(!fileName.isEmpty()){
+        fileName = fileNameTemp;
+        saveFile();
     }
 }
 
