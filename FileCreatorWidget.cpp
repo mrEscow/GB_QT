@@ -30,5 +30,6 @@ void FileCreatorWidget::create()
 
 void FileCreatorWidget::cancel()
 {
+    emit newNameFromFileCreator("");
     this->close();
 }

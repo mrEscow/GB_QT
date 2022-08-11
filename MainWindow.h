@@ -19,12 +19,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
-    void createFile();
-    void getNamefile(QString);
+    void runFileCreator();
+    void createFile(QString);
+    void closeFile();
     void saveFile();
     void saveFile_as();
-    void openFile();
-    void openFile_as();
+    void openFileReadWrite();
+    void openFileReadOnly();
+private:
+    void openFile(bool isReadOnly);
+private slots:
     void exit();
     void parametrs();
     void help();

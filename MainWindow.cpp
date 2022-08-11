@@ -10,27 +10,24 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    //ui->textEdit->setReadOnly(true);
     ui->textEdit->setEnabled(false);
-
     filter = "Текстовый файл(*.txt);";
+    ui->menuSave->setEnabled(false);
+    ui->menuCloseFile->setEnabled(false);
 
-    connect(ui->saveButton,SIGNAL(clicked()),this,SLOT(saveFile_as()));
-    connect(ui->openButton,SIGNAL(clicked()),this,SLOT(openFile()));
-    connect(ui->helpButton,SIGNAL(clicked()),this,SLOT(help()));
-
-
-    connect(ui->menuCreateNewFile,SIGNAL(triggered(bool)), this, SLOT(createFile()));
-
+    connect(ui->menuCreateNewFile,SIGNAL(triggered(bool)), this, SLOT(runFileCreator()));
+    connect(ui->menuCloseFile,SIGNAL(triggered(bool)), this, SLOT(closeFile()));
     connect(ui->menuSave, SIGNAL(triggered(bool)), this, SLOT(saveFile()));
     connect(ui->menuSave_as, SIGNAL(triggered(bool)), this, SLOT(saveFile_as()));
-    connect(ui->menuOpen, SIGNAL(triggered(bool)), this, SLOT(openFile()));
-    connect(ui->menuOpen_as, SIGNAL(triggered(bool)), this, SLOT(openFile_as()));
+    connect(ui->menuOpen, SIGNAL(triggered(bool)), this, SLOT(openFileReadWrite()));
+    connect(ui->menuOpen_ReadOnly, SIGNAL(triggered(bool)), this, SLOT(openFileReadOnly()));
+    connect(ui->menuExit, SIGNAL(triggered(bool)), this, SLOT(exit()));
+
+    connect(ui->toolsParametrs, SIGNAL(triggered(bool)), this, SLOT(parametrs()));
 
     connect(ui->helpAboutProgramm,SIGNAL(triggered(bool)),this,SLOT(help()));
 
-    connect(&fileCreatorWidget,SIGNAL(newNameFromFileCreator(QString)),this, SLOT(getNamefile(QString)));
+    connect(&fileCreatorWidget,SIGNAL(newNameFromFileCreator(QString)),this, SLOT(createFile(QString)));
 
 }
 
@@ -39,87 +36,92 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::createFile()
+void MainWindow::runFileCreator()
 {
+    this->setEnabled(false);
     fileCreatorWidget.show();
-//    while(fileCreatorWidget.isEnabled()){
-//        system("pause");
-//    };
-
 }
 
-void MainWindow::getNamefile(QString fileName)
+void MainWindow::createFile(QString fileName)
 {
-    this->fileName = fileName;
+    if(!fileName.isEmpty()){
+        this->fileName = fileName;
+        saveFile();
+        ui->nameFileLabel->setText(fileName);
+        ui->textEdit->setEnabled(true);
+    }
+
+    this->setEnabled(true);
+    ui->menuSave->setEnabled(true);
+    ui->menuCloseFile->setEnabled(true);
+}
+
+void MainWindow::closeFile()
+{
+    saveFile();
+    fileName.clear();
+    ui->nameFileLabel->clear();
+    ui->textEdit->clear();
+    ui->textEdit->setEnabled(false);
+    ui->menuSave->setEnabled(false);
+    ui->menuCloseFile->setEnabled(false);
 }
 
 void MainWindow::saveFile()
 {
     if(!fileName.isEmpty()){
         if (fileName.length() > 0){
-            QString ext = QString(&(fileName.data()[fileName.length() - 4]));
+            QString ext = QString(&(fileName.data()[fileName.length() - 4]));            
             if (ext == ".txt"){
                 QFile file(fileName);
                 if (file.open(QFile::WriteOnly /* | QFile::NewOnly */)){
                     QTextStream stream(&file);
-                    stream << ui->textEdit->toPlainText();
+                    stream << ui->textEdit->toPlainText();                   
                     file.close();
                 }
             }
         }
     }
-    else{
-
-        saveFile_as();
-    }
-
 }
 
 void MainWindow::saveFile_as()
 {
-    fileName =
+    QString fileNameTemp =
             QFileDialog::getSaveFileName
             (this, tr("Сохранить как"), QDir::current().path(), filter);
 
-    if (fileName.length() > 0){
-        QString ext = QString(&(fileName.data()[fileName.length() - 4]));
+    if (fileNameTemp.length() > 0){
+        QString ext = QString(&(fileNameTemp.data()[fileNameTemp.length() - 4]));
         if (ext == ".txt"){
-            QFile file(fileName);
+            QFile file(fileNameTemp);
             if (file.open(QFile::WriteOnly /* | QFile::NewOnly */)){
                 QTextStream stream(&file);
                 stream << ui->textEdit->toPlainText();
+                fileName = fileNameTemp;
                 file.close();
             }
         }
     }
 }
 
-void MainWindow::openFile()
+void MainWindow::openFileReadWrite()
 {
-    fileName =
-            QFileDialog::getOpenFileName
+    fileName = QFileDialog::getOpenFileName
             (this, tr("открыть для редактирования"), QDir::current().path(), filter);
 
-    if (fileName.length() > 0){
-        int index = fileName.indexOf(".txt");
-        if (index != -1 && fileName.length() - 4 == index){
-            QFile file(fileName);
-            if (file.open(QFile::ReadOnly | QFile::ExistingOnly)){
-                QTextStream stream(&file);
-                ui->textEdit->setPlainText(stream.readAll());
-                ui->textEdit->setReadOnly(false);
-                file.close();
-            }
-        }
-    }
+    openFile(false);
 }
 
-void MainWindow::openFile_as()
+void MainWindow::openFileReadOnly()
 {
-    fileName =
-            QFileDialog::getOpenFileName
+    fileName = QFileDialog::getOpenFileName
             (this, tr("открыть без редактирования"), QDir::current().path(), filter);
 
+    openFile(true);
+}
+
+void MainWindow::openFile(bool isReadOnly)
+{
     if (fileName.length() > 0){
         int index = fileName.indexOf(".txt");
         if (index != -1 && fileName.length() - 4 == index){
@@ -127,7 +129,11 @@ void MainWindow::openFile_as()
             if (file.open(QFile::ReadOnly | QFile::ExistingOnly)){
                 QTextStream stream(&file);
                 ui->textEdit->setPlainText(stream.readAll());
-                ui->textEdit->setReadOnly(true);
+                ui->textEdit->setEnabled(true);
+                ui->textEdit->setReadOnly(isReadOnly);
+                ui->nameFileLabel->setText(fileName);
+                ui->menuSave->setEnabled(true);
+                ui->menuCloseFile->setEnabled(true);
                 file.close();
             }
         }
@@ -136,12 +142,13 @@ void MainWindow::openFile_as()
 
 void MainWindow::exit()
 {
-
+    saveFile();
+    qApp->exit(0);
 }
 
 void MainWindow::parametrs()
 {
-
+    qDebug() << "PARAMETRS";
 }
 
 void MainWindow::help()
