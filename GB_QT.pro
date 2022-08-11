@@ -9,13 +9,16 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    HelpWidget.cpp \
     main.cpp \
     MainWindow.cpp
 
 HEADERS += \
+    HelpWidget.h \
     MainWindow.h
 
 FORMS += \
+    HelpWidget.ui \
     MainWindow.ui
 
 # Default rules for deployment.
@@ -26,6 +29,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     Resources.qrc
 
-TRANSLATIONS += QtLanguage_ru.ts QtLanguage_ja.ts
+TRANSLATIONS += QtLanguage_en.ts QtLanguage_ru.ts QtLanguage_ja.ts
 
 CODECFORSRC = UTF-8

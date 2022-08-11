@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QLabel>
+#include "HelpWidget.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,6 +25,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QString filter;
-    QLabel label;
+    HelpWidget helpWidget;
 };
 #endif // MAINWINDOW_H

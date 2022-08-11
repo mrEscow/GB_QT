@@ -2,6 +2,8 @@
 #include "ui_MainWindow.h"
 #include <QFileDialog>
 #include <QTextStream>
+#include <QDebug>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -63,15 +65,20 @@ void MainWindow::openFile()
 void MainWindow::help()
 {
     QFile file(":/HelpText.txt");
-    QString help;
+
+    QString helpText;
 
     if (file.open(QIODevice::ReadOnly)){
         QTextStream stream(&file);
-        help = stream.readAll();
+        helpText = stream.readAll();
         file.close();
     }
 
-    label.setText(tr(help.toStdString().c_str()));
-    label.show();
+    qDebug() << helpText;
+    helpWidget.setWindowTitle(tr("Справка"));
+    helpWidget.setLabelText(tr("Справка"));
+    helpWidget.setText(tr(helpText.toStdString().c_str()));
+    helpWidget.show();
+
 }
 
