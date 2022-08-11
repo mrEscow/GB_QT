@@ -7,7 +7,7 @@ FileCreatorWidget::FileCreatorWidget(QWidget *parent) :
     ui(new Ui::FileCreatorWidget)
 {
     ui->setupUi(this);
-    this->setWindowTitle(tr("Создать фаил"));
+    this->setWindowTitle(tr("Создать файл"));
 
     connect(ui->createButton,SIGNAL(clicked()),this, SLOT(create()));
     connect(ui->cancelButton,SIGNAL(clicked()),this, SLOT(cancel()));
@@ -33,4 +33,12 @@ void FileCreatorWidget::cancel()
 {
     emit newNameFromFileCreator("");
     this->close();
+}
+
+void FileCreatorWidget::switchLanguage()
+{
+    this->setWindowTitle(tr("Создать файл"));
+    ui->label->setText(tr("Введите имя нового документа:"));
+    ui->createButton->setText(tr("Создать"));
+    ui->cancelButton->setText(tr("Отмена"));
 }

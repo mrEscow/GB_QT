@@ -29,6 +29,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(&fileCreatorWidget,SIGNAL(newNameFromFileCreator(QString)),this, SLOT(createFile(QString)));
 
+    connect(&parametersWidget, SIGNAL(switchLanguage()),this, SLOT(switchLanguage()));
+    connect(&parametersWidget, SIGNAL(switchLanguage()),&fileCreatorWidget, SLOT(switchLanguage()));
+    connect(&parametersWidget, SIGNAL(switchLanguage()),&helpWidget, SLOT(switchLanguage()));
 }
 
 MainWindow::~MainWindow()
@@ -153,20 +156,26 @@ void MainWindow::parametrs()
 
 void MainWindow::help()
 {
-    QFile file(":/HelpText.txt");
-
-    QString helpText;
-
-    if (file.open(QIODevice::ReadOnly)){
-        QTextStream stream(&file);
-        helpText = stream.readAll();
-        file.close();
-    }
-
-    qDebug() << helpText;
-    helpWidget.setWindowTitle(tr("Справка"));
-    helpWidget.setLabelText(tr("О программе !"));
-    helpWidget.setText(tr(helpText.toStdString().c_str()));
     helpWidget.show();
+}
+
+void MainWindow::switchLanguage()
+{
+    this->setWindowTitle(tr("Текстовый редактор"));
+
+    ui->menu->setTitle(tr("Меню"));
+    ui->menuCreateNewFile->setText(tr("Создать новый файл"));
+    ui->menuCloseFile->setText(tr("Закрыть файл"));
+    ui->menuSave->setText(tr("Сохранить"));
+    ui->menuSave_as->setText(tr("Сохранить как..."));
+    ui->menuOpen->setText(tr("Открыть"));
+    ui->menuOpen_ReadOnly->setText(tr("Открыть для просмотра"));
+    ui->menuExit->setText(tr("Выход"));
+
+    ui->tools->setTitle(tr("Инструменты"));
+    ui->toolsParametrs->setText(tr("Параметры"));
+
+    ui->help->setTitle(tr("Справка"));
+    ui->helpAboutProgramm->setText(tr("О программе"));
 }
 

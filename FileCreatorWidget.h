@@ -19,6 +19,8 @@ private slots:
     void cancel();
 signals:
     void newNameFromFileCreator(QString);
+private slots:
+    void switchLanguage();
 
 private:
     Ui::FileCreatorWidget *ui;

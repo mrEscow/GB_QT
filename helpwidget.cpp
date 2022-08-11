@@ -1,11 +1,24 @@
 #include "HelpWidget.h"
+#include "qdebug.h"
 #include "ui_HelpWidget.h"
+#include <QFile>
 
 HelpWidget::HelpWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::HelpWidget)
 {
     ui->setupUi(this);
+    ui->textBrowser->setEnabled(false);
+    this->setWindowTitle(tr("Справка"));
+    ui->label->setText(tr("О программе !"));
+    QFile file(":/HelpText.txt");
+    QString helpText;
+    if (file.open(QIODevice::ReadOnly)){
+        QTextStream stream(&file);
+        helpText = stream.readAll();
+        file.close();
+    }
+    ui->textBrowser->setText(helpText);
 }
 
 HelpWidget::~HelpWidget()
@@ -13,12 +26,20 @@ HelpWidget::~HelpWidget()
     delete ui;
 }
 
-void HelpWidget::setText(QString text)
+void HelpWidget::switchLanguage()
 {
-    ui->textBrowser->setText(text);
-}
+    this->setWindowTitle(tr("Справка"));
+    ui->label->setText(tr("О программе !"));
 
-void HelpWidget::setLabelText(QString text)
-{
-    ui->label->setText(text);
+    QString list[] =
+    {
+        tr("\tДобро пожаловать в текстовый редактор!"),
+        tr("\tЗдесь вы можете загружать файлы с расширением txt,"),
+        tr("\tредактировать их и сохранять."),
+        tr("\tСпасибо что прочитали!"),
+        tr("\tудачи!")
+    };
+    ui->textBrowser->clear();
+    for(auto &text: list)
+        ui->textBrowser->append(text);
 }

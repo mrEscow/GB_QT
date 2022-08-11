@@ -33,6 +33,8 @@ private slots:
     void exit();
     void parametrs();
     void help();
+private slots:
+    void switchLanguage();
 
 private:
     Ui::MainWindow *ui;

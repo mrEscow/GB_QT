@@ -14,9 +14,8 @@ class HelpWidget : public QWidget
 public:
     explicit HelpWidget(QWidget *parent = nullptr);
     ~HelpWidget();
-public:
-    void setText(QString text);
-    void setLabelText(QString text);
+private slots:
+    void switchLanguage();
 private:
     Ui::HelpWidget *ui;
 };
