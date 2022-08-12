@@ -29,13 +29,13 @@ void ParametersWidget::switchLanguage(int activItemID)
 {
     QTranslator translator;
     QString path = "languages/QtLanguage_" + languagesPostfics.at(activItemID);
-    qDebug() << path;
     translator.load(path);
-    qApp->installTranslator(&translator);
+
+    bool isGood = qApp->installTranslator(&translator);
+    qDebug() << path << isGood;
 
     this->setWindowTitle(tr("Параменты"));
     ui->language->setText(tr("Язык:"));
-
     ui->comboBox->setItemText(0,tr("Русский"));
     ui->comboBox->setItemText(1,tr("Английский"));
     ui->comboBox->setItemText(2,tr("Японский"));
