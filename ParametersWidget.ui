@@ -72,7 +72,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox_4"/>
+      <widget class="QComboBox" name="comboBoxCreateFile"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_15">
@@ -88,7 +88,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_3">
+      <widget class="QLineEdit" name="lineEditCreateFile">
        <property name="minimumSize">
         <size>
          <width>50</width>
@@ -100,6 +100,9 @@
          <width>50</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -166,7 +169,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox_5"/>
+      <widget class="QComboBox" name="comboBoxExit"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_19">
@@ -182,7 +185,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_4">
+      <widget class="QLineEdit" name="lineEditExit">
        <property name="minimumSize">
         <size>
          <width>50</width>
@@ -194,6 +197,9 @@
          <width>50</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -487,7 +493,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox_2"/>
+      <widget class="QComboBox" name="comboBoxOpen"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_7">
@@ -503,7 +509,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="lineEditOpen">
        <property name="minimumSize">
         <size>
          <width>50</width>
@@ -515,6 +521,9 @@
          <width>50</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -581,7 +590,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox_3"/>
+      <widget class="QComboBox" name="comboBoxSave_as"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_11">
@@ -597,7 +606,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_2">
+      <widget class="QLineEdit" name="lineEditSave_as">
        <property name="minimumSize">
         <size>
          <width>50</width>
@@ -609,6 +618,9 @@
          <width>50</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
