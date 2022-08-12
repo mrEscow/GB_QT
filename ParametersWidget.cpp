@@ -13,14 +13,14 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle(tr("Параменты"));
 
-    ui->comboBox->addItem(tr("Русский"));
+    ui->comboBoxLanguages->addItem(tr("Русский"));
     languagesPostfics.push_back("ru");
-    ui->comboBox->addItem(tr("Английский"));
+    ui->comboBoxLanguages->addItem(tr("Английский"));
     languagesPostfics.push_back("en");
-    ui->comboBox->addItem(tr("Японский"));
+    ui->comboBoxLanguages->addItem(tr("Японский"));
     languagesPostfics.push_back("ja");
 
-    connect(ui->comboBox,SIGNAL(activated(int)),SLOT(switchLanguage(int)));
+    connect(ui->comboBoxLanguages,SIGNAL(activated(int)),SLOT(switchLanguage(int)));
 
     modifiers.append("NO MOD");
     modifiers.append("Shift ");
@@ -31,6 +31,11 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
     ui->comboBoxSave_as->addItems(modifiers);
     ui->comboBoxCreateFile->addItems(modifiers);
     ui->comboBoxExit->addItems(modifiers);
+
+//    connect(ui->comboBox,SIGNAL(activated(int)),SLOT(switchLanguage(int)));
+//    connect(ui->comboBox,SIGNAL(activated(int)),SLOT(switchLanguage(int)));
+//    connect(ui->comboBox,SIGNAL(activated(int)),SLOT(switchLanguage(int)));
+//    connect(ui->comboBox,SIGNAL(activated(int)),SLOT(switchLanguage(int)));
 
     lineEdits.push_back(ui->lineEditOpen);
     lineEdits.push_back(ui->lineEditSave_as);
@@ -73,9 +78,9 @@ void ParametersWidget::switchLanguage(int activItemID)
 
     this->setWindowTitle(tr("Параменты"));
     ui->language->setText(tr("Язык:"));
-    ui->comboBox->setItemText(0,tr("Русский"));
-    ui->comboBox->setItemText(1,tr("Английский"));
-    ui->comboBox->setItemText(2,tr("Японский"));
+    ui->comboBoxLanguages->setItemText(0,tr("Русский"));
+    ui->comboBoxLanguages->setItemText(1,tr("Английский"));
+    ui->comboBoxLanguages->setItemText(2,tr("Японский"));
 
     emit switchLanguage();
 }
