@@ -18,6 +18,7 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
     languagesPostfics.push_back("ja");
 
     connect(ui->comboBox,SIGNAL(activated(int)),SLOT(switchLanguage(int)));
+
 }
 
 ParametersWidget::~ParametersWidget()

@@ -12,6 +12,13 @@ class ParametersWidget : public QWidget
 {
     Q_OBJECT
 
+    struct Shortcuts{
+        QPair<Qt::Modifier,Qt::Key> open;
+        QPair<Qt::Modifier,Qt::Key> save_as;
+        QPair<Qt::Modifier,Qt::Key> createFile;
+        QPair<Qt::Modifier,Qt::Key> exit;
+    };
+
 public:
     explicit ParametersWidget(QWidget *parent = nullptr);
     ~ParametersWidget();
