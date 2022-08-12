@@ -35,7 +35,8 @@ private slots:
     void help();
 private slots:
     void switchLanguage();
-
+public:
+    bool eventFilter(QObject* watched, QEvent* event) override;
 private:
     Ui::MainWindow *ui;
     QString filter;

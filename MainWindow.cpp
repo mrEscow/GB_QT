@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QDebug>
+#include <QKeyEvent>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -32,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&parametersWidget, SIGNAL(switchLanguage()),this, SLOT(switchLanguage()));
     connect(&parametersWidget, SIGNAL(switchLanguage()),&fileCreatorWidget, SLOT(switchLanguage()));
     connect(&parametersWidget, SIGNAL(switchLanguage()),&helpWidget, SLOT(switchLanguage()));
+
+    installEventFilter(this);
 }
 
 MainWindow::~MainWindow()
@@ -168,4 +171,25 @@ void MainWindow::switchLanguage()
     ui->help->setTitle(tr("Справка"));
     ui->helpAboutProgramm->setText(tr("О программе"));
 }
+
+bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    if(watched  == this && event->type() == QEvent::KeyPress){
+        auto key_event = static_cast<QKeyEvent*>(event);
+        if(key_event->key() == Qt::Key_O && key_event->modifiers() == Qt::ControlModifier){
+            openFileReadWrite();
+        }
+        if(key_event->key() == Qt::Key_S && key_event->modifiers() == Qt::ControlModifier){
+            saveFile_as();
+        }
+        if(key_event->key() == Qt::Key_N && key_event->modifiers() == Qt::ControlModifier){
+            runFileCreator();
+        }
+        if(key_event->key() == Qt::Key_Q && key_event->modifiers() == Qt::ControlModifier){
+            exit();
+        }
+    }
+    return QMainWindow::eventFilter(watched,event);
+}
+
 
