@@ -12,6 +12,7 @@ SOURCES += \
     FileCreatorWidget.cpp \
     HelpWidget.cpp \
     ParametersWidget.cpp \
+    Shortcut.cpp \
     main.cpp \
     MainWindow.cpp
 
@@ -20,6 +21,7 @@ HEADERS += \
     HelpWidget.h \
     MainWindow.h \
     ParametersWidget.h \
+    Shortcut.h \
     Shortcuts.h
 
 FORMS += \

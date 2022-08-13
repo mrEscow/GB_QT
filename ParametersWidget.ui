@@ -579,7 +579,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="labelSave_as">
+      <widget class="QLabel" name="labelSaveAs">
        <property name="minimumSize">
         <size>
          <width>90</width>
