@@ -21,6 +21,16 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
     ui->comboBoxLanguages->addItem(tr("Японский"));
     languagesPostfics.push_back("ja");
 
+    ui->labeKeybord->setText(tr("Клавиатура:"));
+    ui->labelAction->setText(tr("Действие"));
+    ui->labelModifilter->setText(tr("Модификатор"));
+    ui->labelKey->setText(tr("Клавиша"));
+
+    ui->labelOpen->setText(tr("Открыть"));
+    ui->labelSaveAs->setText(tr("Сохранить как"));
+    ui->labelCreateFile->setText(tr("Создать файл"));
+    ui->labelExit->setText(tr("Выход"));
+
     connect(ui->comboBoxLanguages,SIGNAL(activated(int)),SLOT(switchLanguage(int)));
 
     QPair<Qt::KeyboardModifier,Qt::Key> open;
@@ -73,6 +83,16 @@ void ParametersWidget::switchLanguage(int activItemID)
     ui->comboBoxLanguages->setItemText(0,tr("Русский"));
     ui->comboBoxLanguages->setItemText(1,tr("Английский"));
     ui->comboBoxLanguages->setItemText(2,tr("Японский"));
+
+    ui->labeKeybord->setText(tr("Клавиатура:"));
+    ui->labelAction->setText(tr("Действие"));
+    ui->labelModifilter->setText(tr("Модификатор"));
+    ui->labelKey->setText(tr("Клавиша"));
+
+    ui->labelOpen->setText(tr("Открыть"));
+    ui->labelSaveAs->setText(tr("Сохранить как"));
+    ui->labelCreateFile->setText(tr("Создать файл"));
+    ui->labelExit->setText(tr("Выход"));
 
     emit changeLanguage();
 }
