@@ -6,8 +6,6 @@
 #include "HelpWidget.h"
 #include "FileCreatorWidget.h"
 #include "ParametersWidget.h"
-#include "Shortcuts.h"
-
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,8 +14,6 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
-    Shortcuts shortcuts;
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -38,7 +34,7 @@ private slots:
     void help();
 private slots:
     void switchLanguage();
-    void changeShortcuts();
+    void changeShortcuts(QList<Shortcut> newShortcuts);
 public:
     bool eventFilter(QObject* watched, QEvent* event) override;
 private:
@@ -48,5 +44,6 @@ private:
     FileCreatorWidget fileCreatorWidget;
     QString fileName;
     ParametersWidget parametersWidget;
+    QList<Shortcut> shortcuts;
 };
 #endif // MAINWINDOW_H

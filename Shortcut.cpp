@@ -60,7 +60,6 @@ void Shortcut::setKeyParamInWidgets()
 
 void Shortcut::setModifierForCombobox(const Qt::KeyboardModifier& modifilter,QComboBox* box)
 {
-    qDebug() << modifilter;
     if(modifilter == Qt::NoModifier)
         box->setCurrentIndex(0);
     if(modifilter == Qt::ShiftModifier)

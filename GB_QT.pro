@@ -21,8 +21,7 @@ HEADERS += \
     HelpWidget.h \
     MainWindow.h \
     ParametersWidget.h \
-    Shortcut.h \
-    Shortcuts.h
+    Shortcut.h
 
 FORMS += \
     FileCreatorWidget.ui \

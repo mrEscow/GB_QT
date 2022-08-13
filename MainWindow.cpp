@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     filter = "Текстовый файл(*.txt);";
     ui->menuSave->setEnabled(false);
     ui->menuCloseFile->setEnabled(false);
+    installEventFilter(this);
 
     connect(ui->menuCreateNewFile,SIGNAL(triggered(bool)), this, SLOT(runFileCreator()));
     connect(ui->menuCloseFile,SIGNAL(triggered(bool)), this, SLOT(closeFile()));
@@ -34,18 +35,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&parametersWidget, SIGNAL(changeLanguage()),&fileCreatorWidget, SLOT(switchLanguage()));
     connect(&parametersWidget, SIGNAL(changeLanguage()),&helpWidget, SLOT(switchLanguage()));
 
-    installEventFilter(this);
 
-    shortcuts.open.first = Qt::ControlModifier;
-    shortcuts.open.second = Qt::Key_O;
-    shortcuts.saveAs.first = Qt::ControlModifier;
-    shortcuts.saveAs.second = Qt::Key_S;
-    shortcuts.createFile.first = Qt::ControlModifier;
-    shortcuts.createFile.second = Qt::Key_N;
-    shortcuts.exit.first = Qt::ControlModifier;
-    shortcuts.exit.second = Qt::Key_Q;
-
-    connect(&parametersWidget, SIGNAL(changeShortcuts()),this, SLOT(changeShortcuts()));
+    shortcuts = parametersWidget.getShortcuts();
+    connect(&parametersWidget, SIGNAL(changeShortcuts(QList<Shortcut>)),this, SLOT(changeShortcuts(QList<Shortcut>)));
 }
 
 MainWindow::~MainWindow()
@@ -183,9 +175,10 @@ void MainWindow::switchLanguage()
     ui->helpAboutProgramm->setText(tr("О программе"));
 }
 
-void MainWindow::changeShortcuts()
+void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)
 {
-    shortcuts = parametersWidget.getShortcuts();
+    shortcuts = newShortcuts;
+    qDebug() << "SLOT void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)";
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
@@ -193,17 +186,23 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     if(watched  == this && event->type() == QEvent::KeyPress){
         auto keyEvent = static_cast<QKeyEvent*>(event);
 
-        if(keyEvent->key() == (int)shortcuts.open.second && keyEvent->modifiers() == shortcuts.open.first){
-            openFileReadWrite();
-        }
-        if(keyEvent->key() == (int)shortcuts.saveAs.second && keyEvent->modifiers() == shortcuts.saveAs.first){
-            saveFile_as();
-        }
-        if(keyEvent->key() == shortcuts.createFile.second && keyEvent->modifiers() == shortcuts.createFile.first){
-            runFileCreator();
-        }
-        if(keyEvent->key() == (int)shortcuts.exit.second && keyEvent->modifiers() == shortcuts.exit.first){
-            exit();
+        for(auto& shortcut:shortcuts){
+
+            if(shortcut.getName()->text() == tr("Открыть"))
+                if(keyEvent->key() == shortcut.getKey() && keyEvent->modifiers() == shortcut.getModifier())
+                    openFileReadWrite();
+
+            if(shortcut.getName()->text() == tr("Сохранить как"))
+                if(keyEvent->key() == shortcut.getKey() && keyEvent->modifiers() == shortcut.getModifier())
+                    saveFile_as();
+
+            if(shortcut.getName()->text() == tr("Создать файл"))
+                if(keyEvent->key() == shortcut.getKey() && keyEvent->modifiers() == shortcut.getModifier())
+                    runFileCreator();
+
+            if(shortcut.getName()->text() == tr("Выход"))
+                if(keyEvent->key() == shortcut.getKey() && keyEvent->modifiers() == shortcut.getModifier())
+                    exit();
         }
     }
 
