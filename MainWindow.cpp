@@ -35,7 +35,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&parametersWidget, SIGNAL(changeLanguage()),&fileCreatorWidget, SLOT(switchLanguage()));
     connect(&parametersWidget, SIGNAL(changeLanguage()),&helpWidget, SLOT(switchLanguage()));
 
-
     shortcuts = parametersWidget.getShortcuts();
     connect(&parametersWidget, SIGNAL(changeShortcuts(QList<Shortcut>)),this, SLOT(changeShortcuts(QList<Shortcut>)));
 }
@@ -178,7 +177,6 @@ void MainWindow::switchLanguage()
 void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)
 {
     shortcuts = newShortcuts;
-    qDebug() << "SLOT void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)";
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
@@ -208,5 +206,3 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
     return QMainWindow::eventFilter(watched,event);
 }
-
-

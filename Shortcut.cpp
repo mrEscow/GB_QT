@@ -22,33 +22,48 @@ Shortcut::Shortcut(QLabel* name,
     setKeyParamInWidgets();
 }
 
-QLabel *Shortcut::getName(){return name.data();}
+QLabel *Shortcut::getName()
+{
+    return name.data();
+}
 
-QComboBox *Shortcut::getComboBox(){return comboBox.data();}
+QComboBox *Shortcut::getComboBox()
+{
+    return comboBox.data();
+}
 
-QLineEdit *Shortcut::getLineEdit(){return lineEdit.data();}
+QLineEdit *Shortcut::getLineEdit()
+{
+    return lineEdit.data();
+}
 
-QPair<Qt::KeyboardModifier, Qt::Key> Shortcut::getShortcut(){
+QPair<Qt::KeyboardModifier, Qt::Key> Shortcut::getShortcut()
+{
     return shortcut;
 }
 
-Qt::KeyboardModifier Shortcut::getModifier(){
+Qt::KeyboardModifier Shortcut::getModifier()
+{
     return shortcut.first;
 }
 
-Qt::Key Shortcut::getKey(){
+Qt::Key Shortcut::getKey()
+{
     return shortcut.second;
 }
 
-void Shortcut::setShortcut(QPair<Qt::KeyboardModifier, Qt::Key> shortcut){
+void Shortcut::setShortcut(QPair<Qt::KeyboardModifier, Qt::Key> shortcut)
+{
     this->shortcut = shortcut;
 }
 
-void Shortcut::setKeyboardModifier(Qt::KeyboardModifier modifier){
+void Shortcut::setKeyboardModifier(Qt::KeyboardModifier modifier)
+{
     shortcut.first = modifier;
 }
 
-void Shortcut::setKey(Qt::Key key){
+void Shortcut::setKey(Qt::Key key)
+{
     shortcut.second = key;
 };
 
@@ -74,8 +89,3 @@ void Shortcut::setKeyForLineEdit(const Qt::Key &key, QLineEdit *lineEdit)
 {
     lineEdit->setText(QKeySequence(key).toString());
 }
-
-
-
-
-

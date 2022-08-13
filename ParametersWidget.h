@@ -7,7 +7,6 @@
 #include "qlineedit.h"
 #include <QWidget>
 #include <QStringList>
-#include <QSharedPointer>
 
 namespace Ui {
 class ParametersWidget;
