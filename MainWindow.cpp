@@ -30,11 +30,22 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(&fileCreatorWidget,SIGNAL(newNameFromFileCreator(QString)),this, SLOT(createFile(QString)));
 
-    connect(&parametersWidget, SIGNAL(switchLanguage()),this, SLOT(switchLanguage()));
-    connect(&parametersWidget, SIGNAL(switchLanguage()),&fileCreatorWidget, SLOT(switchLanguage()));
-    connect(&parametersWidget, SIGNAL(switchLanguage()),&helpWidget, SLOT(switchLanguage()));
+    connect(&parametersWidget, SIGNAL(changeLanguage()),this, SLOT(switchLanguage()));
+    connect(&parametersWidget, SIGNAL(changeLanguage()),&fileCreatorWidget, SLOT(switchLanguage()));
+    connect(&parametersWidget, SIGNAL(changeLanguage()),&helpWidget, SLOT(switchLanguage()));
 
     installEventFilter(this);
+
+    shortcuts.open.first = Qt::ControlModifier;
+    shortcuts.open.second = Qt::Key_O;
+    shortcuts.saveAs.first = Qt::ControlModifier;
+    shortcuts.saveAs.second = Qt::Key_S;
+    shortcuts.createFile.first = Qt::ControlModifier;
+    shortcuts.createFile.second = Qt::Key_N;
+    shortcuts.exit.first = Qt::ControlModifier;
+    shortcuts.exit.second = Qt::Key_Q;
+
+    connect(&parametersWidget, SIGNAL(changeShortcuts()),this, SLOT(changeShortcuts()));
 }
 
 MainWindow::~MainWindow()
@@ -172,20 +183,26 @@ void MainWindow::switchLanguage()
     ui->helpAboutProgramm->setText(tr("О программе"));
 }
 
+void MainWindow::changeShortcuts()
+{
+    shortcuts = parametersWidget.getShortcuts();
+}
+
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if(watched  == this && event->type() == QEvent::KeyPress){
         auto keyEvent = static_cast<QKeyEvent*>(event);
-        if(keyEvent->key() == Qt::Key_O && keyEvent->modifiers() == Qt::ControlModifier){
+
+        if(keyEvent->key() == (int)shortcuts.open.second && keyEvent->modifiers() == shortcuts.open.first){
             openFileReadWrite();
         }
-        if(keyEvent->key() == Qt::Key_S && keyEvent->modifiers() == Qt::ControlModifier){
+        if(keyEvent->key() == (int)shortcuts.saveAs.second && keyEvent->modifiers() == shortcuts.saveAs.first){
             saveFile_as();
         }
-        if(keyEvent->key() == Qt::Key_N && keyEvent->modifiers() == Qt::ControlModifier){
+        if(keyEvent->key() == shortcuts.createFile.second && keyEvent->modifiers() == shortcuts.createFile.first){
             runFileCreator();
         }
-        if(keyEvent->key() == Qt::Key_Q && keyEvent->modifiers() == Qt::ControlModifier){
+        if(keyEvent->key() == (int)shortcuts.exit.second && keyEvent->modifiers() == shortcuts.exit.first){
             exit();
         }
     }

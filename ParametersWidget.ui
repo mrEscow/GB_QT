@@ -605,7 +605,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBoxSave_as"/>
+      <widget class="QComboBox" name="comboBoxSaveAs"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_11">
@@ -621,7 +621,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEditSave_as">
+      <widget class="QLineEdit" name="lineEditSaveAs">
        <property name="minimumSize">
         <size>
          <width>50</width>
