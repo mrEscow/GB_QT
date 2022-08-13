@@ -36,7 +36,7 @@ private:
     bool isSuchPair(const Qt::KeyboardModifier& modifier);
     void closeLineEditors();
     void setKeyParamInStruct();
-    Qt::KeyboardModifier getKeyboardModifier(QComboBox*);
+    Qt::KeyboardModifier getKeyboardModifier(const int& currentIndex);
 signals:
     void changeShortcuts();
 public:
@@ -48,11 +48,10 @@ private:
     QStringList modifiers;
     QList<QLineEdit*> lineEdits;
     QList<QComboBox*> comboBoxes;
-    QLineEdit* testLineEdit;
-    QComboBox* testComboBox;
+    QLineEdit* senderLineEdit;
+    QComboBox* senderComboBox;
     bool isChangeKey;
     QString oldKey;
-    QString newKey;
     int oldCurrentIndex;
 
 

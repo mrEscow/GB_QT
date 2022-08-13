@@ -121,92 +121,41 @@ void ParametersWidget::setNewModifierFromCombobox(int index)
 {
     QObject* obj = sender();
 
-    testComboBox = qobject_cast<QComboBox*>(obj);
-    if(!testComboBox)
+    senderComboBox = qobject_cast<QComboBox*>(obj);
+    if(!senderComboBox)
         return;
 
-    //testComboBox->currentIndexChanged();
+    Qt::KeyboardModifier newModifier = getKeyboardModifier(index);
 
-    Qt::KeyboardModifier tempTestModifier;
-
-    switch(index){
-        case 0:
-            tempTestModifier = Qt::NoModifier;
-        break;
-        case 1:
-            tempTestModifier = Qt::ShiftModifier;
-        break;
-        case 2:
-            tempTestModifier = Qt::ControlModifier;
-        break;
-        case 3:
-            tempTestModifier = Qt::AltModifier;
-        break;
-    }
-
-    if(isSuchPair(tempTestModifier))
-        testComboBox->setCurrentIndex(oldCurrentIndex);
+    if(isSuchPair(newModifier))
+        senderComboBox->setCurrentIndex(oldCurrentIndex);
     else
         setKeyParamInStruct();
 }
 
-
-
 bool ParametersWidget::eventFilter(QObject *watched, QEvent *event)
 {
-    if(watched == ui->comboBoxOpen && event->type() == QEvent::MouseButtonPress)
-        oldCurrentIndex = ui->comboBoxOpen->currentIndex();
+    for(auto& comboBox: comboBoxes)
+        if(watched == comboBox && event->type() == QEvent::MouseButtonPress)
+            oldCurrentIndex = comboBox->currentIndex();
 
-    if(watched == ui->comboBoxSaveAs && event->type() == QEvent::MouseButtonPress)
-        oldCurrentIndex = ui->comboBoxSaveAs->currentIndex();
-
-    if(watched == ui->comboBoxCreateFile && event->type() == QEvent::MouseButtonPress)
-        oldCurrentIndex = ui->comboBoxCreateFile->currentIndex();
-
-    if(watched == ui->comboBoxExit && event->type() == QEvent::MouseButtonPress)
-        oldCurrentIndex = ui->comboBoxExit->currentIndex();
-
-
-    if(watched == ui->lineEditOpen && event->type() == QEvent::MouseButtonPress){
-       QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-       if(mouseEvent != 0 && mouseEvent->button() == Qt::LeftButton)
-            celectLineEditFromFilter(ui->lineEditOpen);
-    }
-
-    if(watched == ui->lineEditSaveAs && event->type() == QEvent::MouseButtonPress){
-       QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-       if(mouseEvent != 0 && mouseEvent->button() == Qt::LeftButton)
-            celectLineEditFromFilter(ui->lineEditSaveAs);
-    }
-
-    if(watched == ui->lineEditCreateFile && event->type() == QEvent::MouseButtonPress){
-       QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-       if(mouseEvent != 0 && mouseEvent->button() == Qt::LeftButton)
-            celectLineEditFromFilter(ui->lineEditCreateFile);
-    }
-
-    if(watched == ui->lineEditExit && event->type() == QEvent::MouseButtonPress){
-       QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-       if(mouseEvent != 0 && mouseEvent->button() == Qt::LeftButton)
-           celectLineEditFromFilter(ui->lineEditExit);
-    }
+    for(auto& lineEdit: lineEdits)
+        if(watched == lineEdit && event->type() == QEvent::MouseButtonPress){
+           QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+           if(mouseEvent != 0 && mouseEvent->button() == Qt::LeftButton)
+               celectLineEditFromFilter(lineEdit);
+        }
 
     if(watched == this && event->type() == QEvent::MouseButtonPress)
         closeLineEditors();
 
-
     if(isChangeKey){
         if(watched  == this && event->type() == QEvent::KeyPress){
             QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-
-            newKey = QKeySequence(keyEvent->key()).toString();
-
-            if(!isModifaerKey(keyEvent->key())){
-                if(!isSuchPair(keyEvent->key())){
-                    oldKey = newKey;
+            if(!isModifaerKey(keyEvent->key()) && !isSuchPair(keyEvent->key())){
+                    oldKey = QKeySequence(keyEvent->key()).toString();
                     closeLineEditors();
                     setKeyParamInStruct();
-                }
             }
         }
     }
@@ -228,7 +177,7 @@ void ParametersWidget::celectLineEditFromFilter(QLineEdit* lE)
         oldKey = lE->text();
         lE->clear();
         lE->setEnabled(true);
-        testLineEdit = lE;
+        senderLineEdit = lE;
     }
 }
 
@@ -247,25 +196,25 @@ bool ParametersWidget::isModifaerKey(const int& key)
 bool ParametersWidget::isSuchPair(const int& key)
 {
 
-    if(testLineEdit == ui->lineEditOpen){
+    if(senderLineEdit == ui->lineEditOpen){
         QPair<Qt::KeyboardModifier,Qt::Key> temp(shortcuts.open.first,(Qt::Key)key);
         if(shortcuts.saveAs == temp) return true;
         if(shortcuts.createFile == temp) return true;
         if(shortcuts.exit == temp) return true;
     }
-    if(testLineEdit == ui->lineEditSaveAs){
+    if(senderLineEdit == ui->lineEditSaveAs){
         QPair<Qt::KeyboardModifier,Qt::Key> temp(shortcuts.saveAs.first,(Qt::Key)key);
         if(shortcuts.open == temp) return true;
         if(shortcuts.createFile == temp) return true;
         if(shortcuts.exit == temp) return true;
     }
-    if(testLineEdit == ui->lineEditCreateFile){
+    if(senderLineEdit == ui->lineEditCreateFile){
         QPair<Qt::KeyboardModifier,Qt::Key> temp(shortcuts.createFile.first,(Qt::Key)key);
         if(shortcuts.open == temp) return true;
         if(shortcuts.saveAs == temp) return true;
         if(shortcuts.exit == temp) return true;
     }
-    if(testLineEdit == ui->lineEditExit){
+    if(senderLineEdit == ui->lineEditExit){
         QPair<Qt::KeyboardModifier,Qt::Key> temp(shortcuts.exit.first,(Qt::Key)key);
         if(shortcuts.open == temp) return true;
         if(shortcuts.saveAs == temp) return true;
@@ -277,25 +226,25 @@ bool ParametersWidget::isSuchPair(const int& key)
 
 bool ParametersWidget::isSuchPair(const Qt::KeyboardModifier &modifier)
 {
-    if(testComboBox == ui->comboBoxOpen){
+    if(senderComboBox == ui->comboBoxOpen){
         QPair<Qt::KeyboardModifier,Qt::Key> temp(modifier,(Qt::Key)QKeySequence(ui->lineEditOpen->text())[0]);
         if(shortcuts.saveAs == temp) return true;
         if(shortcuts.createFile == temp) return true;
         if(shortcuts.exit == temp) return true;
     }
-    if(testComboBox == ui->comboBoxSaveAs){
+    if(senderComboBox == ui->comboBoxSaveAs){
         QPair<Qt::KeyboardModifier,Qt::Key> temp(modifier,(Qt::Key)QKeySequence(ui->lineEditSaveAs->text())[0]);
         if(shortcuts.open == temp) return true;
         if(shortcuts.createFile == temp) return true;
         if(shortcuts.exit == temp) return true;
     }
-    if(testComboBox == ui->comboBoxCreateFile){
+    if(senderComboBox == ui->comboBoxCreateFile){
         QPair<Qt::KeyboardModifier,Qt::Key> temp(modifier,(Qt::Key)QKeySequence(ui->lineEditCreateFile->text())[0]);
         if(shortcuts.open == temp) return true;
         if(shortcuts.saveAs == temp) return true;
         if(shortcuts.exit == temp) return true;
     }
-    if(testComboBox == ui->comboBoxExit){
+    if(senderComboBox == ui->comboBoxExit){
         QPair<Qt::KeyboardModifier,Qt::Key> temp(modifier,(Qt::Key)QKeySequence(ui->lineEditExit->text())[0]);
         if(shortcuts.open == temp) return true;
         if(shortcuts.saveAs == temp) return true;
@@ -324,31 +273,24 @@ void ParametersWidget::setKeyParamInStruct()
     shortcuts.createFile.second = (Qt::Key)QKeySequence(ui->lineEditCreateFile->text())[0];
     shortcuts.exit.second = (Qt::Key)QKeySequence(ui->lineEditExit->text())[0];
 
-    shortcuts.open.first = getKeyboardModifier(ui->comboBoxOpen);
-    shortcuts.saveAs.first = getKeyboardModifier(ui->comboBoxSaveAs);
-    shortcuts.createFile.first = getKeyboardModifier(ui->comboBoxCreateFile);
-    shortcuts.exit.first = getKeyboardModifier(ui->comboBoxExit);
+    shortcuts.open.first = getKeyboardModifier(ui->comboBoxOpen->currentIndex());
+    shortcuts.saveAs.first = getKeyboardModifier(ui->comboBoxSaveAs->currentIndex());
+    shortcuts.createFile.first = getKeyboardModifier(ui->comboBoxCreateFile->currentIndex());
+    shortcuts.exit.first = getKeyboardModifier(ui->comboBoxExit->currentIndex());
 
     emit changeShortcuts();
 }
 
-Qt::KeyboardModifier ParametersWidget::getKeyboardModifier(QComboBox* comboBox)
+Qt::KeyboardModifier ParametersWidget::getKeyboardModifier(const int& currentIndex)
 {
     Qt::KeyboardModifier keyboardModifier;
 
-    switch(comboBox->currentIndex()){
-        case 0:
-            keyboardModifier = Qt::NoModifier;
-        break;
-        case 1:
-            keyboardModifier = Qt::ShiftModifier;
-        break;
-        case 2:
-            keyboardModifier = Qt::ControlModifier;
-        break;
-        case 3:
-            keyboardModifier = Qt::AltModifier;
-        break;
+    switch(currentIndex){
+        case 0: keyboardModifier = Qt::NoModifier; break;
+        case 1: keyboardModifier = Qt::ShiftModifier;break;
+        case 2: keyboardModifier = Qt::ControlModifier;break;
+        case 3: keyboardModifier = Qt::AltModifier;break;
+        default:keyboardModifier = Qt::NoModifier;break;
     }
 
     return keyboardModifier;
