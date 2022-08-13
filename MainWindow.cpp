@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->menuCreateNewFile,SIGNAL(triggered(bool)), this, SLOT(runFileCreator()));
     connect(ui->menuCloseFile,SIGNAL(triggered(bool)), this, SLOT(closeFile()));
     connect(ui->menuSave, SIGNAL(triggered(bool)), this, SLOT(saveFile()));
-    connect(ui->menuSave_as, SIGNAL(triggered(bool)), this, SLOT(saveFile_as()));
+    connect(ui->menuSaveAs, SIGNAL(triggered(bool)), this, SLOT(saveFileAs()));
     connect(ui->menuOpen, SIGNAL(triggered(bool)), this, SLOT(openFileReadWrite()));
     connect(ui->menuOpen_ReadOnly, SIGNAL(triggered(bool)), this, SLOT(openFileReadOnly()));
     connect(ui->menuExit, SIGNAL(triggered(bool)), this, SLOT(exit()));
@@ -90,7 +90,7 @@ void MainWindow::saveFile()
     }
 }
 
-void MainWindow::saveFile_as()
+void MainWindow::saveFileAs()
 {
     QString fileNameTemp =
             QFileDialog::getSaveFileName
@@ -162,7 +162,7 @@ void MainWindow::switchLanguage()
     ui->menuCreateNewFile->setText(tr("Создать новый файл"));
     ui->menuCloseFile->setText(tr("Закрыть файл"));
     ui->menuSave->setText(tr("Сохранить"));
-    ui->menuSave_as->setText(tr("Сохранить как..."));
+    ui->menuSaveAs->setText(tr("Сохранить как..."));
     ui->menuOpen->setText(tr("Открыть"));
     ui->menuOpen_ReadOnly->setText(tr("Открыть для просмотра"));
     ui->menuExit->setText(tr("Выход"));
@@ -192,7 +192,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
             if(shortcut.getName()->text() == tr("Сохранить как"))
                 if(keyEvent->key() == shortcut.getKey() && keyEvent->modifiers() == shortcut.getModifier())
-                    saveFile_as();
+                    saveFileAs();
 
             if(shortcut.getName()->text() == tr("Создать файл"))
                 if(keyEvent->key() == shortcut.getKey() && keyEvent->modifiers() == shortcut.getModifier())

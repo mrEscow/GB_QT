@@ -60,7 +60,7 @@
     <addaction name="menuCloseFile"/>
     <addaction name="separator"/>
     <addaction name="menuSave"/>
-    <addaction name="menuSave_as"/>
+    <addaction name="menuSaveAs"/>
     <addaction name="menuOpen"/>
     <addaction name="menuOpen_ReadOnly"/>
     <addaction name="separator"/>
@@ -88,7 +88,7 @@
     <string>Сохранить</string>
    </property>
   </action>
-  <action name="menuSave_as">
+  <action name="menuSaveAs">
    <property name="text">
     <string>Сохранить как...</string>
    </property>

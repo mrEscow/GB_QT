@@ -23,7 +23,7 @@ private slots:
     void createFile(QString);
     void closeFile();
     void saveFile();
-    void saveFile_as();
+    void saveFileAs();
     void openFileReadWrite();
     void openFileReadOnly();
 private:
