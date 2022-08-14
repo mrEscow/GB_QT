@@ -31,10 +31,10 @@ private slots:
 private:
     bool eventFilter(QObject *watched, QEvent *event) override;
     void celectLineEditFromFilter(QLineEdit* lE);
-    bool isModifaerKey(const Qt::Key& key);
-    bool isSuchPair(const Qt::Key& key);
     bool isSuchPair(const Qt::KeyboardModifier& modifier);
     void testAndSetNewKey(QKeyEvent* keyEvent);
+    bool isModifaerKey(const Qt::Key& key);
+    bool isSuchPair(const Qt::Key& key);        
     void closeLineEditors();
     void setKeyParamInShortcutsAndApp();
     Qt::KeyboardModifier getKeyboardModifier(const int& currentIndex);

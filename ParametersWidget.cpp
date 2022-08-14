@@ -115,11 +115,23 @@ void ParametersWidget::setNewModifierFromCombobox(int index)
         return;
 
     Qt::KeyboardModifier newModifier = getKeyboardModifier(index);
-
-    if(isSuchPair(newModifier))
-        senderComboBox->setCurrentIndex(oldCurrentIndex);
-    else
+    if(!isSuchPair(newModifier))
         setKeyParamInShortcutsAndApp();
+    else        
+        senderComboBox->setCurrentIndex(oldCurrentIndex);
+}
+
+bool ParametersWidget::isSuchPair(const Qt::KeyboardModifier &modifier)
+{
+    for(auto& shortcut: shortcutsList)
+        if(senderComboBox == shortcut.getComboBox()){
+            QPair<Qt::KeyboardModifier,Qt::Key> testPair(modifier, shortcut.getKey());
+            for(auto& shortcutPair: shortcutsList)
+                if(shortcutPair.getShortcut() == testPair)
+                    return true;
+        }
+
+    return false;
 }
 
 bool ParametersWidget::eventFilter(QObject *watched, QEvent *event)
@@ -160,6 +172,16 @@ void ParametersWidget::celectLineEditFromFilter(QLineEdit* lineEdit)
     }
 }
 
+void ParametersWidget::testAndSetNewKey(QKeyEvent *keyEvent)
+{
+    if(!isModifaerKey((Qt::Key)keyEvent->key()) && !isSuchPair((Qt::Key)keyEvent->key())){
+            currentKey = QKeySequence(keyEvent->key()).toString();
+            isChangeKey = false;
+            closeLineEditors();
+            setKeyParamInShortcutsAndApp();
+    }
+}
+
 bool ParametersWidget::isModifaerKey(const Qt::Key& key)
 {
     if(key == Qt::Key_Shift) return true;
@@ -185,29 +207,6 @@ bool ParametersWidget::isSuchPair(const Qt::Key& key)
     return false;
 }
 
-bool ParametersWidget::isSuchPair(const Qt::KeyboardModifier &modifier)
-{
-    for(auto& shortcut: shortcutsList)
-        if(senderComboBox == shortcut.getComboBox()){
-            QPair<Qt::KeyboardModifier,Qt::Key> testPair(modifier, shortcut.getKey());
-            for(auto& shortcutPair: shortcutsList)
-                if(shortcutPair.getShortcut() == testPair)
-                    return true;
-        }
-
-    return false;
-}
-
-void ParametersWidget::testAndSetNewKey(QKeyEvent *keyEvent)
-{
-    if(!isModifaerKey((Qt::Key)keyEvent->key()) && !isSuchPair((Qt::Key)keyEvent->key())){
-            currentKey = QKeySequence(keyEvent->key()).toString();
-            isChangeKey = false;
-            closeLineEditors();
-            setKeyParamInShortcutsAndApp();
-    }
-}
-
 void ParametersWidget::closeLineEditors()
 {
     for(auto& shortcut: shortcutsList)
@@ -219,9 +218,9 @@ void ParametersWidget::closeLineEditors()
 
 void ParametersWidget::setKeyParamInShortcutsAndApp()
 {
-    for(auto& shortcuts : shortcutsList){
-        shortcuts.setKeyboardModifier(getKeyboardModifier(shortcuts.getComboBox()->currentIndex()));
-        shortcuts.setKey((Qt::Key)QKeySequence(shortcuts.getLineEdit()->text())[0]);
+    for(auto& shortcut : shortcutsList){
+        shortcut.setKeyboardModifier(getKeyboardModifier(shortcut.getComboBox()->currentIndex()));
+        shortcut.setKey((Qt::Key)QKeySequence(shortcut.getLineEdit()->text())[0]);
     }
 
     emit changeShortcuts(shortcutsList);
