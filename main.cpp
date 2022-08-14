@@ -24,9 +24,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QResource::registerResource("./Resource.rcc");
-    QTranslator translator;
-    translator.load("languages/QtLanguage_" + QLocale::system().name());
-    a.installTranslator(&translator);
     MainWindow w;
     w.resize(600,800);
     w.show();

@@ -69,6 +69,15 @@ ParametersWidget::~ParametersWidget()
     delete ui;
 }
 
+void ParametersWidget::setLocalLanguage()
+{
+    QString localPostfics = QLocale::system().name();
+    for(auto& postfics: languagesPostfics)
+        if(localPostfics.contains(postfics))
+            switchLanguage(languagesPostfics.indexOf(postfics));
+
+}
+
 void ParametersWidget::switchLanguage(int activItemID)
 {
     QTranslator translator;

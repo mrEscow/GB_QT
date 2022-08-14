@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&parametersWidget, SIGNAL(changeLanguage()),this, SLOT(switchLanguage()));
     connect(&parametersWidget, SIGNAL(changeLanguage()),&fileCreatorWidget, SLOT(switchLanguage()));
     connect(&parametersWidget, SIGNAL(changeLanguage()),&helpWidget, SLOT(switchLanguage()));
+    parametersWidget.setLocalLanguage();
 
     shortcuts = parametersWidget.getShortcuts();
     connect(&parametersWidget, SIGNAL(changeShortcuts(QList<Shortcut>)),this, SLOT(changeShortcuts(QList<Shortcut>)));

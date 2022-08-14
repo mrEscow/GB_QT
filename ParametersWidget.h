@@ -19,6 +19,8 @@ public:
     explicit ParametersWidget(QWidget *parent = nullptr);
     ~ParametersWidget();
 
+public:
+    void setLocalLanguage();
 private slots:
     void switchLanguage(int);
 signals:
