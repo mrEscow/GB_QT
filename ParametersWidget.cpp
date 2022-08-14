@@ -136,7 +136,6 @@ bool ParametersWidget::eventFilter(QObject *watched, QEvent *event)
             testAndSetNewKey(keyEvent);
         }
 
-
     return qApp->eventFilter(watched, event);
 }
 
@@ -167,7 +166,7 @@ bool ParametersWidget::isModifaerKey(const Qt::Key& key)
 bool ParametersWidget::isSuchPair(const Qt::Key& key)
 {
     for(auto& shortcut: shortcutsList)
-        if(shortcut.getLineEdit() == senderLineEdit){
+        if(senderLineEdit == shortcut.getLineEdit()){
             QPair<Qt::KeyboardModifier,Qt::Key> testPair(shortcut.getModifier(),key);
             for(auto& shortcutPair: shortcutsList)
                 if(shortcutPair.getShortcut() == testPair)
@@ -238,5 +237,3 @@ QList<Shortcut> ParametersWidget::getShortcuts()
 {
     return shortcutsList;
 }
-
-
