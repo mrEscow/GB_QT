@@ -115,35 +115,27 @@ void ParametersWidget::setNewModifierFromCombobox(int index)
 
 bool ParametersWidget::eventFilter(QObject *watched, QEvent *event)
 {
-    for(auto& shortcut: shortcutsList)
+    for(auto& shortcut: shortcutsList){
         if(watched == shortcut.getComboBox() && event->type() == QEvent::MouseButtonPress)
             oldCurrentIndex = shortcut.getComboBox()->currentIndex();
-
-    for(auto& shortcut: shortcutsList)
         if(watched == shortcut.getLineEdit() && event->type() == QEvent::MouseButtonPress){
            QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
            if(mouseEvent != 0 && mouseEvent->button() == Qt::LeftButton)
                celectLineEditFromFilter(shortcut.getLineEdit());
         }
-
+    }
 
     if(watched == this && event->type() == QEvent::MouseButtonPress){
         isChangeKey = false;
         closeLineEditors();
     }
 
-
-    if(isChangeKey){
+    if(isChangeKey)
         if(watched  == this && event->type() == QEvent::KeyPress){
             QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-            if(!isModifaerKey((Qt::Key)keyEvent->key()) && !isSuchPair((Qt::Key)keyEvent->key())){
-                    currentKey = QKeySequence(keyEvent->key()).toString();
-                    isChangeKey = false;
-                    closeLineEditors();
-                    setKeyParamInShortcutsAndApp();
-            }
+            testAndSetNewKey(keyEvent);
         }
-    }
+
 
     return qApp->eventFilter(watched, event);
 }
@@ -196,6 +188,16 @@ bool ParametersWidget::isSuchPair(const Qt::KeyboardModifier &modifier)
         }
 
     return false;
+}
+
+void ParametersWidget::testAndSetNewKey(QKeyEvent *keyEvent)
+{
+    if(!isModifaerKey((Qt::Key)keyEvent->key()) && !isSuchPair((Qt::Key)keyEvent->key())){
+            currentKey = QKeySequence(keyEvent->key()).toString();
+            isChangeKey = false;
+            closeLineEditors();
+            setKeyParamInShortcutsAndApp();
+    }
 }
 
 void ParametersWidget::closeLineEditors()

@@ -32,6 +32,7 @@ private:
     bool isModifaerKey(const Qt::Key& key);
     bool isSuchPair(const Qt::Key& key);
     bool isSuchPair(const Qt::KeyboardModifier& modifier);
+    void testAndSetNewKey(QKeyEvent* keyEvent);
     void closeLineEditors();
     void setKeyParamInShortcutsAndApp();
     Qt::KeyboardModifier getKeyboardModifier(const int& currentIndex);
