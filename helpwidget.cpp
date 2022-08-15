@@ -8,7 +8,7 @@ HelpWidget::HelpWidget(QWidget *parent) :
     ui(new Ui::HelpWidget)
 {
     ui->setupUi(this);
-    ui->textBrowser->setEnabled(false);
+    ui->textBrowser->setReadOnly(true);
     this->setWindowTitle(tr("Справка"));
     ui->label->setText(tr("О программе !"));
     QFile file(":/HelpText.txt");
