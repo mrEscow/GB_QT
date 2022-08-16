@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     QResource::registerResource("./Resource.rcc");
     MainWindow w;
-    w.resize(600,800);
+    w.resize(800,600);
     w.show();
     return a.exec();
 }

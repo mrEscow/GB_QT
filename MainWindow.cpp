@@ -54,8 +54,8 @@ void MainWindow::createFile(QString fileName)
 {
     if(!fileName.isEmpty()){
         this->fileName = fileName;
-        saveFile();
-        ui->nameFileLabel->setText(fileName);
+        saveFile();       
+        //ui->nameFileLabel->setText(fileName);
         ui->textEdit->setEnabled(true);
     }
 
@@ -67,7 +67,7 @@ void MainWindow::closeFile()
 {
     saveFile();
     fileName.clear();
-    ui->nameFileLabel->clear();
+    //ui->nameFileLabel->clear();
     ui->textEdit->clear();
     ui->textEdit->setEnabled(false);
     ui->menuSave->setEnabled(false);
@@ -130,7 +130,7 @@ void MainWindow::openFile(bool isReadOnly)
                 ui->textEdit->setPlainText(stream.readAll());
                 ui->textEdit->setEnabled(true);
                 ui->textEdit->setReadOnly(isReadOnly);
-                ui->nameFileLabel->setText(fileName);
+                //ui->nameFileLabel->setText(fileName);
                 ui->menuSave->setEnabled(true);
                 ui->menuCloseFile->setEnabled(true);
                 file.close();
