@@ -31,6 +31,7 @@ private slots:
     void openFileReadOnly();
 private:
     void openFile(bool isReadOnly);
+    QString getCorrectName(QString fileName);
 private slots:
     void exit();
     void parametrs();

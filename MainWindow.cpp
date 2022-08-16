@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+    ui->setupUi(this);    
     filterForNameFile = "Текстовый файл(*.txt);";
     connects();
     setSettingsForThisWidgets();
@@ -47,8 +47,9 @@ void MainWindow::setSettingsForThisWidgets()
     ui->splitter->setStretchFactor(0,3);
     ui->splitter->setStretchFactor(1,10);
 
-    //ui->tab->setWindowIconText("Test");
-    //ui->tabWidget->currentWidget()
+
+    ui->tabWidget->setTabText(0,getCorrectName(fileName));
+    ui->tabWidget->setTabText(1,"+");
 }
 
 void MainWindow::setSettingsFromParametrs()
@@ -68,8 +69,7 @@ void MainWindow::createFile(QString fileName)
     if(!fileName.isEmpty()){
         this->fileName = fileName;
         saveFile();
-        //ui->tab->setWindowIconText("Test");
-        //ui->nameFileLabel->setText(fileName);
+        ui->tabWidget->setTabText(0,getCorrectName(fileName));
         ui->textEdit->setEnabled(true);
     }
 
@@ -81,7 +81,7 @@ void MainWindow::closeFile()
 {
     saveFile();
     fileName.clear();
-    //ui->nameFileLabel->clear();
+    ui->tabWidget->setTabText(0,getCorrectName(fileName));
     ui->textEdit->clear();
     ui->textEdit->setEnabled(false);
     ui->menuSave->setEnabled(false);
@@ -144,13 +144,30 @@ void MainWindow::openFile(bool isReadOnly)
                 ui->textEdit->setPlainText(stream.readAll());
                 ui->textEdit->setEnabled(true);
                 ui->textEdit->setReadOnly(isReadOnly);
-                //ui->nameFileLabel->setText(fileName);
+                ui->tabWidget->setTabText(0,getCorrectName(fileName));
                 ui->menuSave->setEnabled(true);
                 ui->menuCloseFile->setEnabled(true);
                 file.close();
             }
         }
     }
+}
+
+QString MainWindow::getCorrectName(QString fileName)
+{
+    if(fileName.isEmpty())
+        fileName = "no name";
+    else
+        for(int count = -1, i = fileName.count(); i > 0 ; i--){
+            if(fileName[i] != '/'){
+                count++;
+                continue;
+            }
+            fileName.remove(0,fileName.count() - count);
+            break;
+        }
+
+    return fileName;
 }
 
 void MainWindow::exit()
@@ -199,7 +216,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     if(watched  == this && event->type() == QEvent::KeyPress){
         auto keyEvent = static_cast<QKeyEvent*>(event);
 
-        for(auto& shortcut:shortcuts){
+        for(auto& shortcut: shortcuts){
 
             if(shortcut.getName()->text() == tr("Открыть"))
                 if(keyEvent->key() == shortcut.getKey() && keyEvent->modifiers() == shortcut.getModifier())
