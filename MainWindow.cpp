@@ -4,6 +4,7 @@
 #include <QTextStream>
 #include <QDebug>
 #include <QKeyEvent>
+#include <QTabWidget>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -11,12 +12,14 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->textEdit->setEnabled(false);
-    filter = "Текстовый файл(*.txt);";
-    ui->menuSave->setEnabled(false);
-    ui->menuCloseFile->setEnabled(false);
-    installEventFilter(this);
+    filterForNameFile = "Текстовый файл(*.txt);";
+    connects();
+    setSettingsForThisWidgets();
+    setSettingsFromParametrs();
+}
 
+void MainWindow::connects()
+{
     connect(ui->menuCreateNewFile,SIGNAL(triggered(bool)), this, SLOT(runFileCreator()));
     connect(ui->menuCloseFile,SIGNAL(triggered(bool)), this, SLOT(closeFile()));
     connect(ui->menuSave, SIGNAL(triggered(bool)), this, SLOT(saveFile()));
@@ -24,25 +27,35 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->menuOpen, SIGNAL(triggered(bool)), this, SLOT(openFileReadWrite()));
     connect(ui->menuOpen_ReadOnly, SIGNAL(triggered(bool)), this, SLOT(openFileReadOnly()));
     connect(ui->menuExit, SIGNAL(triggered(bool)), this, SLOT(exit()));
-
     connect(ui->toolsParametrs, SIGNAL(triggered(bool)), this, SLOT(parametrs()));
-
     connect(ui->helpAboutProgramm,SIGNAL(triggered(bool)),this,SLOT(help()));
-
     connect(&fileCreatorWidget,SIGNAL(newNameFromFileCreator(QString)),this, SLOT(createFile(QString)));
-
+    connect(&parametersWidget, SIGNAL(changeLanguage()),&helpWidget, SLOT(switchLanguage()));
     connect(&parametersWidget, SIGNAL(changeLanguage()),this, SLOT(switchLanguage()));
     connect(&parametersWidget, SIGNAL(changeLanguage()),&fileCreatorWidget, SLOT(switchLanguage()));
-    connect(&parametersWidget, SIGNAL(changeLanguage()),&helpWidget, SLOT(switchLanguage()));
-    parametersWidget.setLocalLanguage();
-
-    shortcuts = parametersWidget.getShortcuts();
     connect(&parametersWidget, SIGNAL(changeShortcuts(QList<Shortcut>)),this, SLOT(changeShortcuts(QList<Shortcut>)));
 }
 
-MainWindow::~MainWindow()
+void MainWindow::setSettingsForThisWidgets()
 {
-    delete ui;
+    installEventFilter(this);
+
+    ui->textEdit->setEnabled(false);
+    ui->menuSave->setEnabled(false);
+    ui->menuCloseFile->setEnabled(false);
+
+    ui->splitter->setStretchFactor(0,3);
+    ui->splitter->setStretchFactor(1,10);
+
+    //ui->tab->setWindowIconText("Test");
+    //ui->tabWidget->currentWidget()
+}
+
+void MainWindow::setSettingsFromParametrs()
+{
+    parametersWidget.setLocalLanguage();
+
+    shortcuts = parametersWidget.getShortcuts();
 }
 
 void MainWindow::runFileCreator()
@@ -54,7 +67,8 @@ void MainWindow::createFile(QString fileName)
 {
     if(!fileName.isEmpty()){
         this->fileName = fileName;
-        saveFile();       
+        saveFile();
+        //ui->tab->setWindowIconText("Test");
         //ui->nameFileLabel->setText(fileName);
         ui->textEdit->setEnabled(true);
     }
@@ -95,7 +109,7 @@ void MainWindow::saveFileAs()
 {
     QString fileNameTemp =
             QFileDialog::getSaveFileName
-            (this, tr("Сохранить как..."), QDir::current().path(), filter);
+            (this, tr("Сохранить как..."), QDir::current().path(), filterForNameFile);
 
     if(!fileName.isEmpty()){
         fileName = fileNameTemp;
@@ -106,7 +120,7 @@ void MainWindow::saveFileAs()
 void MainWindow::openFileReadWrite()
 {
     fileName = QFileDialog::getOpenFileName
-            (this, tr("открыть для редактирования"), QDir::current().path(), filter);
+            (this, tr("открыть для редактирования"), QDir::current().path(), filterForNameFile);
 
     openFile(false);
 }
@@ -114,7 +128,7 @@ void MainWindow::openFileReadWrite()
 void MainWindow::openFileReadOnly()
 {
     fileName = QFileDialog::getOpenFileName
-            (this, tr("открыть без редактирования"), QDir::current().path(), filter);
+            (this, tr("открыть без редактирования"), QDir::current().path(), filterForNameFile);
 
     openFile(true);
 }
@@ -206,4 +220,9 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     }
 
     return QMainWindow::eventFilter(watched,event);
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
 }

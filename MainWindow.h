@@ -16,8 +16,11 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    MainWindow(QWidget *parent = nullptr);    
+private:
+    void connects();
+    void setSettingsForThisWidgets();
+    void setSettingsFromParametrs();
 private slots:
     void runFileCreator();
     void createFile(QString);
@@ -37,9 +40,10 @@ private slots:
     void changeShortcuts(QList<Shortcut> newShortcuts);
 public:
     bool eventFilter(QObject* watched, QEvent* event) override;
+    ~MainWindow();
 private:
     Ui::MainWindow *ui;
-    QString filter;
+    QString filterForNameFile;
     HelpWidget helpWidget;
     FileCreatorWidget fileCreatorWidget;
     QString fileName;
