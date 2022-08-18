@@ -39,6 +39,8 @@ void MainWindow::connects()
 
     connect(&fileSystemViwer, SIGNAL(newPath(QString)), this, SLOT(newPath(QString)));
     connect(&fileSystemViwer, SIGNAL(openFile(QString)), this, SLOT(openFile(QString)));
+
+    connect(ui->tabWidget, SIGNAL(tabBarClicked(int)),this, SLOT(addTab(int)));
 }
 
 void MainWindow::setSettingsForThisWidgets()
@@ -242,6 +244,13 @@ void MainWindow::openFile(QString fileName)
 {
     this->fileName = fileName;
     openFile(false);
+}
+
+void MainWindow::addTab(int index)
+{
+    if(ui->tabWidget->tabText(index) == "+"){
+        ui->tabWidget->insertTab(index,new QTextEdit(this),"no name");
+    }
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)

@@ -48,6 +48,7 @@ private slots:
 private slots:
     void newPath(QString newPath);
     void openFile(QString fileName);
+    void addTab(int);
 private:
     bool eventFilter(QObject* watched, QEvent* event) override;
 public:
