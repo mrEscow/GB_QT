@@ -20,20 +20,24 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::connects()
 {
-    connect(ui->menuCreateNewFile,SIGNAL(triggered(bool)), this, SLOT(runFileCreator()));
-    connect(ui->menuCloseFile,SIGNAL(triggered(bool)), this, SLOT(closeFile()));
+    connect(ui->menuCreateNewFile, SIGNAL(triggered(bool)), this, SLOT(runFileCreator()));
+    connect(ui->menuCloseFile, SIGNAL(triggered(bool)), this, SLOT(closeFile()));
     connect(ui->menuSave, SIGNAL(triggered(bool)), this, SLOT(saveFile()));
     connect(ui->menuSaveAs, SIGNAL(triggered(bool)), this, SLOT(saveFileAs()));
     connect(ui->menuOpen, SIGNAL(triggered(bool)), this, SLOT(openFileReadWrite()));
     connect(ui->menuOpen_ReadOnly, SIGNAL(triggered(bool)), this, SLOT(openFileReadOnly()));
     connect(ui->menuExit, SIGNAL(triggered(bool)), this, SLOT(exit()));
     connect(ui->toolsParametrs, SIGNAL(triggered(bool)), this, SLOT(parametrs()));
-    connect(ui->helpAboutProgramm,SIGNAL(triggered(bool)),this,SLOT(help()));
-    connect(&fileCreatorWidget,SIGNAL(newNameFromFileCreator(QString)),this, SLOT(createFile(QString)));
-    connect(&parametersWidget, SIGNAL(changeLanguage()),&helpWidget, SLOT(switchLanguage()));
-    connect(&parametersWidget, SIGNAL(changeLanguage()),this, SLOT(switchLanguage()));
-    connect(&parametersWidget, SIGNAL(changeLanguage()),&fileCreatorWidget, SLOT(switchLanguage()));
-    connect(&parametersWidget, SIGNAL(changeShortcuts(QList<Shortcut>)),this, SLOT(changeShortcuts(QList<Shortcut>)));
+    connect(ui->helpAboutProgramm, SIGNAL(triggered(bool)),this, SLOT(help()));
+
+    connect(&fileCreatorWidget, SIGNAL(newNameFromFileCreator(QString)), this, SLOT(createFile(QString)));
+
+    connect(&parametersWidget, SIGNAL(changeLanguage()), &helpWidget, SLOT(switchLanguage()));
+    connect(&parametersWidget, SIGNAL(changeLanguage()), this, SLOT(switchLanguage()));
+    connect(&parametersWidget, SIGNAL(changeLanguage()), &fileCreatorWidget, SLOT(switchLanguage()));
+    connect(&parametersWidget, SIGNAL(changeShortcuts(QList<Shortcut>)), this, SLOT(changeShortcuts(QList<Shortcut>)));
+
+    connect(ui->listView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(listViewDoubleClicked(QModelIndex)));
 }
 
 void MainWindow::setSettingsForThisWidgets()
@@ -41,11 +45,25 @@ void MainWindow::setSettingsForThisWidgets()
     installEventFilter(this);
 
     ui->textEdit->setEnabled(false);
+
     ui->menuSave->setEnabled(false);
     ui->menuCloseFile->setEnabled(false);
 
     ui->splitter->setStretchFactor(0,3);
     ui->splitter->setStretchFactor(1,10);
+
+
+
+    fileSystemModel = new QFileSystemModel(this);
+    fileSystemModel->setFilter(QDir::AllEntries);
+    fileSystemModel->setRootPath(QDir::current().path());
+
+    ui->listView->setModel(fileSystemModel);
+
+
+    ui->listView->setRootIndex(fileSystemModel->index(QDir::current().path()));
+
+    ui->lineEditNavigation->setText(fileSystemModel->rootPath());
 
 
     ui->tabWidget->setTabText(0,getCorrectName(fileName));
@@ -209,6 +227,46 @@ void MainWindow::switchLanguage()
 void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)
 {
     shortcuts = newShortcuts;
+}
+
+void MainWindow::listViewDoubleClicked(QModelIndex index)
+{
+    QFileInfo fileInfo = fileSystemModel->fileInfo(index);
+
+    if(fileInfo.fileName() == ".."){
+        QDir dir = fileInfo.dir();
+        dir.cdUp();
+        ui->listView->setRootIndex(fileSystemModel->index(dir.absolutePath()));
+        ui->lineEditNavigation->setText(dir.absolutePath());
+    }
+
+    else if(fileInfo.fileName() == "."){
+        ui->listView->setRootIndex(fileSystemModel->index(""));
+        ui->lineEditNavigation->setText("");
+    }
+
+    else if(fileInfo.isDir()){
+        ui->listView->setRootIndex(index);
+        ui->lineEditNavigation->setText(fileInfo.filePath());
+    }
+
+    else if(fileInfo.isFile()){
+        fileName = fileInfo.fileName();
+        qDebug() << fileInfo.absoluteFilePath();
+        //qDebug() << fileName;
+
+        QFile file(fileInfo.absoluteFilePath());
+        if (file.open(QFile::ReadOnly | QFile::ExistingOnly)){
+            QTextStream stream(&file);
+            ui->textEdit->setPlainText(stream.readAll());
+            ui->textEdit->setEnabled(true);
+            //ui->textEdit->setReadOnly(isReadOnly);
+            ui->tabWidget->setTabText(0,getCorrectName(fileName));
+            ui->menuSave->setEnabled(true);
+            ui->menuCloseFile->setEnabled(true);
+            file.close();
+        }
+    }
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)

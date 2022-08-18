@@ -6,6 +6,7 @@
 #include "HelpWidget.h"
 #include "FileCreatorWidget.h"
 #include "ParametersWidget.h"
+#include <qfilesystemmodel.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -39,8 +40,11 @@ private slots:
 private slots:
     void switchLanguage();
     void changeShortcuts(QList<Shortcut> newShortcuts);
-public:
+private slots:
+    void listViewDoubleClicked(QModelIndex index);
+private:
     bool eventFilter(QObject* watched, QEvent* event) override;
+public:
     ~MainWindow();
 private:
     Ui::MainWindow *ui;
@@ -50,5 +54,7 @@ private:
     QString fileName;
     ParametersWidget parametersWidget;
     QList<Shortcut> shortcuts;
+    QFileSystemModel *fileSystemModel;
+
 };
 #endif // MAINWINDOW_H
