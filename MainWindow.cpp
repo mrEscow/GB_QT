@@ -37,9 +37,8 @@ void MainWindow::connects()
     connect(&parametersWidget, SIGNAL(changeLanguage()), &fileCreatorWidget, SLOT(switchLanguage()));
     connect(&parametersWidget, SIGNAL(changeShortcuts(QList<Shortcut>)), this, SLOT(changeShortcuts(QList<Shortcut>)));
 
-    //connect(ui->listView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(listViewShowContextMenu(QPoint)));
-    //connect(ui->listView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(listViewDoubleClicked(QModelIndex)));
-    connect(fileSystemViwer.getView(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(listViewDoubleClicked(QModelIndex)));
+    connect(&fileSystemViwer, SIGNAL(newPath(QString)), this, SLOT(newPath(QString)));
+    connect(&fileSystemViwer, SIGNAL(openFile(QString)), this, SLOT(openFile(QString)));
 }
 
 void MainWindow::setSettingsForThisWidgets()
@@ -51,28 +50,24 @@ void MainWindow::setSettingsForThisWidgets()
     ui->menuSave->setEnabled(false);
     ui->menuCloseFile->setEnabled(false);
 
+    fileSystemViwer.setRootPathAndIndex(QDir::current().path());
 
-    //fileSystemViwer.setFilter(QDir::AllEntries);
-    fileSystemViwer.setRootPath(QDir::current().path());
-    //ui->splitter.layout
-    //ui->splitter->setLayout(fileSystemViwer.getLayout());
-    ui->splitter->insertWidget(0,fileSystemViwer.getWidget());
+    ui->splitter->insertWidget(0,fileSystemViwer());
 
     ui->splitter->setStretchFactor(0,3);
     ui->splitter->setStretchFactor(1,7);
 
+    ui->lineEditNavigation->setText(QDir::current().path());
 
-    ui->lineEditNavigation->setText(fileSystemViwer.getModel()->rootPath());
+//    listViewContextMenu = new QMenu(this);
 
-    listViewContextMenu = new QMenu(this);
+//    QAction* readDevice = new QAction(tr("Открыть"), this);
+//    QAction* editDevice = new QAction(tr("Редактировать"), this);
+//    QAction* deleteDevice = new QAction(tr("Удалить"), this);
 
-    QAction* readDevice = new QAction(tr("Открыть"), this);
-    QAction* editDevice = new QAction(tr("Редактировать"), this);
-    QAction* deleteDevice = new QAction(tr("Удалить"), this);
-
-    listViewContextMenu->addAction(readDevice);
-    listViewContextMenu->addAction(editDevice);
-    listViewContextMenu->addAction(deleteDevice);
+//    listViewContextMenu->addAction(readDevice);
+//    listViewContextMenu->addAction(editDevice);
+//    listViewContextMenu->addAction(deleteDevice);
 
 
     ui->tabWidget->setTabText(0,getCorrectName(fileName));
@@ -170,8 +165,8 @@ void MainWindow::openFile(bool isReadOnly)
                 QTextStream stream(&file);
                 ui->textEdit->setPlainText(stream.readAll());
                 ui->textEdit->setEnabled(true);
-                ui->textEdit->setReadOnly(isReadOnly);
-                ui->tabWidget->setTabText(0,getCorrectName(fileName));
+                ui->textEdit->setReadOnly(isReadOnly);                
+                ui->tabWidget->setTabText(ui->tabWidget->currentIndex(),getCorrectName(fileName));
                 ui->menuSave->setEnabled(true);
                 ui->menuCloseFile->setEnabled(true);
                 file.close();
@@ -238,49 +233,15 @@ void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)
     shortcuts = newShortcuts;
 }
 
-void MainWindow::listViewShowContextMenu(QPoint pos)
+void MainWindow::newPath(QString newPath)
 {
-    //listViewContextMenu->popup(ui->listView->viewport()->mapToGlobal(pos));
+    ui->lineEditNavigation->setText(newPath);
 }
 
-void MainWindow::listViewDoubleClicked(QModelIndex index)
+void MainWindow::openFile(QString fileName)
 {
-    QFileInfo fileInfo = fileSystemViwer.getModel()->fileInfo(index);
-
-    if(fileInfo.fileName() == ".."){
-        QDir dir = fileInfo.dir();
-        dir.cdUp();
-        fileSystemViwer.getView()->setRootIndex(fileSystemViwer.getModel()->index(dir.absolutePath()));
-        ui->lineEditNavigation->setText(dir.absolutePath());
-    }
-
-    else if(fileInfo.fileName() == "."){
-        fileSystemViwer.getView()->setRootIndex(fileSystemViwer.getModel()->index(""));
-        ui->lineEditNavigation->setText("");
-    }
-
-    else if(fileInfo.isDir()){
-        fileSystemViwer.getView()->setRootIndex(index);
-        ui->lineEditNavigation->setText(fileInfo.filePath());
-    }
-
-    else if(fileInfo.isFile()){
-        fileName = fileInfo.fileName();
-        qDebug() << fileInfo.absoluteFilePath();
-        //qDebug() << fileName;
-
-        QFile file(fileInfo.absoluteFilePath());
-        if (file.open(QFile::ReadOnly | QFile::ExistingOnly)){
-            QTextStream stream(&file);
-            ui->textEdit->setPlainText(stream.readAll());
-            ui->textEdit->setEnabled(true);
-            //ui->textEdit->setReadOnly(isReadOnly);
-            ui->tabWidget->setTabText(0,getCorrectName(fileName));
-            ui->menuSave->setEnabled(true);
-            ui->menuCloseFile->setEnabled(true);
-            file.close();
-        }
-    }
+    this->fileName = fileName;
+    openFile(false);
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)

@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     FileCreatorWidget.cpp \
+    FileSystemViewer.cpp \
     HelpWidget.cpp \
     ParametersWidget.cpp \
     Shortcut.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
 
 HEADERS += \
     FileCreatorWidget.h \
+    FileSystemViewer.h \
     HelpWidget.h \
     MainWindow.h \
     ParametersWidget.h \
