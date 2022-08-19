@@ -20,7 +20,6 @@ void MainWindow::setSettingsForThisWidgets()
 {
     installEventFilter(this);
 
-    //ui->textEdit->setEnabled(false);
     ui->menuSave->setEnabled(false);
     ui->menuCloseFile->setEnabled(false);
 
@@ -40,12 +39,8 @@ void MainWindow::setSettingsForThisWidgets()
     ui->splitter->setStretchFactor(0,3);
     ui->splitter->setStretchFactor(1,15);
 
-    //openFiles
     ui->tabWidget->removeTab(1);
-    //ui->tabWidget->setTabText(0,getCorrectName(fileName));
     ui->tabWidget->setTabText(0,"+");
-
-    //textEditorsList.push_back(ui->textEdit);
 
     connects();
 }
@@ -72,7 +67,7 @@ void MainWindow::connects()
     connect(fileSystemViwer, SIGNAL(openFile(QString,bool)), this, SLOT(openFile(QString,bool)));
 
     connect(ui->tabWidget, SIGNAL(tabBarClicked(int)),this, SLOT(addTab(int)));
-    connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(addTab(int)));
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(changedTab(int)));
 }
 
 void MainWindow::setSettingsFromParametrs()
@@ -105,27 +100,11 @@ void MainWindow::createFile(QString fileName)
 
 void MainWindow::closeFile()
 {
-//    QMutableListIterator  it(openFiles);
+    QMutableListIterator  it(openFiles);
 
-//    for(auto& oF: openFiles){
-//        if(oF.getTextEdit() == senderTextEdit){
-//            qDebug() << "TRUE!!!";
-//        }
-//    }
-
-//    while(it.hasNext()){
-//        qDebug() << "qqqqq";
-//        OpenFile currentValue = it.next();
-//        qDebug() << currentValue.getTextEdit()->toPlainText();
-//        qDebug() << senderTextEdit->toPlainText();
-//        if(currentValue.getTextEdit() == senderTextEdit){
-//          qDebug() << "TTTTT";
-//          it.remove();
-//        }
-//    }
-
-
-    //ui->tabWidget->removeTab(ui->tabWidget->currentIndex());
+    while(it.hasNext())
+        if(it.next().getTextEdit() == senderTextEdit)
+            it.remove();
 
     if(openFiles.isEmpty()){
         ui->menuSave->setEnabled(false);
@@ -142,7 +121,6 @@ void MainWindow::saveFile()
                     saveFileAs();
 
                 if(!openFile.getPath().isEmpty()){
-
                     if (openFile.getPath().length() > 0){
                         QString ext = QString(&(openFile.getPath().data()[openFile.getPath().length() - 4]));
                         if (ext == ".txt"){
@@ -290,11 +268,10 @@ void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)
 }
 
 void MainWindow::addTab(int index)
-{
-    QTextEdit* textEdit = new QTextEdit;
-    senderTextEdit = textEdit;
-
+{   
     if(ui->tabWidget->tabText(index) == "+"){
+        QTextEdit* textEdit = new QTextEdit;
+        senderTextEdit = textEdit;
         OpenFile openFile(getCorrectName(""),fileSystemViwer->getCurrentPath(),textEdit);
         openFiles.append(openFile);
         ui->tabWidget->insertTab(index,textEdit,openFile.getName());
@@ -302,6 +279,11 @@ void MainWindow::addTab(int index)
         ui->menuSave->setEnabled(true);
         ui->menuCloseFile->setEnabled(true);
     }
+}
+
+void MainWindow::changedTab(int index)
+{
+    senderTextEdit = qobject_cast<QTextEdit*>(ui->tabWidget->widget(index));
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
@@ -335,7 +317,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 MainWindow::~MainWindow()
 {
     disconnect(ui->tabWidget, SIGNAL(tabBarClicked(int)),this, SLOT(addTab(int)));
-    disconnect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(addTab(int)));
+    disconnect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(changedTab(int)));
 
     delete fileSystemViwer;
     delete ui;

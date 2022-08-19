@@ -47,7 +47,8 @@ private slots:
     void switchLanguage();
     void changeShortcuts(QList<Shortcut> newShortcuts);
 private slots:
-    void addTab(int);
+    void addTab(int index);
+    void changedTab(int index);
 private:
     bool eventFilter(QObject* watched, QEvent* event) override;
 public:
