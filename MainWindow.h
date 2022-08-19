@@ -38,6 +38,7 @@ private slots:
     void openFileReadWrite();
     void openFileReadOnly();
     void openFile(QString fileName,bool isReadOnly);
+private:
     QString getCorrectName(QString fileName);
 private slots:
     void exit();
@@ -58,16 +59,10 @@ private:
     QString filterForNameFile;
     HelpWidget helpWidget;
     FileCreatorWidget fileCreatorWidget;
-
-
     ParametersWidget parametersWidget;
     QList<Shortcut> shortcuts;
-
-
     QTextEdit* senderTextEdit;
     QList<OpenFile> openFiles;
-
     FileSystemViewer* fileSystemViwer;
-
 };
 #endif // MAINWINDOW_H

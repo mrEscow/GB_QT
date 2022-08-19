@@ -73,7 +73,6 @@ void MainWindow::connects()
 void MainWindow::setSettingsFromParametrs()
 {
     parametersWidget.setLocalLanguage();
-
     shortcuts = parametersWidget.getShortcuts();
 }
 
@@ -170,7 +169,6 @@ void MainWindow::openFileReadWrite()
 {
     QString fileName = QFileDialog::getOpenFileName
             (this, tr("открыть для редактирования"),fileSystemViwer->getCurrentPath(), filterForNameFile);
-
     openFile(fileName,false);
 }
 
@@ -178,7 +176,6 @@ void MainWindow::openFileReadOnly()
 {
     QString fileName = QFileDialog::getOpenFileName
             (this, tr("открыть без редактирования"), fileSystemViwer->getCurrentPath(), filterForNameFile);
-
     openFile(fileName,true);
 }
 
