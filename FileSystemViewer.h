@@ -31,8 +31,7 @@ private slots:
     void onDoublCliced(QModelIndex index);
 
 signals:
-    void newPath(QString newPath);
-    void openFile(QString newPath);
+    void openFile(QString newPath,bool isReadOnly);
 
 private:
     QFileSystemModel *model;

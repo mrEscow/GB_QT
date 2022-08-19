@@ -61,14 +61,10 @@ void FileSystemViewer::onHomeButton()
 void FileSystemViewer::onUpButton()
 {
     QDir dir = model->rootDirectory();
-    if(dir.cdUp()){
+    if(dir.cdUp())
         setRootPathAndIndex(dir.absolutePath());
-        emit newPath(dir.absolutePath());
-    }
-    else{
+    else
         setRootPathAndIndex("");
-        emit newPath("");
-    }
 }
 
 void FileSystemViewer::onSearchButton()
@@ -86,11 +82,9 @@ void FileSystemViewer::onDoublCliced(QModelIndex index)
 {
     QFileInfo fileInfo = model->fileInfo(index);
 
-    if(fileInfo.isDir()){
+    if(fileInfo.isDir())
         setRootPathAndIndex(fileInfo.absoluteFilePath());
-        emit newPath(fileInfo.absoluteFilePath());
-    }
 
     if(fileInfo.isFile())
-        emit openFile(fileInfo.absoluteFilePath());
+        emit openFile(fileInfo.absoluteFilePath(),false);
 }

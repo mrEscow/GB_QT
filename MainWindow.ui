@@ -89,13 +89,9 @@
            <attribute name="title">
             <string>Tab 1</string>
            </attribute>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QTextEdit" name="textEdit"/>
-            </item>
-           </layout>
+           <layout class="QHBoxLayout" name="horizontalLayout"/>
           </widget>
-          <widget class="QWidget" name="tab_2">
+          <widget class="QWidget" name="tabCreator">
            <attribute name="title">
             <string>Tab 2</string>
            </attribute>

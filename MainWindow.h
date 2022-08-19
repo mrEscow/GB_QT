@@ -6,6 +6,7 @@
 #include "FileSystemViewer.h"
 #include "HelpWidget.h"
 #include "FileCreatorWidget.h"
+#include "OpenFile.h"
 #include "ParametersWidget.h"
 #include "qboxlayout.h"
 #include "qlistview.h"
@@ -36,8 +37,7 @@ private slots:
     void saveFileAs();
     void openFileReadWrite();
     void openFileReadOnly();
-private:
-    void openFile(bool isReadOnly);
+    void openFile(QString fileName,bool isReadOnly);
     QString getCorrectName(QString fileName);
 private slots:
     void exit();
@@ -47,8 +47,6 @@ private slots:
     void switchLanguage();
     void changeShortcuts(QList<Shortcut> newShortcuts);
 private slots:
-    void newPath(QString newPath);
-    void openFile(QString fileName);
     void addTab(int);
 private:
     bool eventFilter(QObject* watched, QEvent* event) override;
@@ -59,11 +57,15 @@ private:
     QString filterForNameFile;
     HelpWidget helpWidget;
     FileCreatorWidget fileCreatorWidget;
-    QString fileName;
-    QString currentPath;
+
+
     ParametersWidget parametersWidget;
     QList<Shortcut> shortcuts;
-    QList<QTextEdit*> textEditorsList;
+
+
+    QTextEdit* senderTextEdit;
+    QList<OpenFile> openFiles;
+
     FileSystemViewer* fileSystemViwer;
 
 };

@@ -15,6 +15,7 @@ public:
     const QString& getName();
     const QString& getPath();
     QString getText();
+    QTextEdit* getTextEdit();
 
 private:
     QString name;

@@ -31,3 +31,8 @@ QString OpenFile::getText()
 {
     return textEdit.data()->toPlainText();
 }
+
+QTextEdit *OpenFile::getTextEdit()
+{
+    return textEdit.data();
+}
