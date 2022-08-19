@@ -12,6 +12,7 @@ SOURCES += \
     FileCreatorWidget.cpp \
     FileSystemViewer.cpp \
     HelpWidget.cpp \
+    OpenFile.cpp \
     ParametersWidget.cpp \
     Shortcut.cpp \
     main.cpp \
@@ -22,6 +23,7 @@ HEADERS += \
     FileSystemViewer.h \
     HelpWidget.h \
     MainWindow.h \
+    OpenFile.h \
     ParametersWidget.h \
     Shortcut.h
 
