@@ -11,11 +11,42 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);    
-    filterForNameFile = "Текстовый файл(*.txt);";
-    connects();
+    ui->setupUi(this);        
     setSettingsForThisWidgets();
     setSettingsFromParametrs();
+}
+
+void MainWindow::setSettingsForThisWidgets()
+{
+    installEventFilter(this);
+
+    ui->textEdit->setEnabled(false);
+    ui->menuSave->setEnabled(false);
+    ui->menuCloseFile->setEnabled(false);
+
+    filterForNameFile = "Текстовый файл(*.txt);";
+    currentPath = QDir::current().path();
+
+    fileSystemViwer = new FileSystemViewer(
+                ui->pushButtonHome,
+                ui->pushButtonUp,
+                ui->pushButtonSearch,
+                ui->lineEditNavigation,
+                ui->listView
+                );
+
+    fileSystemViwer->setHomePath(currentPath);
+    fileSystemViwer->setRootPathAndIndex(currentPath);
+
+    ui->splitter->setStretchFactor(0,3);
+    ui->splitter->setStretchFactor(1,7);
+
+    ui->tabWidget->setTabText(0,getCorrectName(fileName));
+    ui->tabWidget->setTabText(1,"+");
+
+    textEditorsList.push_back(ui->textEdit);
+
+    connects();
 }
 
 void MainWindow::connects()
@@ -37,43 +68,10 @@ void MainWindow::connects()
     connect(&parametersWidget, SIGNAL(changeLanguage()), &fileCreatorWidget, SLOT(switchLanguage()));
     connect(&parametersWidget, SIGNAL(changeShortcuts(QList<Shortcut>)), this, SLOT(changeShortcuts(QList<Shortcut>)));
 
-    connect(&fileSystemViwer, SIGNAL(newPath(QString)), this, SLOT(newPath(QString)));
-    connect(&fileSystemViwer, SIGNAL(openFile(QString)), this, SLOT(openFile(QString)));
+    connect(fileSystemViwer, SIGNAL(newPath(QString)), this, SLOT(newPath(QString)));
+    connect(fileSystemViwer, SIGNAL(openFile(QString)), this, SLOT(openFile(QString)));
 
     connect(ui->tabWidget, SIGNAL(tabBarClicked(int)),this, SLOT(addTab(int)));
-}
-
-void MainWindow::setSettingsForThisWidgets()
-{
-    installEventFilter(this);
-
-    ui->textEdit->setEnabled(false);
-
-    ui->menuSave->setEnabled(false);
-    ui->menuCloseFile->setEnabled(false);
-
-    fileSystemViwer.setRootPathAndIndex(QDir::current().path());
-
-    ui->splitter->insertWidget(0,fileSystemViwer());
-
-    ui->splitter->setStretchFactor(0,3);
-    ui->splitter->setStretchFactor(1,7);
-
-    ui->lineEditNavigation->setText(QDir::current().path());
-
-//    listViewContextMenu = new QMenu(this);
-
-//    QAction* readDevice = new QAction(tr("Открыть"), this);
-//    QAction* editDevice = new QAction(tr("Редактировать"), this);
-//    QAction* deleteDevice = new QAction(tr("Удалить"), this);
-
-//    listViewContextMenu->addAction(readDevice);
-//    listViewContextMenu->addAction(editDevice);
-//    listViewContextMenu->addAction(deleteDevice);
-
-
-    ui->tabWidget->setTabText(0,getCorrectName(fileName));
-    ui->tabWidget->setTabText(1,"+");
 }
 
 void MainWindow::setSettingsFromParametrs()
@@ -133,7 +131,7 @@ void MainWindow::saveFileAs()
 {
     QString fileNameTemp =
             QFileDialog::getSaveFileName
-            (this, tr("Сохранить как..."), QDir::current().path(), filterForNameFile);
+            (this, tr("Сохранить как..."), fileSystemViwer->getCurrentPath(), filterForNameFile);
 
     if(!fileName.isEmpty()){
         fileName = fileNameTemp;
@@ -237,7 +235,7 @@ void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)
 
 void MainWindow::newPath(QString newPath)
 {
-    ui->lineEditNavigation->setText(newPath);
+    currentPath = newPath;
 }
 
 void MainWindow::openFile(QString fileName)
@@ -249,7 +247,9 @@ void MainWindow::openFile(QString fileName)
 void MainWindow::addTab(int index)
 {
     if(ui->tabWidget->tabText(index) == "+"){
-        ui->tabWidget->insertTab(index,new QTextEdit(this),"no name");
+        QTextEdit* newTextEditor = new QTextEdit(this);
+        textEditorsList.insert(index,newTextEditor);
+        ui->tabWidget->insertTab(index,newTextEditor,"no name");
     }
 }
 
@@ -283,5 +283,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
 MainWindow::~MainWindow()
 {
+    delete fileSystemViwer;
     delete ui;
 }

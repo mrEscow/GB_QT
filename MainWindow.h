@@ -11,6 +11,7 @@
 #include "qlistview.h"
 #include "qpushbutton.h"
 #include <qfilesystemmodel.h>
+#include <QTextEdit>
 
 
 QT_BEGIN_NAMESPACE
@@ -24,8 +25,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);    
 private:
-    void connects();
     void setSettingsForThisWidgets();
+    void connects();
     void setSettingsFromParametrs();
 private slots:
     void runFileCreator();
@@ -59,11 +60,11 @@ private:
     HelpWidget helpWidget;
     FileCreatorWidget fileCreatorWidget;
     QString fileName;
+    QString currentPath;
     ParametersWidget parametersWidget;
     QList<Shortcut> shortcuts;
-    //QFileSystemModel *fileSystemModel;
-    //QMenu* listViewContextMenu;
-    FileSystemViewer fileSystemViwer;
+    QList<QTextEdit*> textEditorsList;
+    FileSystemViewer* fileSystemViwer;
 
 };
 #endif // MAINWINDOW_H
