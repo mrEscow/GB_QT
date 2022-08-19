@@ -44,6 +44,9 @@ public:
 signals:
     void changeShortcuts(QList<Shortcut>);
 
+private slots:
+    void setStyleSheet(int index);
+
 private:
     Ui::ParametersWidget *ui;
     QStringList languagesPostfics;
@@ -53,6 +56,8 @@ private:
     bool isChangeKey;
     QString currentKey;
     int oldCurrentIndex;
+
+    QStringList styles;
 };
 
 #endif // PARAMETERSWIDGET_H

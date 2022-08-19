@@ -7,4 +7,49 @@
         <file>QtLanguage_ru.ts</file>
         <file>QtLanguage_en.ts</file>
     </qresource>
+    <qresource prefix="/QSS">
+        <file>Styles/Fibers.qss</file>
+        <file>Styles/Adaptic.qss</file>
+        <file>Styles/Chatbee.qss</file>
+        <file>Styles/Clientor.qss</file>
+        <file>Styles/Clocker.qss</file>
+        <file>Styles/Combinear.qss</file>
+        <file>Styles/Cstartpage.qss</file>
+        <file>Styles/Darkeum.qss</file>
+        <file>Styles/DeepBox.qss</file>
+        <file>Styles/Diffnes.qss</file>
+        <file>Styles/Diplaytap.qss</file>
+        <file>Styles/Dtor.qss</file>
+        <file>Styles/EasyCode.qss</file>
+        <file>Styles/Eclippy.qss</file>
+        <file>Styles/ExcelOffice.qss</file>
+        <file>Styles/Fibrary.qss</file>
+        <file>Styles/Filmovio.qss</file>
+        <file>Styles/Genetive.qss</file>
+        <file>Styles/Geoo.qss</file>
+        <file>Styles/Gravira.qss</file>
+        <file>Styles/HackBook.qss</file>
+        <file>Styles/Incrypt.qss</file>
+        <file>Styles/Integrid.qss</file>
+        <file>Styles/Irrorater.qss</file>
+        <file>Styles/MailSy.qss</file>
+        <file>Styles/Medize.qss</file>
+        <file>Styles/Mixchat.qss</file>
+        <file>Styles/MyWatch.qss</file>
+        <file>Styles/Obit.qss</file>
+        <file>Styles/Perstfic.qss</file>
+        <file>Styles/Photoxo.qss</file>
+        <file>Styles/PicPax.qss</file>
+        <file>Styles/Remover.qss</file>
+        <file>Styles/Scalcula.qss</file>
+        <file>Styles/SpyBot.qss</file>
+        <file>Styles/SyNet.qss</file>
+        <file>Styles/Takezo.qss</file>
+        <file>Styles/TCobra.qss</file>
+        <file>Styles/Toolery.qss</file>
+        <file>Styles/VisualScript.qss</file>
+        <file>Styles/Webmas.qss</file>
+        <file>Styles/WordOffice.qss</file>
+        <file>Styles/Wstartpage.qss</file>
+    </qresource>
 </RCC>

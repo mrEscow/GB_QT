@@ -1,5 +1,6 @@
 #include "ParametersWidget.h"
 #include "qdebug.h"
+#include "qdiriterator.h"
 #include "ui_ParametersWidget.h"
 #include <QTranslator>
 #include <QEvent>
@@ -21,15 +22,6 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
     ui->comboBoxLanguages->addItem(tr("Японский"));
     languagesPostfics.push_back("ja");
 
-    ui->labeKeybord->setText(tr("Клавиатура:"));
-    ui->labelAction->setText(tr("Действие"));
-    ui->labelModifilter->setText(tr("Модификатор"));
-    ui->labelKey->setText(tr("Клавиша"));
-
-    ui->labelOpen->setText(tr("Открыть"));
-    ui->labelSaveAs->setText(tr("Сохранить как"));
-    ui->labelCreateFile->setText(tr("Создать файл"));
-    ui->labelExit->setText(tr("Выход"));
 
     connect(ui->comboBoxLanguages,SIGNAL(activated(int)),SLOT(switchLanguage(int)));
 
@@ -62,6 +54,25 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
         shortcut.getLineEdit()->setEnabled(false);
         shortcut.getLineEdit()->setReadOnly(true);
     }
+
+
+    QDirIterator ItR(":/QSS/Styles/", QDir::Files);
+    while(ItR.hasNext()) {
+        QFile file(ItR.next());
+        if(file.open(QFile::ReadOnly)) {
+
+            QString styleSheet = file.readAll();
+            styles.push_back(styleSheet);
+
+            QString name = file.fileName().mid(13, file.fileName().count() - 13 - 4);
+            ui->comboBoxStyles->addItem(name);
+
+            file.close();
+        }
+
+    }
+
+    connect(ui->comboBoxStyles,SIGNAL(activated(int)),SLOT(setStyleSheet(int)));
 }
 
 ParametersWidget::~ParametersWidget()
@@ -244,4 +255,9 @@ Qt::KeyboardModifier ParametersWidget::getKeyboardModifier(const int& currentInd
 QList<Shortcut> ParametersWidget::getShortcuts()
 {
     return shortcutsList;
+}
+
+void ParametersWidget::setStyleSheet(int index)
+{
+    qApp->setStyleSheet(styles[index]);
 }

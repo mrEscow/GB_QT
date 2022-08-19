@@ -11,6 +11,7 @@
 #include <QApplication>
 #include <QTranslator>
 #include <QResource>
+#include <QFile>
 
 int main(int argc, char *argv[])
 {
