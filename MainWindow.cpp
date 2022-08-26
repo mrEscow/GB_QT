@@ -23,6 +23,9 @@ void MainWindow::setSettingsForThisWidgets()
     ui->menuSave->setEnabled(false);
     ui->menuCloseFile->setEnabled(false);
 
+    fileCreatorWidget.setWindowModality(Qt::ApplicationModal);
+    parametersWidget.setWindowModality(Qt::ApplicationModal);
+
     filterForNameFile = "Текстовый файл(*.txt);";
 
     fileSystemViwer = new FileSystemViewer(
@@ -41,6 +44,8 @@ void MainWindow::setSettingsForThisWidgets()
 
     ui->tabWidget->removeTab(1);
     ui->tabWidget->setTabText(0,"+");
+    //ui->tabWidget.t
+    //ui->tabWidget->setTabsClosable(true);
 
     connects();
 }
