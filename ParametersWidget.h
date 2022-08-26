@@ -21,6 +21,7 @@ public:
 
 public:
     void setLocalLanguage();
+    void setStyleSheet();
 private slots:
     void switchLanguage(int);
 signals:

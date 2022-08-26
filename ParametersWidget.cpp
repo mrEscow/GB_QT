@@ -89,6 +89,11 @@ void ParametersWidget::setLocalLanguage()
 
 }
 
+void ParametersWidget::setStyleSheet()
+{
+    setStyleSheet(0);
+}
+
 void ParametersWidget::switchLanguage(int activItemID)
 {
     QTranslator translator;
