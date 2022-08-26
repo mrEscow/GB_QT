@@ -14,9 +14,12 @@
 #include <QResource>
 #include <QFile>
 
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QApplication::setOrganizationName("Escow company");
+    QApplication::setApplicationName("TextEditor");
     QResource::registerResource("./Resource.rcc");
     MainWindow w;
     w.resize(800,600);

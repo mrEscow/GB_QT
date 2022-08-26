@@ -14,69 +14,16 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle(tr("Параменты"));
     installEventFilter(this);
+    settings = new QSettings(this);
 
-    ui->comboBoxLanguages->addItem(QIcon("://Images/Flags/russia.jpg"),"Русский");
-    languagesPostfics.push_back("ru");
-    ui->comboBoxLanguages->addItem(QIcon("://Images/Flags/english.jpg"),"English");
-    languagesPostfics.push_back("en");
-    ui->comboBoxLanguages->addItem(QIcon("://Images/Flags/japan.jpg"),"日本語");
-    languagesPostfics.push_back("ja");
+    loadSettings();
 
 
-    connect(ui->comboBoxLanguages,SIGNAL(activated(int)),SLOT(switchLanguage(int)));
-
-    QPair<Qt::KeyboardModifier,Qt::Key> open;
-    open.first = Qt::ControlModifier;
-    open.second = Qt::Key_O;
-
-    QPair<Qt::KeyboardModifier,Qt::Key> saveAs;
-    saveAs.first = Qt::ControlModifier;
-    saveAs.second = Qt::Key_S;
-
-    QPair<Qt::KeyboardModifier,Qt::Key> createFile;
-    createFile.first = Qt::ControlModifier;
-    createFile.second = Qt::Key_N;
-
-    QPair<Qt::KeyboardModifier,Qt::Key> exit;
-    exit.first = Qt::ControlModifier;
-    exit.second = Qt::Key_Q;
-
-    shortcutsList.push_back(Shortcut(ui->labelOpen,ui->comboBoxOpen,ui->lineEditOpen,open));
-    shortcutsList.push_back(Shortcut(ui->labelSaveAs,ui->comboBoxSaveAs,ui->lineEditSaveAs,saveAs));
-    shortcutsList.push_back(Shortcut(ui->labelCreateFile,ui->comboBoxCreateFile,ui->lineEditCreateFile,createFile));
-    shortcutsList.push_back(Shortcut(ui->labelExit,ui->comboBoxExit,ui->lineEditExit,exit));
-
-    for(auto& shortcut: shortcutsList){
-        shortcut.getComboBox()->setTabletTracking(false);
-        shortcut.getComboBox()->installEventFilter(this);
-        connect(shortcut.getComboBox(),SIGNAL(activated(int)),SLOT(setNewModifierFromCombobox(int)));
-        shortcut.getLineEdit()->installEventFilter(this);
-        shortcut.getLineEdit()->setEnabled(false);
-        shortcut.getLineEdit()->setReadOnly(true);
-    }
-
-
-    QDirIterator ItR("://Styles/", QDir::Files);
-    while(ItR.hasNext()) {
-        QFile file(ItR.next());
-        if(file.open(QFile::ReadOnly)) {
-
-            QString styleSheet = file.readAll();
-            styles.push_back(styleSheet);
-
-            QString name = file.fileName().mid(10, file.fileName().count() - 10 - 4);
-            ui->comboBoxStyles->addItem(name);
-
-            file.close();
-        }
-
-    }
-
-    connect(ui->comboBoxStyles,SIGNAL(activated(int)),SLOT(setStyleSheet(int)));
 }
 
 ParametersWidget::~ParametersWidget()
 {
+    saveSettings();
     delete ui;
 }
 
@@ -89,9 +36,14 @@ void ParametersWidget::setLocalLanguage()
 
 }
 
+void ParametersWidget::setLanguage()
+{
+    switchLanguage(ui->comboBoxLanguages->currentIndex());
+}
+
 void ParametersWidget::setStyleSheet()
 {
-    setStyleSheet(0);
+    setStyleSheet(ui->comboBoxStyles->currentIndex());
 }
 
 void ParametersWidget::switchLanguage(int activItemID)
@@ -100,8 +52,7 @@ void ParametersWidget::switchLanguage(int activItemID)
     QString path = ":/Languages/QtLanguage_" + languagesPostfics.at(activItemID);
     translator.load(path);
 
-    bool isGood = qApp->installTranslator(&translator);
-    qDebug() << path << isGood;
+    qApp->installTranslator(&translator);
 
     this->setWindowTitle(tr("Параменты"));
     ui->language->setText(tr("Язык:"));
@@ -253,6 +204,129 @@ Qt::KeyboardModifier ParametersWidget::getKeyboardModifier(const int& currentInd
     }
 
     return keyboardModifier;
+}
+
+void ParametersWidget::loadSettings()
+{
+    loadLanguage();
+    loadStyle();
+    loadShortcuts();
+}
+
+void ParametersWidget::loadLanguage()
+{
+    settings->beginGroup("Language");
+        auto index = settings->value("Language",0).toInt();
+    settings->endGroup();
+
+    ui->comboBoxLanguages->addItem(QIcon("://Images/Flags/russia.jpg"),"Русский");
+    languagesPostfics.push_back("ru");
+    ui->comboBoxLanguages->addItem(QIcon("://Images/Flags/english.jpg"),"English");
+    languagesPostfics.push_back("en");
+    ui->comboBoxLanguages->addItem(QIcon("://Images/Flags/japan.jpg"),"日本語");
+    languagesPostfics.push_back("ja");
+
+    ui->comboBoxLanguages->setCurrentIndex(index);
+    connect(ui->comboBoxLanguages,SIGNAL(activated(int)),SLOT(switchLanguage(int)));
+    switchLanguage(index);
+}
+
+void ParametersWidget::loadStyle()
+{
+    settings->beginGroup("Style");
+        auto index = settings->value("Style",0).toInt();
+    settings->endGroup();
+
+    QDirIterator ItR("://Styles/", QDir::Files);
+    while(ItR.hasNext()) {
+        QFile file(ItR.next());
+        if(file.open(QFile::ReadOnly)) {
+
+            QString styleSheet = file.readAll();
+            styles.push_back(styleSheet);
+
+            QString name = file.fileName().mid(10, file.fileName().count() - 10 - 4);
+            ui->comboBoxStyles->addItem(name);
+
+            file.close();
+        }
+
+    }
+
+    ui->comboBoxStyles->setCurrentIndex(index);
+    connect(ui->comboBoxStyles,SIGNAL(activated(int)),SLOT(setStyleSheet(int)));
+}
+
+void ParametersWidget::loadShortcuts()
+{
+    settings->beginGroup("Shortcuts");
+
+        QPair<Qt::KeyboardModifier,Qt::Key> open;
+        open.first = settings->value("OpenModifier", Qt::ControlModifier).value<Qt::KeyboardModifier>();
+        open.second = settings->value("OpenKey", Qt::Key_O).value<Qt::Key>();
+
+        QPair<Qt::KeyboardModifier,Qt::Key> saveAs;
+        saveAs.first = settings->value("SaveAsModifier", Qt::ControlModifier).value<Qt::KeyboardModifier>();
+        saveAs.second = settings->value("SaveAsKey", Qt::Key_S).value<Qt::Key>();
+
+        QPair<Qt::KeyboardModifier,Qt::Key> createFile;
+        createFile.first = settings->value("CreateFileModifier", Qt::ControlModifier).value<Qt::KeyboardModifier>();
+        createFile.second = settings->value("CreateFileKey", Qt::Key_N).value<Qt::Key>();
+
+        QPair<Qt::KeyboardModifier,Qt::Key> exit;
+        exit.first = settings->value("ExitModifier", Qt::ControlModifier).value<Qt::KeyboardModifier>();
+        exit.second = settings->value("ExitKey", Qt::Key_Q).value<Qt::Key>();
+
+    settings->endGroup();
+
+    shortcutsList.push_back(Shortcut(ui->labelOpen,ui->comboBoxOpen,ui->lineEditOpen,open));
+    shortcutsList.push_back(Shortcut(ui->labelSaveAs,ui->comboBoxSaveAs,ui->lineEditSaveAs,saveAs));
+    shortcutsList.push_back(Shortcut(ui->labelCreateFile,ui->comboBoxCreateFile,ui->lineEditCreateFile,createFile));
+    shortcutsList.push_back(Shortcut(ui->labelExit,ui->comboBoxExit,ui->lineEditExit,exit));
+
+    for(auto& shortcut: shortcutsList){
+        shortcut.getComboBox()->setTabletTracking(false);
+        shortcut.getComboBox()->installEventFilter(this);
+        connect(shortcut.getComboBox(),SIGNAL(activated(int)),SLOT(setNewModifierFromCombobox(int)));
+        shortcut.getLineEdit()->installEventFilter(this);
+        shortcut.getLineEdit()->setEnabled(false);
+        shortcut.getLineEdit()->setReadOnly(true);
+    }
+}
+
+void ParametersWidget::saveSettings()
+{
+    saveLanguage();
+    saveStyle();
+    saveShortcuts();
+}
+
+void ParametersWidget::saveLanguage()
+{
+    settings->beginGroup("Language");
+        settings->setValue("Language",ui->comboBoxLanguages->currentIndex());
+    settings->endGroup();
+}
+
+void ParametersWidget::saveStyle()
+{
+    settings->beginGroup("Style");
+        settings->setValue("Style",ui->comboBoxStyles->currentIndex());
+    settings->endGroup();
+}
+
+void ParametersWidget::saveShortcuts()
+{
+    settings->beginGroup("Shortcuts");
+        settings->setValue("OpenModifier",shortcutsList[0].getModifier());
+        settings->setValue("OpenKey",shortcutsList[0].getKey());
+        settings->setValue("SaveAsModifier",shortcutsList[1].getModifier());
+        settings->setValue("SaveAsKey",shortcutsList[1].getKey());
+        settings->setValue("CreateFileModifier",shortcutsList[2].getModifier());
+        settings->setValue("CreateFileKey",shortcutsList[2].getKey());
+        settings->setValue("ExitModifier",shortcutsList[3].getModifier());
+        settings->setValue("ExitKey",shortcutsList[3].getKey());
+    settings->endGroup();
 }
 
 QList<Shortcut> ParametersWidget::getShortcuts()

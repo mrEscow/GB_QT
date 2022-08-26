@@ -7,6 +7,7 @@
 #include "qlineedit.h"
 #include <QWidget>
 #include <QStringList>
+#include <QSettings>
 
 namespace Ui {
 class ParametersWidget;
@@ -21,6 +22,7 @@ public:
 
 public:
     void setLocalLanguage();
+    void setLanguage();
     void setStyleSheet();
 private slots:
     void switchLanguage(int);
@@ -40,6 +42,16 @@ private:
     void setKeyParamInShortcutsAndApp();
     Qt::KeyboardModifier getKeyboardModifier(const int& currentIndex);
 
+    void loadSettings();
+    void loadLanguage();
+    void loadStyle();
+    void loadShortcuts();
+
+    void saveSettings();
+    void saveLanguage();
+    void saveStyle();
+    void saveShortcuts();
+
 public:
     QList<Shortcut> getShortcuts();
 signals:
@@ -57,8 +69,11 @@ private:
     bool isChangeKey;
     QString currentKey;
     int oldCurrentIndex;
-
     QStringList styles;
+
+    QSettings* settings;
 };
+
+Q_DECLARE_METATYPE(Qt::KeyboardModifier)
 
 #endif // PARAMETERSWIDGET_H

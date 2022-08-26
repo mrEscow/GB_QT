@@ -77,7 +77,7 @@ void MainWindow::connects()
 
 void MainWindow::setSettingsFromParametrs()
 {
-    parametersWidget.setLocalLanguage();
+    parametersWidget.setLanguage();
     parametersWidget.setStyleSheet();
     shortcuts = parametersWidget.getShortcuts();
 }
