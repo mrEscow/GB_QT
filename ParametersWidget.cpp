@@ -6,6 +6,7 @@
 #include <QEvent>
 #include <QMouseEvent>
 #include <QKeyEvent>
+#include <QFileDialog>
 
 ParametersWidget::ParametersWidget(QWidget *parent) :
     QWidget(parent),
@@ -18,7 +19,7 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
 
     loadSettings();
 
-
+    connect(ui->pushButtonOpen, SIGNAL(clicked()), this, SLOT(onOpenButton()));
 }
 
 ParametersWidget::~ParametersWidget()
@@ -33,7 +34,6 @@ void ParametersWidget::setLocalLanguage()
     for(auto& postfics: languagesPostfics)
         if(localPostfics.contains(postfics))
             switchLanguage(languagesPostfics.indexOf(postfics));
-
 }
 
 void ParametersWidget::setLanguage()
@@ -67,6 +67,9 @@ void ParametersWidget::switchLanguage(int activItemID)
     ui->labelSaveAs->setText(tr("Сохранить как"));
     ui->labelCreateFile->setText(tr("Создать файл"));
     ui->labelExit->setText(tr("Выход"));
+
+    ui->labelHomeDirectory->setText(tr("Домашний каталог:"));
+    ui->pushButtonOpen->setText(tr("Открыть"));
 
     emit changeLanguage();
 }
@@ -211,6 +214,7 @@ void ParametersWidget::loadSettings()
     loadLanguage();
     loadStyle();
     loadShortcuts();
+    loadHomeDirectory();
 }
 
 void ParametersWidget::loadLanguage()
@@ -294,11 +298,22 @@ void ParametersWidget::loadShortcuts()
     }
 }
 
+void ParametersWidget::loadHomeDirectory()
+{
+    settings->beginGroup("Directory");
+        homeDirectory = settings->value("HomeDirectory",QDir::current().path()).toString();
+    settings->endGroup();
+
+    ui->lineEditPath->setText(homeDirectory);
+    emit changeHomeDirectory(homeDirectory);
+}
+
 void ParametersWidget::saveSettings()
 {
     saveLanguage();
     saveStyle();
     saveShortcuts();
+    saveHomeDirectory();
 }
 
 void ParametersWidget::saveLanguage()
@@ -329,6 +344,13 @@ void ParametersWidget::saveShortcuts()
     settings->endGroup();
 }
 
+void ParametersWidget::saveHomeDirectory()
+{
+    settings->beginGroup("Directory");
+        settings->setValue("HomeDirectory", homeDirectory);
+    settings->endGroup();
+}
+
 QList<Shortcut> ParametersWidget::getShortcuts()
 {
     return shortcutsList;
@@ -337,4 +359,19 @@ QList<Shortcut> ParametersWidget::getShortcuts()
 void ParametersWidget::setStyleSheet(int index)
 {
     qApp->setStyleSheet(styles[index]);
+}
+
+const QString &ParametersWidget::getHomeDirectory()
+{
+    return homeDirectory;
+}
+
+void ParametersWidget::onOpenButton()
+{
+    homeDirectory = QFileDialog::getExistingDirectory(this, tr("Открыть каталог"),
+                                                 "",
+                                                 QFileDialog::ShowDirsOnly
+                                                 | QFileDialog::DontResolveSymlinks);
+    ui->lineEditPath->setText(homeDirectory);
+    emit changeHomeDirectory(homeDirectory);
 }

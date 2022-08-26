@@ -36,8 +36,8 @@ void MainWindow::setSettingsForThisWidgets()
                 ui->listView
                 );
 
-    fileSystemViwer->setHomePath(QDir::current().path());
-    fileSystemViwer->setRootPathAndIndex(QDir::current().path());
+    fileSystemViwer->setHomePath(parametersWidget.getHomeDirectory());
+    fileSystemViwer->setRootPathAndIndex(parametersWidget.getHomeDirectory());
 
     ui->splitter->setStretchFactor(0,3);
     ui->splitter->setStretchFactor(1,15);
@@ -68,6 +68,7 @@ void MainWindow::connects()
     connect(&parametersWidget, SIGNAL(changeLanguage()), this, SLOT(switchLanguage()));
     connect(&parametersWidget, SIGNAL(changeLanguage()), &fileCreatorWidget, SLOT(switchLanguage()));
     connect(&parametersWidget, SIGNAL(changeShortcuts(QList<Shortcut>)), this, SLOT(changeShortcuts(QList<Shortcut>)));
+    connect(&parametersWidget, SIGNAL(changeHomeDirectory(QString)), fileSystemViwer, SLOT(setHomePath(QString)));
 
     connect(fileSystemViwer, SIGNAL(openFile(QString,bool)), this, SLOT(openFile(QString,bool)));
 

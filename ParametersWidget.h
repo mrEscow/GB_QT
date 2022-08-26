@@ -46,11 +46,13 @@ private:
     void loadLanguage();
     void loadStyle();
     void loadShortcuts();
+    void loadHomeDirectory();
 
     void saveSettings();
     void saveLanguage();
     void saveStyle();
     void saveShortcuts();
+    void saveHomeDirectory();
 
 public:
     QList<Shortcut> getShortcuts();
@@ -59,6 +61,12 @@ signals:
 
 private slots:
     void setStyleSheet(int index);
+public:
+    const QString& getHomeDirectory();
+signals:
+    void changeHomeDirectory(QString directory);
+private slots:
+    void onOpenButton();
 
 private:
     Ui::ParametersWidget *ui;
@@ -70,8 +78,8 @@ private:
     QString currentKey;
     int oldCurrentIndex;
     QStringList styles;
-
     QSettings* settings;
+    QString homeDirectory;
 };
 
 Q_DECLARE_METATYPE(Qt::KeyboardModifier)

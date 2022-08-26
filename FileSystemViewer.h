@@ -20,7 +20,7 @@ public:
             QListView* listView
             );
     ~FileSystemViewer();
-
+public slots:
     void setRootPathAndIndex(const QString& path);
     void setHomePath(const QString& path);
     const QString& getCurrentPath();
