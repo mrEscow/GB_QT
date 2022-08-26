@@ -15,11 +15,11 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
     this->setWindowTitle(tr("Параменты"));
     installEventFilter(this);
 
-    ui->comboBoxLanguages->addItem(tr("Русский"));
+    ui->comboBoxLanguages->addItem(QIcon("://Images/Flags/russia.jpg"),"Русский");
     languagesPostfics.push_back("ru");
-    ui->comboBoxLanguages->addItem(tr("Английский"));
+    ui->comboBoxLanguages->addItem(QIcon("://Images/Flags/english.jpg"),"English");
     languagesPostfics.push_back("en");
-    ui->comboBoxLanguages->addItem(tr("Японский"));
+    ui->comboBoxLanguages->addItem(QIcon("://Images/Flags/japan.jpg"),"日本語");
     languagesPostfics.push_back("ja");
 
 
@@ -56,7 +56,7 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
     }
 
 
-    QDirIterator ItR(":/QSS/Styles/", QDir::Files);
+    QDirIterator ItR("://Styles/", QDir::Files);
     while(ItR.hasNext()) {
         QFile file(ItR.next());
         if(file.open(QFile::ReadOnly)) {
@@ -64,7 +64,7 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
             QString styleSheet = file.readAll();
             styles.push_back(styleSheet);
 
-            QString name = file.fileName().mid(13, file.fileName().count() - 13 - 4);
+            QString name = file.fileName().mid(10, file.fileName().count() - 10 - 4);
             ui->comboBoxStyles->addItem(name);
 
             file.close();
@@ -92,7 +92,7 @@ void ParametersWidget::setLocalLanguage()
 void ParametersWidget::switchLanguage(int activItemID)
 {
     QTranslator translator;
-    QString path = "languages/QtLanguage_" + languagesPostfics.at(activItemID);
+    QString path = ":/Languages/QtLanguage_" + languagesPostfics.at(activItemID);
     translator.load(path);
 
     bool isGood = qApp->installTranslator(&translator);
@@ -100,9 +100,7 @@ void ParametersWidget::switchLanguage(int activItemID)
 
     this->setWindowTitle(tr("Параменты"));
     ui->language->setText(tr("Язык:"));
-    ui->comboBoxLanguages->setItemText(0,tr("Русский"));
-    ui->comboBoxLanguages->setItemText(1,tr("Английский"));
-    ui->comboBoxLanguages->setItemText(2,tr("Японский"));
+    ui->labelStyle->setText(tr("Стиль:"));
 
     ui->labeKeybord->setText(tr("Клавиатура:"));
     ui->labelAction->setText(tr("Действие"));

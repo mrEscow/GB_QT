@@ -1,14 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>HelpText.txt</file>
-    </qresource>
-    <qresource prefix="/languages">
-        <file>QtLanguage_ja.ts</file>
-        <file>QtLanguage_ru.ts</file>
-        <file>QtLanguage_en.ts</file>
-    </qresource>
-    <qresource prefix="/QSS">
-        <file>Styles/Fibers.qss</file>
         <file>Styles/Adaptic.qss</file>
         <file>Styles/Chatbee.qss</file>
         <file>Styles/Clientor.qss</file>
@@ -23,6 +15,7 @@
         <file>Styles/EasyCode.qss</file>
         <file>Styles/Eclippy.qss</file>
         <file>Styles/ExcelOffice.qss</file>
+        <file>Styles/Fibers.qss</file>
         <file>Styles/Fibrary.qss</file>
         <file>Styles/Filmovio.qss</file>
         <file>Styles/Genetive.qss</file>
@@ -51,5 +44,14 @@
         <file>Styles/Webmas.qss</file>
         <file>Styles/WordOffice.qss</file>
         <file>Styles/Wstartpage.qss</file>
+        <file>Languages/QtLanguage_en.qm</file>
+        <file>Languages/QtLanguage_en.ts</file>
+        <file>Languages/QtLanguage_ja.qm</file>
+        <file>Languages/QtLanguage_ja.ts</file>
+        <file>Languages/QtLanguage_ru.qm</file>
+        <file>Languages/QtLanguage_ru.ts</file>
+        <file>Images/Flags/english.jpg</file>
+        <file>Images/Flags/japan.jpg</file>
+        <file>Images/Flags/russia.jpg</file>
     </qresource>
 </RCC>

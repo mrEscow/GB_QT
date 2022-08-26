@@ -262,6 +262,10 @@ void MainWindow::switchLanguage()
 
     ui->help->setTitle(tr("Справка"));
     ui->helpAboutProgramm->setText(tr("О программе"));
+
+    ui->pushButtonHome->setText(tr("Домой"));
+    ui->pushButtonUp->setText(tr("Вверх"));
+    ui->pushButtonSearch->setText(tr("Поиск"));
 }
 
 void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)
