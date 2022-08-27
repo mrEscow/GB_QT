@@ -140,6 +140,7 @@
      <string>Меню</string>
     </property>
     <addaction name="menuCreateNewFile"/>
+    <addaction name="menuCloseFile"/>
     <addaction name="separator"/>
     <addaction name="menuSave"/>
     <addaction name="menuSaveAs"/>
@@ -193,9 +194,12 @@
     <bool>false</bool>
    </attribute>
    <addaction name="menuCreateNewFile"/>
+   <addaction name="menuCloseFile"/>
    <addaction name="separator"/>
    <addaction name="menuSave"/>
+   <addaction name="menuSaveAs"/>
    <addaction name="menuOpen"/>
+   <addaction name="menuOpen_ReadOnly"/>
    <addaction name="separator"/>
    <addaction name="toolsPrinter"/>
   </widget>
@@ -231,6 +235,10 @@
    </property>
   </action>
   <action name="menuSaveAs">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Images/Icons/SaveAs.png</normaloff>:/Images/Icons/SaveAs.png</iconset>
+   </property>
    <property name="text">
     <string>Сохранить как...</string>
    </property>
@@ -245,11 +253,19 @@
    </property>
   </action>
   <action name="menuOpen_ReadOnly">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Images/Icons/openOnlyRead.png</normaloff>:/Images/Icons/openOnlyRead.png</iconset>
+   </property>
    <property name="text">
     <string>Открыть для просмотра</string>
    </property>
   </action>
   <action name="menuExit">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Images/Icons/exit.png</normaloff>:/Images/Icons/exit.png</iconset>
+   </property>
    <property name="text">
     <string>Выход</string>
    </property>
@@ -264,6 +280,10 @@
    </property>
   </action>
   <action name="helpAboutProgramm">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Images/Icons/about.png</normaloff>:/Images/Icons/about.png</iconset>
+   </property>
    <property name="text">
     <string>О программе</string>
    </property>
@@ -278,6 +298,10 @@
    </property>
   </action>
   <action name="menuCloseFile">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Images/Icons/CloseFile.png</normaloff>:/Images/Icons/CloseFile.png</iconset>
+   </property>
    <property name="text">
     <string>Закрыть файл</string>
    </property>
