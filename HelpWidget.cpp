@@ -1,5 +1,6 @@
 #include "HelpWidget.h"
 #include "qdebug.h"
+#include "qicon.h"
 #include "ui_HelpWidget.h"
 #include <QFile>
 
@@ -9,6 +10,7 @@ HelpWidget::HelpWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->textBrowser->setReadOnly(true);
+    this->setWindowIcon(QIcon(":/Images/Icons/about.png"));
     this->setWindowTitle(tr("Справка"));
     ui->label->setText(tr("О программе !"));
     QFile file(":/HelpText.txt");

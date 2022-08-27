@@ -13,6 +13,7 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
     ui(new Ui::ParametersWidget)
 {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/Images/Icons/settings.png"));
     this->setWindowTitle(tr("Параменты"));
     installEventFilter(this);
     settings = new QSettings(this);

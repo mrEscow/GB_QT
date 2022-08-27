@@ -7,6 +7,7 @@ FileCreatorWidget::FileCreatorWidget(QWidget *parent) :
     ui(new Ui::FileCreatorWidget)
 {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/Images/Icons/new.png"));
     this->setWindowTitle(tr("Создать файл"));
 
     connect(ui->createButton,SIGNAL(clicked()),this, SLOT(create()));
