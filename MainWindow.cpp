@@ -5,23 +5,26 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QTabWidget>
+#include <QPrinter>
+#include <QPrintDialog>
 
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);        
+
     setSettingsForThisWidgets();
     setSettingsFromParametrs();
 }
 
 void MainWindow::setSettingsForThisWidgets()
 {
+    ui->setupUi(this);
+    setWindowIcon(QIcon(":/Images/Icons/crown.png"));
     installEventFilter(this);
 
-    ui->menuSave->setEnabled(false);
-    ui->menuCloseFile->setEnabled(false);
+    setEnablets(false);
 
     fileCreatorWidget.setWindowModality(Qt::ApplicationModal);
     parametersWidget.setWindowModality(Qt::ApplicationModal);
@@ -79,6 +82,8 @@ void MainWindow::connects()
 
     connect(ui->toolsViewTabs, SIGNAL(triggered(bool)), SLOT(onTabsAction()));
     connect(ui->toolsViewMdi, SIGNAL(triggered(bool)), SLOT(onMdiAction()));
+
+    connect(ui->toolsPrinter,SIGNAL(triggered(bool)), SLOT(onPrintAction()));
 }
 
 void MainWindow::setSettingsFromParametrs()
@@ -86,6 +91,14 @@ void MainWindow::setSettingsFromParametrs()
     parametersWidget.setLanguage();
     parametersWidget.setStyleSheet();
     shortcuts = parametersWidget.getShortcuts();
+}
+
+void MainWindow::setEnablets(bool b)
+{
+    ui->menuSave->setEnabled(b);
+    ui->menuSaveAs->setEnabled(b);
+    ui->menuCloseFile->setEnabled(b);
+    ui->toolsPrinter->setEnabled(b);
 }
 
 void MainWindow::runFileCreator()
@@ -105,8 +118,7 @@ void MainWindow::createFile(QString fileName)
         saveFile();
     }
 
-    ui->menuSave->setEnabled(true);
-    ui->menuCloseFile->setEnabled(true);
+    setEnablets(true);
 }
 
 void MainWindow::closeFile()
@@ -117,10 +129,20 @@ void MainWindow::closeFile()
         if(it.next().getTextEdit() == senderTextEdit)
             it.remove();
 
-    if(openFiles.isEmpty()){
-        ui->menuSave->setEnabled(false);
-        ui->menuCloseFile->setEnabled(false);
+    if(ui->tabWidget->currentIndex() == 0){
+        for(auto& file: openFiles){
+            int index = ui->tabWidget->indexOf(file.getTextEdit());
+            qDebug() << index;
+            if(index != 0){
+                ui->tabWidget->setCurrentIndex(index);
+                break;
+            }
+        }
     }
+
+    if(openFiles.isEmpty())
+        setEnablets(false);
+
 }
 
 void MainWindow::saveFile()
@@ -207,8 +229,7 @@ void MainWindow::openFile(QString fileName,bool isReadOnly)
                openFiles.append(openFile);
                ui->tabWidget->insertTab(0,textEdit,openFile.getName());
                ui->tabWidget->setCurrentIndex(0);
-               ui->menuSave->setEnabled(true);
-               ui->menuCloseFile->setEnabled(true);
+               setEnablets(true);
                file.close();
             }
         }
@@ -287,10 +308,9 @@ void MainWindow::addTab(int index)
         senderTextEdit = textEdit;
         OpenFile openFile(getCorrectName(""),fileSystemViwer->getCurrentPath(),textEdit);
         openFiles.append(openFile);
-        ui->tabWidget->insertTab(index,textEdit,openFile.getName());
+        ui->tabWidget->insertTab(index,textEdit,openFile.getName());       
         ui->tabWidget->setCurrentIndex(index);
-        ui->menuSave->setEnabled(true);
-        ui->menuCloseFile->setEnabled(true);
+        setEnablets(true);
     }
 }
 
@@ -301,14 +321,42 @@ void MainWindow::changedTab(int index)
 
 void MainWindow::onTabsAction()
 {
+    ui->tabWidget->addTab(ui->tabCreator, "+");
+
+    for(auto& file: openFiles)
+        ui->tabWidget->insertTab(0,file.getTextEdit(),file.getName());
+
+    ui->mdiArea->closeAllSubWindows();
     ui->mdiArea->close();
+
     ui->tabWidget->show();
 }
 
 void MainWindow::onMdiAction()
 {
+
+    for(auto& files: openFiles)
+        ui->mdiArea->addSubWindow(files.getTextEdit());
+
+    ui->tabWidget->clear();
     ui->tabWidget->close();
+
     ui->mdiArea->show();
+}
+
+void MainWindow::onPrintAction()
+{
+    QPrinter printer;
+    QPrintDialog dlg(&printer,this);
+
+    dlg.setWindowTitle("Print");
+
+    if (dlg.exec() != QDialog::Accepted)
+        return;
+
+    if(senderTextEdit)
+        senderTextEdit->print(&printer);
+
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)

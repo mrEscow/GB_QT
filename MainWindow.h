@@ -29,6 +29,7 @@ private:
     void setSettingsForThisWidgets();
     void connects();
     void setSettingsFromParametrs();
+    void setEnablets(bool);
 private slots:
     void runFileCreator();
     void createFile(QString);
@@ -53,6 +54,8 @@ private slots:
 private slots:
     void onTabsAction();
     void onMdiAction();
+private slots:
+    void onPrintAction();
 private:
     bool eventFilter(QObject* watched, QEvent* event) override;
 public:
