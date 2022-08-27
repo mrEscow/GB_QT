@@ -47,8 +47,8 @@ void MainWindow::setSettingsForThisWidgets()
 
     ui->mdiArea->close();
 
-    ui->tabWidget->removeTab(1);
-    ui->tabWidget->setTabText(0,"+");
+//    ui->tabWidget->removeTab(1);
+//    ui->tabWidget->setTabText(0,"+");
     //ui->tabWidget.t
     //ui->tabWidget->setTabsClosable(true);
 
@@ -126,19 +126,22 @@ void MainWindow::closeFile()
     QMutableListIterator  it(openFiles);
 
     while(it.hasNext())
-        if(it.next().getTextEdit() == senderTextEdit)
+        if(it.next().getTextEdit() == senderTextEdit){
             it.remove();
-
-    if(ui->tabWidget->currentIndex() == 0){
-        for(auto& file: openFiles){
-            int index = ui->tabWidget->indexOf(file.getTextEdit());
-            qDebug() << index;
-            if(index != 0){
-                ui->tabWidget->setCurrentIndex(index);
-                break;
-            }
+            break;
         }
-    }
+
+
+//    if(ui->tabWidget->currentIndex() == 0){
+//        for(auto& file: openFiles){
+//            int index = ui->tabWidget->indexOf(file.getTextEdit());
+//            qDebug() << index;
+//            if(index != 0){
+//                ui->tabWidget->setCurrentIndex(index);
+//                break;
+//            }
+//        }
+//    }
 
     if(openFiles.isEmpty())
         setEnablets(false);
@@ -304,6 +307,7 @@ void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)
 void MainWindow::addTab(int index)
 {   
     if(ui->tabWidget->tabText(index) == "+"){
+        qDebug() << index;
         QTextEdit* textEdit = new QTextEdit;
         senderTextEdit = textEdit;
         OpenFile openFile(getCorrectName(""),fileSystemViwer->getCurrentPath(),textEdit);
@@ -316,7 +320,13 @@ void MainWindow::addTab(int index)
 
 void MainWindow::changedTab(int index)
 {
-    senderTextEdit = qobject_cast<QTextEdit*>(ui->tabWidget->widget(index));
+    if(ui->tabWidget->tabText(index) == "+" && index >= 0 )
+        changedTab(index-1);
+    else{
+        senderTextEdit = qobject_cast<QTextEdit*>(ui->tabWidget->widget(index));
+        ui->tabWidget->setCurrentIndex(index);
+    }
+
 }
 
 void MainWindow::onTabsAction()
