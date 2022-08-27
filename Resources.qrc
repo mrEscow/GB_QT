@@ -60,5 +60,11 @@
         <file>Images/Icons/save.png</file>
         <file>Images/Icons/settings.png</file>
         <file>Images/Icons/TabView.png</file>
+        <file>Images/Icons/CloseFile.png</file>
+        <file>Images/Icons/about.png</file>
+        <file>Images/Icons/crown.png</file>
+        <file>Images/Icons/openOnlyRead.png</file>
+        <file>Images/Icons/SaveAs.png</file>
+        <file>Images/Icons/exit.png</file>
     </qresource>
 </RCC>
