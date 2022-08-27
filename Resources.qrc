@@ -53,5 +53,12 @@
         <file>Images/Flags/english.jpg</file>
         <file>Images/Flags/japan.jpg</file>
         <file>Images/Flags/russia.jpg</file>
+        <file>Images/Icons/MdiView.png</file>
+        <file>Images/Icons/new.png</file>
+        <file>Images/Icons/open.png</file>
+        <file>Images/Icons/printer.png</file>
+        <file>Images/Icons/save.png</file>
+        <file>Images/Icons/settings.png</file>
+        <file>Images/Icons/TabView.png</file>
     </qresource>
 </RCC>

@@ -50,6 +50,9 @@ private slots:
 private slots:
     void addTab(int index);
     void changedTab(int index);
+private slots:
+    void onTabsAction();
+    void onMdiAction();
 private:
     bool eventFilter(QObject* watched, QEvent* event) override;
 public:

@@ -42,6 +42,8 @@ void MainWindow::setSettingsForThisWidgets()
     ui->splitter->setStretchFactor(0,3);
     ui->splitter->setStretchFactor(1,15);
 
+    ui->mdiArea->close();
+
     ui->tabWidget->removeTab(1);
     ui->tabWidget->setTabText(0,"+");
     //ui->tabWidget.t
@@ -74,6 +76,9 @@ void MainWindow::connects()
 
     connect(ui->tabWidget, SIGNAL(tabBarClicked(int)),this, SLOT(addTab(int)));
     connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(changedTab(int)));
+
+    connect(ui->toolsViewTabs, SIGNAL(triggered(bool)), SLOT(onTabsAction()));
+    connect(ui->toolsViewMdi, SIGNAL(triggered(bool)), SLOT(onMdiAction()));
 }
 
 void MainWindow::setSettingsFromParametrs()
@@ -292,6 +297,18 @@ void MainWindow::addTab(int index)
 void MainWindow::changedTab(int index)
 {
     senderTextEdit = qobject_cast<QTextEdit*>(ui->tabWidget->widget(index));
+}
+
+void MainWindow::onTabsAction()
+{
+    ui->mdiArea->close();
+    ui->tabWidget->show();
+}
+
+void MainWindow::onMdiAction()
+{
+    ui->tabWidget->close();
+    ui->mdiArea->show();
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
