@@ -9,7 +9,7 @@
 #include <QPrintDialog>
 #include <QMdiSubWindow>
 
-#define q (qDebug() << "MY_DEBUG: " )
+#define q (qDebug() << "MY_DEBUG: ")
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -137,8 +137,6 @@ void MainWindow::createFile(QString fileName)
         setEnablets(true);
     }
 }
-
-
 
 void MainWindow::closeFile()
 {     
@@ -395,12 +393,9 @@ void MainWindow::addSubWindow(OpenFile& file)
     QWidget *widget = file.getTextEdit();
     if(!widget)
         return;
-
     ui->mdiArea->addSubWindow(widget)->setWindowFilePath(file.getPath());
     widget->setWindowTitle(file.getName());
-    widget->setWindowFilePath(file.getPath());
     widget->setWindowIcon(QIcon(":/Images/Icons/new.png"));
-    widget->installEventFilter(this);
     widget->show();
 }
 
