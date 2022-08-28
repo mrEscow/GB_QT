@@ -9,6 +9,7 @@
 #include <QPrintDialog>
 
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -322,9 +323,16 @@ void MainWindow::onTabsAction()
 
 void MainWindow::onMdiAction()
 {
+    for(auto& file: openFiles){
+        QWidget *widget = file.getTextEdit();
 
-    for(auto& files: openFiles)
-        ui->mdiArea->addSubWindow(files.getTextEdit());
+        ui->mdiArea->addSubWindow(widget);
+
+        widget->setWindowTitle(file.getName());
+        widget->setWindowIcon(QIcon(":/Images/Icons/new.png"));
+        widget->setWindowFilePath(file.getPath());
+        widget->show();
+    }
 
     ui->tabWidget->clear();
     ui->tabWidget->close();
