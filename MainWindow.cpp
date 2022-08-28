@@ -42,8 +42,8 @@ void MainWindow::setSettingsForThisWidgets()
     fileSystemViwer->setHomePath(parametersWidget.getHomeDirectory());
     fileSystemViwer->setRootPathAndIndex(parametersWidget.getHomeDirectory());
 
-    ui->splitter->setStretchFactor(0,3);
-    ui->splitter->setStretchFactor(1,15);
+    ui->splitter->setStretchFactor(0,15);
+    ui->splitter->setStretchFactor(1,5);
 
     ui->mdiArea->close();
 
@@ -111,14 +111,16 @@ void MainWindow::createFile(QString fileName)
     if(!fileName.isEmpty()){
         QTextEdit* textEdit = new QTextEdit;
         senderTextEdit = textEdit;
-        OpenFile openFile(getCorrectName(fileName),fileSystemViwer->getCurrentPath(),textEdit);
+        QString fullPath = fileSystemViwer->getCurrentPath() + "/" + getCorrectName(fileName);
+        OpenFile openFile(getCorrectName(fileName),fullPath,textEdit);
         openFiles.append(openFile);
         ui->tabWidget->insertTab(0,textEdit,openFile.getName());
         ui->tabWidget->setCurrentIndex(0);
         saveFile();
+        setEnablets(true);
     }
 
-    setEnablets(true);
+
 }
 
 void MainWindow::closeFile()
