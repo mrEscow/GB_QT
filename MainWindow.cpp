@@ -7,8 +7,9 @@
 #include <QTabWidget>
 #include <QPrinter>
 #include <QPrintDialog>
+#include <QMdiSubWindow>
 
-
+#define q (qDebug() << "MY_DEBUG: " )
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::setSettingsForThisWidgets()
 {
     ui->setupUi(this);
+    settings = new QSettings(this);
     setWindowIcon(QIcon(":/Images/Icons/crown.png"));
     installEventFilter(this);
 
@@ -45,7 +47,20 @@ void MainWindow::setSettingsForThisWidgets()
     ui->splitter->setStretchFactor(0,15);
     ui->splitter->setStretchFactor(1,5);
 
-    ui->mdiArea->close();
+    settings->beginGroup("View");
+        isMdiView = settings->value("isMdiView", true).toBool();
+    settings->endGroup();
+
+    if(isMdiView)
+        ui->tabWidget->close();
+    else
+        ui->mdiArea->close();
+
+    settings->beginGroup("OpenFiles");
+        QStringList strList = settings->value("OpenFiles", "").toStringList();
+        for(auto& file: strList)
+            openFile(file, false);
+    settings->endGroup();
 
     connects();
 }
@@ -79,6 +94,8 @@ void MainWindow::connects()
     connect(ui->toolsViewMdi, SIGNAL(triggered(bool)), SLOT(onMdiAction()));
 
     connect(ui->toolsPrinter,SIGNAL(triggered(bool)), SLOT(onPrintAction()));
+
+    connect(ui->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), SLOT(onMdiUpdateAction()));
 }
 
 void MainWindow::setSettingsFromParametrs()
@@ -104,20 +121,29 @@ void MainWindow::runFileCreator()
 void MainWindow::createFile(QString fileName)
 {
     if(!fileName.isEmpty()){
-        QTextEdit* textEdit = new QTextEdit;
+        QTextEdit* textEdit = new QTextEdit(this);
         senderTextEdit = textEdit;
         QString fullPath = fileSystemViwer->getCurrentPath() + "/" + getCorrectName(fileName);
         OpenFile openFile(getCorrectName(fileName),fullPath,textEdit);
         openFiles.append(openFile);
-        ui->tabWidget->insertTab(0,textEdit,openFile.getName());
-        ui->tabWidget->setCurrentIndex(0);
+        if(isMdiView)
+            addSubWindow(openFile);
+        else{
+            ui->tabWidget->insertTab(0,textEdit,openFile.getName());
+            ui->tabWidget->setCurrentIndex(0);
+
+        }
         saveFile();
         setEnablets(true);
     }
 }
 
+
+
 void MainWindow::closeFile()
-{
+{     
+    q << openFiles.count();
+
     QMutableListIterator  it(openFiles);
 
     while(it.hasNext())
@@ -125,6 +151,15 @@ void MainWindow::closeFile()
             it.remove();
             break;
         }
+
+    q << openFiles.count();
+
+    if(isMdiView)
+        ui->mdiArea->closeActiveSubWindow();
+    else{
+        int index = ui->tabWidget->currentIndex();
+        ui->tabWidget->removeTab(index);
+    }
 
     if(openFiles.isEmpty())
         setEnablets(false);
@@ -204,14 +239,19 @@ void MainWindow::openFile(QString fileName,bool isReadOnly)
             QFile file(fileName);
             if (file.open(QFile::ReadOnly | QFile::ExistingOnly)){
                QTextStream stream(&file);
-               QTextEdit* textEdit = new QTextEdit;
+               QTextEdit* textEdit = new QTextEdit(this);
                textEdit->setPlainText(stream.readAll());
                textEdit->setReadOnly(isReadOnly);
                OpenFile openFile(getCorrectName(fileName),fileName,textEdit);
                senderTextEdit = textEdit;
                openFiles.append(openFile);
-               ui->tabWidget->insertTab(0,textEdit,openFile.getName());
-               ui->tabWidget->setCurrentIndex(0);
+               if(isMdiView)
+                   addSubWindow(openFile);
+               else{
+                   ui->tabWidget->insertTab(0,textEdit,openFile.getName());
+                   ui->tabWidget->setCurrentIndex(0);
+               }
+
                setEnablets(true);
                file.close();
             }
@@ -287,8 +327,7 @@ void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)
 void MainWindow::addTab(int index)
 {   
     if(ui->tabWidget->tabText(index) == "+"){
-        qDebug() << index;
-        QTextEdit* textEdit = new QTextEdit;
+        QTextEdit* textEdit = new QTextEdit(this);
         senderTextEdit = textEdit;
         OpenFile openFile(getCorrectName(""),fileSystemViwer->getCurrentPath(),textEdit);
         openFiles.append(openFile);
@@ -310,34 +349,59 @@ void MainWindow::changedTab(int index)
 
 void MainWindow::onTabsAction()
 {
+    if(!isMdiView)
+        return;
+    isMdiView = false;
+
     ui->tabWidget->addTab(ui->tabCreator, "+");
 
-    for(auto& file: openFiles)
-        ui->tabWidget->insertTab(0,file.getTextEdit(),file.getName());
+    openFiles.clear();
+    QList<QMdiSubWindow*> windows = ui->mdiArea->subWindowList();
+    for(auto win: windows)
+        openFile( win->windowFilePath(), false);
 
     ui->mdiArea->closeAllSubWindows();
     ui->mdiArea->close();
-
+    if(!openFiles.isEmpty())
+        setEnablets(true);
     ui->tabWidget->show();
 }
 
 void MainWindow::onMdiAction()
 {
-    for(auto& file: openFiles){
-        QWidget *widget = file.getTextEdit();
+    if(isMdiView)
+        return;
+    isMdiView = true;
 
-        ui->mdiArea->addSubWindow(widget);
-
-        widget->setWindowTitle(file.getName());
-        widget->setWindowIcon(QIcon(":/Images/Icons/new.png"));
-        widget->setWindowFilePath(file.getPath());
-        widget->show();
-    }
+    for(auto& file: openFiles)
+        addSubWindow(file);
 
     ui->tabWidget->clear();
     ui->tabWidget->close();
 
     ui->mdiArea->show();
+}
+
+void MainWindow::onMdiUpdateAction()
+{
+    QMdiSubWindow* subWindow = ui->mdiArea->activeSubWindow();
+    setEnablets(subWindow);
+    if(subWindow)
+        senderTextEdit = qobject_cast<QTextEdit*>(subWindow->widget());
+}
+
+void MainWindow::addSubWindow(OpenFile& file)
+{
+    QWidget *widget = file.getTextEdit();
+    if(!widget)
+        return;
+
+    ui->mdiArea->addSubWindow(widget)->setWindowFilePath(file.getPath());
+    widget->setWindowTitle(file.getName());
+    widget->setWindowFilePath(file.getPath());
+    widget->setWindowIcon(QIcon(":/Images/Icons/new.png"));
+    widget->installEventFilter(this);
+    widget->show();
 }
 
 void MainWindow::onPrintAction()
@@ -384,9 +448,25 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
 MainWindow::~MainWindow()
 {
+    saveSettings();
+
     disconnect(ui->tabWidget, SIGNAL(tabBarClicked(int)),this, SLOT(addTab(int)));
     disconnect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(changedTab(int)));
 
     delete fileSystemViwer;
     delete ui;
+}
+
+void MainWindow::saveSettings()
+{
+    settings->beginGroup("View");
+        settings->setValue("isMdiView", isMdiView);
+    settings->endGroup();
+
+    settings->beginGroup("OpenFiles");
+         QStringList strList;
+         for(auto& file: openFiles)
+             strList.push_back(file.getPath());
+        settings->setValue("OpenFiles", strList);
+    settings->endGroup();
 }

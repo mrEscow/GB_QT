@@ -20,7 +20,7 @@ public:
 private:
     QString name;
     QString path;
-    QSharedPointer<QTextEdit> textEdit;
+    QTextEdit* textEdit;
 };
 
 #endif // OPENFILE_H

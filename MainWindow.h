@@ -54,12 +54,17 @@ private slots:
 private slots:
     void onTabsAction();
     void onMdiAction();
+    void onMdiUpdateAction();
+private:
+    void addSubWindow(OpenFile& file);
 private slots:
     void onPrintAction();
 private:
     bool eventFilter(QObject* watched, QEvent* event) override;
 public:
     ~MainWindow();
+private:
+    void saveSettings();
 private:
     Ui::MainWindow *ui;
     QString filterForNameFile;
@@ -70,5 +75,7 @@ private:
     QTextEdit* senderTextEdit;
     QList<OpenFile> openFiles;
     FileSystemViewer* fileSystemViwer;
+    bool isMdiView;
+    QSettings* settings;
 };
 #endif // MAINWINDOW_H

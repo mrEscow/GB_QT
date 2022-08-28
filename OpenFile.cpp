@@ -4,7 +4,7 @@ OpenFile::OpenFile(QString name,QString path,QTextEdit* textEdit)
 {
     this->name = name;
     this->path = path;
-    this->textEdit.reset(textEdit);
+    this->textEdit = textEdit;
 }
 
 void OpenFile::rename(const QString &name)
@@ -29,10 +29,10 @@ const QString &OpenFile::getPath()
 
 QString OpenFile::getText()
 {
-    return textEdit.data()->toPlainText();
+    return textEdit->toPlainText();
 }
 
 QTextEdit *OpenFile::getTextEdit()
 {
-    return textEdit.data();
+    return textEdit;
 }
