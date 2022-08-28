@@ -13,7 +13,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
     setSettingsForThisWidgets();
     setSettingsFromParametrs();
 }
@@ -46,11 +45,6 @@ void MainWindow::setSettingsForThisWidgets()
     ui->splitter->setStretchFactor(1,5);
 
     ui->mdiArea->close();
-
-//    ui->tabWidget->removeTab(1);
-//    ui->tabWidget->setTabText(0,"+");
-    //ui->tabWidget.t
-    //ui->tabWidget->setTabsClosable(true);
 
     connects();
 }
@@ -119,8 +113,6 @@ void MainWindow::createFile(QString fileName)
         saveFile();
         setEnablets(true);
     }
-
-
 }
 
 void MainWindow::closeFile()
@@ -133,21 +125,8 @@ void MainWindow::closeFile()
             break;
         }
 
-
-//    if(ui->tabWidget->currentIndex() == 0){
-//        for(auto& file: openFiles){
-//            int index = ui->tabWidget->indexOf(file.getTextEdit());
-//            qDebug() << index;
-//            if(index != 0){
-//                ui->tabWidget->setCurrentIndex(index);
-//                break;
-//            }
-//        }
-//    }
-
     if(openFiles.isEmpty())
         setEnablets(false);
-
 }
 
 void MainWindow::saveFile()
@@ -173,7 +152,6 @@ void MainWindow::saveFile()
 
                 }
             }
-
 }
 
 void MainWindow::saveFileAs()
@@ -201,7 +179,6 @@ void MainWindow::saveFileAs()
                     }
                 }
             }
-
 }
 
 void MainWindow::openFileReadWrite()
@@ -328,7 +305,6 @@ void MainWindow::changedTab(int index)
         senderTextEdit = qobject_cast<QTextEdit*>(ui->tabWidget->widget(index));
         ui->tabWidget->setCurrentIndex(index);
     }
-
 }
 
 void MainWindow::onTabsAction()
@@ -368,7 +344,6 @@ void MainWindow::onPrintAction()
 
     if(senderTextEdit)
         senderTextEdit->print(&printer);
-
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
