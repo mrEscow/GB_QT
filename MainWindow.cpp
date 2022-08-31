@@ -140,8 +140,6 @@ void MainWindow::createFile(QString fileName)
 
 void MainWindow::closeFile()
 {     
-    q << openFiles.count();
-
     QMutableListIterator  it(openFiles);
 
     while(it.hasNext())
@@ -149,8 +147,6 @@ void MainWindow::closeFile()
             it.remove();
             break;
         }
-
-    q << openFiles.count();
 
     if(isMdiView)
         ui->mdiArea->closeActiveSubWindow();
@@ -208,7 +204,10 @@ void MainWindow::saveFileAs()
                             if(openFile.getTextEdit() == senderTextEdit){
                                 openFile.changePath(fileName);
                                 openFile.rename(getCorrectName(fileName));
-                                ui->tabWidget->setTabText(ui->tabWidget->currentIndex(),openFile.getName());
+                                if(isMdiView)
+                                    ui->mdiArea->currentSubWindow()->setWindowTitle(openFile.getName());
+                                else
+                                    ui->tabWidget->setTabText(ui->tabWidget->currentIndex(),openFile.getName());
                             }
                     }
                 }
