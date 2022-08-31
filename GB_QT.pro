@@ -12,6 +12,7 @@ SOURCES += \
     FileCreatorWidget.cpp \
     FileSystemViewer.cpp \
     HelpWidget.cpp \
+    MultilingualTextEdit.cpp \
     OpenFile.cpp \
     ParametersWidget.cpp \
     Shortcut.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     FileSystemViewer.h \
     HelpWidget.h \
     MainWindow.h \
+    MultilingualTextEdit.h \
     OpenFile.h \
     ParametersWidget.h \
     Shortcut.h
