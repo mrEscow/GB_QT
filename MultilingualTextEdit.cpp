@@ -2,72 +2,72 @@
 
 #include <QMenu>
 #include <QContextMenuEvent>
-#include <QApplication>
-#include <QClipboard>
+//#include <QApplication>
+//#include <QClipboard>
 
-MultilingualTextEdit::MultilingualTextEdit(QTextEdit *parent)
+#include <QDebug>
+#define q (qDebug() << "MY_DEBUG: ")
+
+MultilingualTextEdit::MultilingualTextEdit(QWidget *parent)
     :QTextEdit(parent)
 {
-    menu = new QMenu(this);
-    QAction *undoAction = menu->addAction(tr("Отменить"));
-    QAction *redoAction = menu->addAction(tr("Вернуть"));
-    menu->addSeparator();
-    QAction *cutAction = menu->addAction(tr("Вырезать"));
-    QAction *copyAction = menu->addAction(tr("Копировать"));
-    QAction *pastAction = menu->addAction(tr("Вставить"));
-    QAction *deleteAction = menu->addAction(tr("Удалить"));
-    menu->addSeparator();
-    QAction *selectAllAction = menu->addAction(tr("Выбрать всё"));
 
-    connect(undoAction, SIGNAL(triggered()), this, SLOT(undoText()));
-    connect(redoAction, SIGNAL(triggered()), this, SLOT(redoText()));
-    connect(cutAction, SIGNAL(triggered()), this, SLOT(cutText()));
-    connect(copyAction, SIGNAL(triggered()), this, SLOT(copyText()));
-    connect(pastAction, SIGNAL(triggered()), this, SLOT(pastText()));
-    connect(deleteAction, SIGNAL(triggered()), this, SLOT(deleteText()));
-    connect(selectAllAction, SIGNAL(triggered()), this, SLOT(selectAllText()));
 }
 
 void MultilingualTextEdit::contextMenuEvent(QContextMenuEvent *event)
 {
+    QMenu *menu = QTextEdit::createStandardContextMenu();
+
+    QList<QAction*> actions = menu->actions();
+
+    actions[0]->setText(tr("&Назад\tCtrl+Z"));
+    actions[1]->setText(tr("&Вперед\tCtrl+Y"));
+    actions[3]->setText(tr("&Вырезать\tCtrl+X"));
+    actions[4]->setText(tr("&Копировать\tCtrl+C"));
+    actions[5]->setText(tr("&Вставить\tCtrl+V"));
+    actions[6]->setText(tr("&Удалить"));
+    actions[8]->setText(tr("&Выбрать всё\tCtrl+A"));
+
     menu->exec(event->globalPos());
 }
 
-void MultilingualTextEdit::undoText()
-{
-    QTextEdit::undo();
-}
+//void MultilingualTextEdit::undoText()
+//{
+//    QTextEdit::undo();
+//}
 
-void MultilingualTextEdit::redoText()
-{
-    QTextEdit::redo();
-}
+//void MultilingualTextEdit::redoText()
+//{
+//    QTextEdit::redo();
+//}
 
-void MultilingualTextEdit::cutText()
-{
-    QTextEdit::cut();
-}
+//void MultilingualTextEdit::cutText()
+//{
+//    QTextEdit::cut();
+//}
 
-void MultilingualTextEdit::copyText()
-{
-    QTextEdit::copy();
-//    QString str = this->textCursor().selectedText();
-//    qApp->clipboard()->setText(str);
-}
+//void MultilingualTextEdit::copyText()
+//{
+//    QTextEdit::copy();
+////    QString str = this->textCursor().selectedText();
+////    qApp->clipboard()->setText(str);
+//}
 
-void MultilingualTextEdit::pasteText()
-{
-    QTextEdit::paste();
-//    QString str = qApp->clipboard()->text();
-//    this->textCursor().insertText(str);
-}
+//void MultilingualTextEdit::pasteText()
+//{
+//    QTextEdit::paste();
+////    QString str = qApp->clipboard()->text();
+////    this->textCursor().insertText(str);
+//}
 
-void MultilingualTextEdit::deleteText()
-{
-    QTextEdit::clear();
-}
+//void MultilingualTextEdit::deleteText()
+//{
+//    //QTextEdit::clear();
+//    //QTextEdit::
+//    //QTextEdit::_q_deleteSelected();
+//}
 
-void MultilingualTextEdit::selectAllText()
-{
-    QTextEdit::selectAll();
-}
+//void MultilingualTextEdit::selectAllText()
+//{
+//    QTextEdit::selectAll();
+//}

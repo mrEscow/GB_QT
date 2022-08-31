@@ -2,13 +2,14 @@
 #include "ui_MainWindow.h"
 #include <QFileDialog>
 #include <QTextStream>
-#include <QDebug>
 #include <QKeyEvent>
 #include <QTabWidget>
 #include <QPrinter>
 #include <QPrintDialog>
 #include <QMdiSubWindow>
+#include "MultilingualTextEdit.h"
 
+#include <QDebug>
 #define q (qDebug() << "MY_DEBUG: ")
 
 MainWindow::MainWindow(QWidget *parent)
@@ -121,7 +122,7 @@ void MainWindow::runFileCreator()
 void MainWindow::createFile(QString fileName)
 {
     if(!fileName.isEmpty()){
-        QTextEdit* textEdit = new QTextEdit(this);
+        MultilingualTextEdit* textEdit = new MultilingualTextEdit(this);
         senderTextEdit = textEdit;
         QString fullPath = fileSystemViwer->getCurrentPath() + "/" + getCorrectName(fileName);
         OpenFile openFile(getCorrectName(fileName),fullPath,textEdit);
@@ -236,7 +237,7 @@ void MainWindow::openFile(QString fileName,bool isReadOnly)
             QFile file(fileName);
             if (file.open(QFile::ReadOnly | QFile::ExistingOnly)){
                QTextStream stream(&file);
-               QTextEdit* textEdit = new QTextEdit(this);
+               MultilingualTextEdit* textEdit = new MultilingualTextEdit(this);
                textEdit->setPlainText(stream.readAll());
                textEdit->setReadOnly(isReadOnly);
                OpenFile openFile(getCorrectName(fileName),fileName,textEdit);
@@ -324,7 +325,7 @@ void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)
 void MainWindow::addTab(int index)
 {   
     if(ui->tabWidget->tabText(index) == "+"){
-        QTextEdit* textEdit = new QTextEdit(this);
+        MultilingualTextEdit* textEdit = new MultilingualTextEdit(this);
         senderTextEdit = textEdit;
         OpenFile openFile(getCorrectName(""),fileSystemViwer->getCurrentPath(),textEdit);
         openFiles.append(openFile);
@@ -339,7 +340,7 @@ void MainWindow::changedTab(int index)
     if(ui->tabWidget->tabText(index) == "+" && index >= 0 )
         changedTab(index-1);
     else{
-        senderTextEdit = qobject_cast<QTextEdit*>(ui->tabWidget->widget(index));
+        senderTextEdit = qobject_cast<MultilingualTextEdit*>(ui->tabWidget->widget(index));
         ui->tabWidget->setCurrentIndex(index);
     }
 }
@@ -384,7 +385,7 @@ void MainWindow::onMdiUpdateAction()
     QMdiSubWindow* subWindow = ui->mdiArea->activeSubWindow();
     setEnablets(subWindow);
     if(subWindow)
-        senderTextEdit = qobject_cast<QTextEdit*>(subWindow->widget());
+        senderTextEdit = qobject_cast<MultilingualTextEdit*>(subWindow->widget());
 }
 
 void MainWindow::addSubWindow(OpenFile& file)

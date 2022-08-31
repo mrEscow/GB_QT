@@ -12,7 +12,9 @@
 #include "qlistview.h"
 #include "qpushbutton.h"
 #include <qfilesystemmodel.h>
-#include <QTextEdit>
+//#include <QTextEdit>
+
+#include "MultilingualTextEdit.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -72,7 +74,7 @@ private:
     FileCreatorWidget fileCreatorWidget;
     ParametersWidget parametersWidget;
     QList<Shortcut> shortcuts;
-    QTextEdit* senderTextEdit;
+    MultilingualTextEdit* senderTextEdit;
     QList<OpenFile> openFiles;
     FileSystemViewer* fileSystemViwer;
     bool isMdiView;
