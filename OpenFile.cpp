@@ -1,9 +1,9 @@
 #include "OpenFile.h"
 
-OpenFile::OpenFile(QString name,QString path,QTextEdit* textEdit)
+OpenFile::OpenFile(const QString &name, const QString &path, MultilingualTextEdit *textEdit)
 {
-    this->name = name;
-    this->path = path;
+    this->name = std::move(name);
+    this->path = std::move(path);
     this->textEdit = textEdit;
 }
 
@@ -32,7 +32,7 @@ QString OpenFile::getText()
     return textEdit->toPlainText();
 }
 
-QTextEdit *OpenFile::getTextEdit()
+MultilingualTextEdit *OpenFile::getTextEdit()
 {
     return textEdit;
 }

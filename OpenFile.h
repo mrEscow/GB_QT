@@ -1,5 +1,6 @@
 #ifndef OPENFILE_H
 #define OPENFILE_H
+#include "MultilingualTextEdit.h"
 #include <QString>
 #include <QTextEdit>
 #include <QSharedPointer>
@@ -7,7 +8,10 @@
 class OpenFile
 {
 public:
-    OpenFile(QString name,QString path,QTextEdit* textEdit);
+    OpenFile(
+            const QString& name,
+            const QString& path,
+            MultilingualTextEdit* textEdit);
 
     void rename(const QString& name);
     void changePath(const QString& path);
@@ -15,12 +19,12 @@ public:
     const QString& getName();
     const QString& getPath();
     QString getText();
-    QTextEdit* getTextEdit();
+    MultilingualTextEdit* getTextEdit();
 
 private:
     QString name;
     QString path;
-    QTextEdit* textEdit;
+    MultilingualTextEdit* textEdit;
 };
 
 #endif // OPENFILE_H

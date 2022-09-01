@@ -9,8 +9,7 @@
 #include <QMdiSubWindow>
 #include "MultilingualTextEdit.h"
 
-#include <QDebug>
-#define q (qDebug() << "MY_DEBUG: ")
+#include "Escow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -123,6 +122,7 @@ void MainWindow::createFile(QString fileName)
 {
     if(!fileName.isEmpty()){
         MultilingualTextEdit* textEdit = new MultilingualTextEdit(this);
+        //textEdit->switchLanguage();
         senderTextEdit = textEdit;
         QString fullPath = fileSystemViwer->getCurrentPath() + "/" + getCorrectName(fileName);
         OpenFile openFile(getCorrectName(fileName),fullPath,textEdit);
@@ -238,6 +238,7 @@ void MainWindow::openFile(QString fileName,bool isReadOnly)
             if (file.open(QFile::ReadOnly | QFile::ExistingOnly)){
                QTextStream stream(&file);
                MultilingualTextEdit* textEdit = new MultilingualTextEdit(this);
+               //textEdit->switchLanguage();
                textEdit->setPlainText(stream.readAll());
                textEdit->setReadOnly(isReadOnly);
                OpenFile openFile(getCorrectName(fileName),fileName,textEdit);
@@ -280,6 +281,7 @@ QString MainWindow::getCorrectName(QString fileName)
 
 void MainWindow::exit()
 {
+    saveSettings();
     qApp->exit(0);
 }
 
@@ -308,6 +310,10 @@ void MainWindow::switchLanguage()
 
     ui->tools->setTitle(tr("Инструменты"));
     ui->toolsParametrs->setText(tr("Параметры"));
+    ui->toolsTypeDoc->setTitle(tr("Вид документов"));
+    ui->toolsViewMdi->setText("Mdi");
+    ui->toolsViewTabs->setText("Tabs");
+    ui->toolsPrinter->setText(tr("Принтер"));
 
     ui->help->setTitle(tr("Справка"));
     ui->helpAboutProgramm->setText(tr("О программе"));
@@ -315,6 +321,9 @@ void MainWindow::switchLanguage()
     ui->pushButtonHome->setText(tr("Домой"));
     ui->pushButtonUp->setText(tr("Вверх"));
     ui->pushButtonSearch->setText(tr("Поиск"));
+
+    for(auto& file: openFiles)
+        file.getTextEdit()->switchLanguage();
 }
 
 void MainWindow::changeShortcuts(QList<Shortcut> newShortcuts)
@@ -326,6 +335,7 @@ void MainWindow::addTab(int index)
 {   
     if(ui->tabWidget->tabText(index) == "+"){
         MultilingualTextEdit* textEdit = new MultilingualTextEdit(this);
+        //textEdit->switchLanguage();
         senderTextEdit = textEdit;
         OpenFile openFile(getCorrectName(""),fileSystemViwer->getCurrentPath(),textEdit);
         openFiles.append(openFile);

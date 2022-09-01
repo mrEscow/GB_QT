@@ -1,17 +1,21 @@
 #include "MultilingualTextEdit.h"
 
+#include "Escow.h"
+
 #include <QMenu>
 #include <QContextMenuEvent>
-//#include <QApplication>
-//#include <QClipboard>
 
-#include <QDebug>
-#define q (qDebug() << "MY_DEBUG: ")
+QString MultilingualTextEdit::undo = tr("&Назад\tCtrl+Z");
+QString MultilingualTextEdit::redo = tr("&Вперед\tCtrl+Y");;
+QString MultilingualTextEdit::cut = tr("&Вырезать\tCtrl+X");
+QString MultilingualTextEdit::copy = tr("&Копировать\tCtrl+C");
+QString MultilingualTextEdit::paste = tr("&Вставить\tCtrl+V");
+QString MultilingualTextEdit::del = tr("&Удалить");
+QString MultilingualTextEdit::selectAll = tr("&Выбрать всё\tCtrl+A");
 
 MultilingualTextEdit::MultilingualTextEdit(QWidget *parent)
     :QTextEdit(parent)
 {
-
 }
 
 void MultilingualTextEdit::contextMenuEvent(QContextMenuEvent *event)
@@ -19,55 +23,25 @@ void MultilingualTextEdit::contextMenuEvent(QContextMenuEvent *event)
     QMenu *menu = QTextEdit::createStandardContextMenu();
 
     QList<QAction*> actions = menu->actions();
-
-    actions[0]->setText(tr("&Назад\tCtrl+Z"));
-    actions[1]->setText(tr("&Вперед\tCtrl+Y"));
-    actions[3]->setText(tr("&Вырезать\tCtrl+X"));
-    actions[4]->setText(tr("&Копировать\tCtrl+C"));
-    actions[5]->setText(tr("&Вставить\tCtrl+V"));
-    actions[6]->setText(tr("&Удалить"));
-    actions[8]->setText(tr("&Выбрать всё\tCtrl+A"));
+    actions[0]->setText(undo);
+    actions[1]->setText(redo);
+    actions[3]->setText(cut);
+    actions[4]->setText(copy);
+    actions[5]->setText(paste);
+    actions[6]->setText(del);
+    actions[8]->setText(selectAll);
 
     menu->exec(event->globalPos());
 }
 
-//void MultilingualTextEdit::undoText()
-//{
-//    QTextEdit::undo();
-//}
+void MultilingualTextEdit::switchLanguage()
+{
+    undo = tr("&Назад\tCtrl+Z");
+    redo = tr("&Вперед\tCtrl+Y");
+    cut = tr("&Вырезать\tCtrl+X");
+    copy = tr("&Копировать\tCtrl+C");
+    paste = tr("&Вставить\tCtrl+V");
+    del = tr("&Удалить");
+    selectAll = tr("&Выбрать всё\tCtrl+A");
+}
 
-//void MultilingualTextEdit::redoText()
-//{
-//    QTextEdit::redo();
-//}
-
-//void MultilingualTextEdit::cutText()
-//{
-//    QTextEdit::cut();
-//}
-
-//void MultilingualTextEdit::copyText()
-//{
-//    QTextEdit::copy();
-////    QString str = this->textCursor().selectedText();
-////    qApp->clipboard()->setText(str);
-//}
-
-//void MultilingualTextEdit::pasteText()
-//{
-//    QTextEdit::paste();
-////    QString str = qApp->clipboard()->text();
-////    this->textCursor().insertText(str);
-//}
-
-//void MultilingualTextEdit::deleteText()
-//{
-//    //QTextEdit::clear();
-//    //QTextEdit::
-//    //QTextEdit::_q_deleteSelected();
-//}
-
-//void MultilingualTextEdit::selectAllText()
-//{
-//    QTextEdit::selectAll();
-//}

@@ -20,6 +20,7 @@ SOURCES += \
     MainWindow.cpp
 
 HEADERS += \
+    Escow.h \
     FileCreatorWidget.h \
     FileSystemViewer.h \
     HelpWidget.h \
