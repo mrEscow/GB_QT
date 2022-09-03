@@ -100,8 +100,11 @@ void MainWindow::connects()
 
     connect(ui->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), SLOT(onMdiUpdateAction()));
 
+    connect(ui->copyFormat,SIGNAL(triggered(bool)), SLOT(onCopyFormat()));
+    connect(ui->setCopyFormat,SIGNAL(triggered(bool)), SLOT(onSetCopyFormat()));
     connect(ui->setFont,SIGNAL(triggered(bool)), SLOT(onSetFont()));
     connect(ui->setFontMouse,SIGNAL(triggered(bool)), SLOT(onSetFontMouse()));
+
     connect(ui->setHTML,SIGNAL(triggered(bool)), SLOT(onSetHTMLLighter(bool)));
 
     connect(ui->alignmentLeft,SIGNAL(triggered(bool)), SLOT(onAlignmentLeft()));
@@ -514,6 +517,18 @@ void MainWindow::onSetFontMouse()
         fmt.setFont(font);
         senderTextEdit->textCursor().setCharFormat(fmt);
     }
+}
+
+void MainWindow::onCopyFormat()
+{
+    copyFont = senderTextEdit->textCursor().charFormat().font();
+}
+
+void MainWindow::onSetCopyFormat()
+{
+    QTextCharFormat fmt;
+    fmt.setFont(copyFont);
+    senderTextEdit->textCursor().setCharFormat(fmt);
 }
 
 void MainWindow::onSetHTMLLighter(bool)

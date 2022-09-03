@@ -72,5 +72,8 @@
         <file>Images/Icons/textCenter.png</file>
         <file>Images/Icons/textLeft.png</file>
         <file>Images/Icons/textRight.png</file>
+        <file>Images/Icons/typographyCopy.png</file>
+        <file>Images/Icons/typographyCopyDown.png</file>
+        <file>Images/Icons/typographyCopyUp.png</file>
     </qresource>
 </RCC>

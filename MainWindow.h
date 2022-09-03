@@ -70,6 +70,8 @@ private:
 private slots:
     void onSetFont();
     void onSetFontMouse();
+    void onCopyFormat();
+    void onSetCopyFormat();
     void onSetHTMLLighter(bool);
     void onAlignmentLeft();
     void onAlignmentRight();
@@ -90,5 +92,6 @@ private:
 
     HtmlHighLighter htmlHighLighter;
     bool isHTML;
+    QFont copyFont;
 };
 #endif // MAINWINDOW_H
