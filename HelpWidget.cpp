@@ -10,6 +10,7 @@ HelpWidget::HelpWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->textBrowser->setReadOnly(true);
+    ui->textBrowser->setAlignment(Qt::AlignCenter);
     this->setWindowIcon(QIcon(":/Images/Icons/about.png"));
     this->setWindowTitle(tr("Справка"));
     ui->label->setText(tr("О программе !"));
@@ -35,13 +36,19 @@ void HelpWidget::switchLanguage()
 
     QString list[] =
     {
-        tr("\tДобро пожаловать в текстовый редактор!"),
-        tr("\tЗдесь вы можете загружать файлы с расширением txt,"),
-        tr("\tредактировать их и сохранять."),
-        tr("\tСпасибо что прочитали!"),
-        tr("\tудачи!")
+        tr("Добро пожаловать в текстовый редактор!"),
+        tr("Здесь вы можете загружать файлы с расширением txt,"),
+        tr("редактировать их и сохранять."),
+        tr("Спасибо что прочитали!"),
+        tr("удачи!")
     };
     ui->textBrowser->clear();
+
+    QFont font = ui->textBrowser->textCursor().charFormat().font();
+    font.setBold(true);
+    ui->textBrowser->setFont(font);
+    ui->textBrowser->setAlignment(Qt::AlignCenter);
+
     for(auto &text: list)
         ui->textBrowser->append(text);
 }
