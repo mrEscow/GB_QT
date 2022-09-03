@@ -12,9 +12,9 @@
 #include "qlistview.h"
 #include "qpushbutton.h"
 #include <qfilesystemmodel.h>
-//#include <QTextEdit>
 
 #include "MultilingualTextEdit.h"
+#include "HTMLHighLighter.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -67,6 +67,14 @@ public:
     ~MainWindow();
 private:
     void saveSettings();
+private slots:
+    void onSetFont();
+    void onSetFontMouse();
+    void onSetHTMLLighter(bool);
+    void onAlignmentLeft();
+    void onAlignmentRight();
+    void onAlignmentCenter();
+    void setAlignment(Qt::Alignment alignment);
 private:
     Ui::MainWindow *ui;
     QString filterForNameFile;
@@ -79,5 +87,8 @@ private:
     FileSystemViewer* fileSystemViwer;
     bool isMdiView;
     QSettings* settings;
+
+    HtmlHighLighter htmlHighLighter;
+    bool isHTML;
 };
 #endif // MAINWINDOW_H

@@ -66,5 +66,11 @@
         <file>Images/Icons/openOnlyRead.png</file>
         <file>Images/Icons/SaveAs.png</file>
         <file>Images/Icons/exit.png</file>
+        <file>Images/Icons/typography.png</file>
+        <file>Images/Icons/notesHTML.png</file>
+        <file>Images/Icons/typographyMouse.png</file>
+        <file>Images/Icons/textCenter.png</file>
+        <file>Images/Icons/textLeft.png</file>
+        <file>Images/Icons/textRight.png</file>
     </qresource>
 </RCC>

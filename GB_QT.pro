@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     FileCreatorWidget.cpp \
     FileSystemViewer.cpp \
+    HTMLHighLighter.cpp \
     HelpWidget.cpp \
     MultilingualTextEdit.cpp \
     OpenFile.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     Escow.h \
     FileCreatorWidget.h \
     FileSystemViewer.h \
+    HTMLHighLighter.h \
     HelpWidget.h \
     MainWindow.h \
     MultilingualTextEdit.h \

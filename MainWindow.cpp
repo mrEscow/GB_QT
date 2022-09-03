@@ -8,6 +8,7 @@
 #include <QPrintDialog>
 #include <QMdiSubWindow>
 #include "MultilingualTextEdit.h"
+#include <QFontDialog>
 
 #include "Escow.h"
 
@@ -62,6 +63,8 @@ void MainWindow::setSettingsForThisWidgets()
             openFile(file, false);
     settings->endGroup();
 
+    isHTML = false;
+
     connects();
 }
 
@@ -96,6 +99,14 @@ void MainWindow::connects()
     connect(ui->toolsPrinter,SIGNAL(triggered(bool)), SLOT(onPrintAction()));
 
     connect(ui->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), SLOT(onMdiUpdateAction()));
+
+    connect(ui->setFont,SIGNAL(triggered(bool)), SLOT(onSetFont()));
+    connect(ui->setFontMouse,SIGNAL(triggered(bool)), SLOT(onSetFontMouse()));
+    connect(ui->setHTML,SIGNAL(triggered(bool)), SLOT(onSetHTMLLighter(bool)));
+
+    connect(ui->alignmentLeft,SIGNAL(triggered(bool)), SLOT(onAlignmentLeft()));
+    connect(ui->alignmentRight,SIGNAL(triggered(bool)), SLOT(onAlignmentRight()));
+    connect(ui->alignmentCenter,SIGNAL(triggered(bool)), SLOT(onAlignmentCenter()));
 }
 
 void MainWindow::setSettingsFromParametrs()
@@ -473,5 +484,69 @@ void MainWindow::saveSettings()
          for(auto& file: openFiles)
              strList.push_back(file.getPath());
         settings->setValue("OpenFiles", strList);
-    settings->endGroup();
+        settings->endGroup();
+}
+
+void MainWindow::onSetFont()
+{
+    QFont font;
+    QFontDialog fntDlg(font,this);
+
+    bool ok[] = {true};
+
+    font = fntDlg.getFont(ok,senderTextEdit);
+
+    if (ok[0])
+        senderTextEdit->setFont(font);
+}
+
+void MainWindow::onSetFontMouse()
+{
+    QFont font = senderTextEdit->textCursor().charFormat().font();
+    QFontDialog fntDlg(font,senderTextEdit);
+
+    bool ok[] = {true};
+
+    font = fntDlg.getFont(ok,senderTextEdit);
+
+    if (ok[0]){
+        QTextCharFormat fmt;
+        fmt.setFont(font);
+        senderTextEdit->textCursor().setCharFormat(fmt);
+    }
+}
+
+void MainWindow::onSetHTMLLighter(bool)
+{
+    isHTML = !isHTML;
+
+    if(isHTML)
+        htmlHighLighter.setDocument(senderTextEdit->document());
+    else{
+        htmlHighLighter.setDocument(nullptr);
+    }
+}
+
+void MainWindow::onAlignmentLeft()
+{
+    setAlignment(Qt::AlignLeft);
+}
+
+void MainWindow::onAlignmentRight()
+{
+    setAlignment(Qt::AlignRight);
+}
+
+void MainWindow::onAlignmentCenter()
+{
+    setAlignment(Qt::AlignCenter);
+}
+
+void MainWindow::setAlignment(Qt::Alignment alignment)
+{
+    QTextCursor cursor = senderTextEdit->textCursor();
+    QTextBlockFormat textBlockFormat = cursor.blockFormat();
+    textBlockFormat.setAlignment(alignment);
+    cursor.mergeBlockFormat(textBlockFormat);
+    senderTextEdit->setTextCursor(cursor);
 }

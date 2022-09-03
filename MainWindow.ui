@@ -167,8 +167,22 @@
     </property>
     <addaction name="helpAboutProgramm"/>
    </widget>
+   <widget class="QMenu" name="docs">
+    <property name="title">
+     <string>Докуменнт</string>
+    </property>
+    <addaction name="setFont"/>
+    <addaction name="setFontMouse"/>
+    <addaction name="separator"/>
+    <addaction name="setHTML"/>
+    <addaction name="separator"/>
+    <addaction name="alignmentLeft"/>
+    <addaction name="alignmentRight"/>
+    <addaction name="alignmentCenter"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="tools"/>
+   <addaction name="docs"/>
    <addaction name="help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -198,9 +212,9 @@
    <addaction name="separator"/>
    <addaction name="toolsPrinter"/>
   </widget>
-  <widget class="QToolBar" name="toolBar_2">
+  <widget class="QToolBar" name="toolBar_5">
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
@@ -217,8 +231,25 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="toolsViewMdi"/>
    <addaction name="toolsViewTabs"/>
+   <addaction name="toolsViewMdi"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar_3">
+   <property name="windowTitle">
+    <string>toolBar_3</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="setFont"/>
+   <addaction name="setFontMouse"/>
+   <addaction name="setHTML"/>
+   <addaction name="alignmentLeft"/>
+   <addaction name="alignmentCenter"/>
+   <addaction name="alignmentRight"/>
   </widget>
   <action name="menuSave">
    <property name="icon">
@@ -326,6 +357,60 @@
    </property>
    <property name="text">
     <string>Mdi</string>
+   </property>
+  </action>
+  <action name="setFont">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Images/Icons/typography.png</normaloff>:/Images/Icons/typography.png</iconset>
+   </property>
+   <property name="text">
+    <string>Шрифт всего документа</string>
+   </property>
+  </action>
+  <action name="setHTML">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Images/Icons/notesHTML.png</normaloff>:/Images/Icons/notesHTML.png</iconset>
+   </property>
+   <property name="text">
+    <string>HTML</string>
+   </property>
+  </action>
+  <action name="setFontMouse">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Images/Icons/typographyMouse.png</normaloff>:/Images/Icons/typographyMouse.png</iconset>
+   </property>
+   <property name="text">
+    <string>Шрифт выделеного текста</string>
+   </property>
+  </action>
+  <action name="alignmentLeft">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Images/Icons/textLeft.png</normaloff>:/Images/Icons/textLeft.png</iconset>
+   </property>
+   <property name="text">
+    <string>Выравнивание по левой стороне</string>
+   </property>
+  </action>
+  <action name="alignmentRight">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Images/Icons/textRight.png</normaloff>:/Images/Icons/textRight.png</iconset>
+   </property>
+   <property name="text">
+    <string>Выравнивание по левой стороне</string>
+   </property>
+  </action>
+  <action name="alignmentCenter">
+   <property name="icon">
+    <iconset resource="Resources.qrc">
+     <normaloff>:/Images/Icons/textCenter.png</normaloff>:/Images/Icons/textCenter.png</iconset>
+   </property>
+   <property name="text">
+    <string>Выравнивание по центру</string>
    </property>
   </action>
  </widget>
