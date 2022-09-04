@@ -78,23 +78,35 @@ void MainWindow::paintEvent(QPaintEvent *event)
     this->render(this);
 
 
+
     QPainter painterHouse(this);
     int h = height() / 3;
+
     // Дом
+    QBrush brush(QColor(5, 255, 0));
+    brush.setStyle(Qt::BrushStyle::VerPattern);
+    painterHouse.setBrush(brush);
     painterHouse.drawRect(5, h, width() - 10, height() - h - 10);
     int w = width() >> 1;
+
     // Крыша
     QPolygon polygonHouse;
     polygonHouse << QPoint(w, 5);
     polygonHouse << QPoint(5, h);
     polygonHouse << QPoint(width() - 5, h);
     painterHouse.drawPolygon(polygonHouse);
+
     // Окошко
+    QPen pen(QColor(0, 0, 250));
+    pen.setStyle(Qt::PenStyle::DashLine);
+    painterHouse.setPen(pen);
     h = height() >> 1;
     painterHouse.drawRect(w - 50, h, 100, 100);
     painterHouse.drawLine(w, h, w, h + 100);
     painterHouse.end();
     this->render(this);
+
+
 
 }
 
