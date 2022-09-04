@@ -16,7 +16,10 @@ public:
     ~MainWindow();
 protected:
     void paintEvent(QPaintEvent *event);
-
+private:
+    void drawBox(const QPoint& begin, const QPoint& end, const QColor& colorFrame = Qt::black, const QColor& colorBrush = Qt::white);
+    void drawCircl(const QPoint& begin, const QPoint& end, const QColor& colorFrame = Qt::black, const QColor& colorBrush = Qt::white);
+    void drawSmile(const QPoint& begin, const QPoint& end, const QColor& colorFrame = Qt::black, const QColor& colorBrush = Qt::white);
 
 private:
     Ui::MainWindow *ui;

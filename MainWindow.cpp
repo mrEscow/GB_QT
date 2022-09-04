@@ -2,14 +2,13 @@
 #include "ui_MainWindow.h"
 
 #include <QPainter>
+#include <QPainterPath>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-
 }
 
 MainWindow::~MainWindow()
@@ -19,94 +18,68 @@ MainWindow::~MainWindow()
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
+    float retreat = 30.f;
+
+    drawBox(QPoint(retreat,retreat),QPoint(width() - retreat, height() - retreat), Qt::red, Qt::yellow);
+
+    drawCircl(QPoint(retreat,retreat),QPoint(width() - retreat, height() - retreat), Qt::black, Qt::darkMagenta);
+
+    drawCircl(QPoint(width() * 1 / 5 + retreat, height() * 1 / 5 + retreat),QPoint(width() * 2 / 5 - retreat, height() * 3 / 5 - retreat), Qt::black, Qt::white);
+    drawCircl(QPoint(width() * 3 / 5 + retreat, height() * 1 / 5 + retreat),QPoint(width() * 4 / 5 - retreat, height() * 3 / 5 - retreat), Qt::black, Qt::white);
+
+    drawSmile(QPoint(retreat,retreat),QPoint(width() - retreat, height() - retreat), Qt::black, Qt::darkMagenta);
+}
+
+void MainWindow::drawBox(const QPoint &begin, const QPoint &end, const QColor &colorFrame, const QColor &colorBrush)
+{
     QPainter painter(this);
 
-    painter.begin(this);
-        painter.drawPoint(50, 50); // x, y
-        QPoint thPoint(50, 50);
-        painter.drawPoint(thPoint); // по объекту точки
-        QPointF thPointf(50., 50.);
-        painter.drawPoint(thPointf);
+    QPen pan(colorFrame,5);
+    painter.setPen(pan);
+
+    painter.setBrush(QBrush(colorBrush));
+
+    QRect rectangal(begin,end);
+    painter.drawRect(rectangal);
+
     painter.end();
-    this->render(this);
+}
 
-    painter.begin(this);
-        painter.drawLine(0,0, 100, 100); // x1, y1, x2, y2
-        QPoint p1 (0,0);
-        QPoint p2 (100,100);
-        painter.drawLine(p1,p2); // по двум точкам
-        QLineF line(0,0,100,100);
-        painter.drawLine(line); // по объекту “линия”
+void MainWindow::drawCircl(const QPoint &begin, const QPoint &end, const QColor &colorFrame, const QColor &colorBrush)
+{
+    QPainter painter(this);
+
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QPen pan(colorFrame,5);
+    painter.setPen(pan);
+
+    painter.setBrush(QBrush(colorBrush));
+
+    QRect rectangal(begin,end);
+    painter.drawEllipse(rectangal);
+
     painter.end();
-    this->render(this);
+}
 
-    painter.begin(this);
-    painter.drawRect(QRect(0,0,100,100));
-    painter.drawRect(0, 20, 50, 50);
-    painter.drawRect(QRectF(100, 120, 200, 200));
+void MainWindow::drawSmile(const QPoint &begin, const QPoint &end, const QColor &colorFrame, const QColor &colorBrush)
+{
+    QPainter painter(this);
+
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QPen pan(colorFrame,5);
+    painter.setPen(pan);
+
+    QPainterPath painterPath;
+
+    painterPath.moveTo((begin.x() + width() / 4) ,begin.y() + (3 * height()) / 4 );
+
+    QPoint midle (width() / 2, height() / 2);
+    painterPath.cubicTo(width() / 2, height() / 2 ,width() / 2 , height() , end.x() - width() / 4 , end.y() - height() / 4 );
+
+    painter.drawPath(painterPath);
+
     painter.end();
-    this->render(this);
-
-    QPolygon polygon; // через объект QPolygon
-    polygon << QPoint(0, height() - 10);
-    polygon << QPoint(width() >> 1, 0);
-    polygon << QPoint(width(), height() - 5);
-    painter.drawPolygon(polygon);
-    //Массив точек
-    QPointF points[] = {
-        QPointF(0,0),                           // 0
-        QPointF(0,height() >> 1),               // 1
-        QPointF(width() >> 1, height() >> 2),   // 2
-        QPointF(width(),height()),              // 3
-        QPointF(0,height()),                    // 4
-    };
-    painter.begin(this);
-        painter.drawPolygon(points, sizeof(points) / sizeof(points[0]));
-    painter.end();
-    this->render(this);
-
-    painter.begin(this);
-        // Задаем координаты x и y верхнего угла, ширину и высоту
-        painter.drawEllipse(50, 50, 50, 50);
-        // Задаем прямоугольную область
-        painter.drawEllipse(QRectF(50.0, 50.0, 50.0, 50.0));
-        painter.drawEllipse(QRect(50, 50, 50, 50));
-        // Задаем центр через класс точки и радиусы по осям x и y
-        painter.drawEllipse(QPoint(50,50), 50, 50);
-        painter.drawEllipse(QPointF(50.0,50.0), 50.0, 50.0);
-    painter.end();
-    this->render(this);
-
-
-
-    QPainter painterHouse(this);
-    int h = height() / 3;
-
-    // Дом
-    QBrush brush(QColor(5, 255, 0));
-    brush.setStyle(Qt::BrushStyle::VerPattern);
-    painterHouse.setBrush(brush);
-    painterHouse.drawRect(5, h, width() - 10, height() - h - 10);
-    int w = width() >> 1;
-
-    // Крыша
-    QPolygon polygonHouse;
-    polygonHouse << QPoint(w, 5);
-    polygonHouse << QPoint(5, h);
-    polygonHouse << QPoint(width() - 5, h);
-    painterHouse.drawPolygon(polygonHouse);
-
-    // Окошко
-    QPen pen(QColor(0, 0, 250));
-    pen.setStyle(Qt::PenStyle::DashLine);
-    painterHouse.setPen(pen);
-    h = height() >> 1;
-    painterHouse.drawRect(w - 50, h, 100, 100);
-    painterHouse.drawLine(w, h, w, h + 100);
-    painterHouse.end();
-    this->render(this);
-
-
-
 }
 
