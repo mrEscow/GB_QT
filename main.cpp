@@ -27,10 +27,15 @@
 
 #include <QApplication>
 
+#include <QTimer>
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
+    QTimer timer;
+    MainWindow::connect(&timer, &QTimer::timeout, &w, &MainWindow::slotTimerAlarm);
+    timer.start(10);
     w.show();
     return a.exec();
 }
