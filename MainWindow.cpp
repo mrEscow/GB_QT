@@ -200,15 +200,14 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     if(event->button() & Qt::LeftButton)
     {
         mousePosBegin = event->pos();
-        qDebug () << "Левая кнопка мыши нажата:";
     }
     else if(event->button() & Qt::RightButton)
     {
-        qDebug () << "Нажата правая кнопка мыши:";
+
     }
     else if(event->button() & Qt::MiddleButton)
     {
-        qDebug () << "Нажата средняя кнопка мыши:";
+
     }
 }
 
@@ -217,6 +216,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 
     if(event->button() & Qt::LeftButton)
     {
+
         mousePosEnd = event->pos();
         if(couter % 3 == 0){
             Box* box = new Box(mousePosBegin, mousePosEnd);
@@ -228,7 +228,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
         }
 
         if(couter % 3 == 2){
-            qDebug () << "ЗВЕЗДА!!!";
+
             Star* star = new Star(mousePosBegin, mousePosEnd);
             painters.push_back(star);
         }
@@ -237,15 +237,15 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 
         this->update();
         couter++;
-        qDebug () << "Левая кнопка мыши отпущена:";
+
     }
     else if(event->button() & Qt::RightButton)
     {
-        qDebug () << "Отпуск правой кнопкой мыши:";
+
     }
     else if(event->button() & Qt::MiddleButton)
     {
-        qDebug () << "Отпуск средней кнопки мыши:";
+
     }
 }
 
@@ -254,15 +254,15 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 
     if(event->buttons() & Qt::LeftButton)
     {
-        qDebug () << "Переместить левую кнопку мыши вниз:";
+
     }
     if(event->buttons() & Qt::RightButton)
     {
-        qDebug () << "Щелкните правой кнопкой мыши, чтобы переместить:";
+
     }
     if(event->buttons() & Qt::MiddleButton)
     {
-        qDebug () << "Перемещение средней кнопки:";
+
     }
 }
 
