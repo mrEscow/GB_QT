@@ -39,6 +39,7 @@ private slots:
     void findFileSlot();
     void changStatusLabel(QString);
     void printFindFile(QString);
+    void clearList();
 signals:
     void newStatusLabel(QString);
 private:

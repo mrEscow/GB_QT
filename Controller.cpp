@@ -31,15 +31,15 @@ void Controller::startFind(QString dir, QString file)
         return;
     }
 
+    emit newFind();
+
     findThread = QSharedPointer<ThreadFinder>::create(dir, file);
 
     findThread->start(QThread::NormalPriority);
 
     connect(findThread.get(), SIGNAL(stopedThread()), SLOT(deleteThread()));
     connect(findThread.get(), SIGNAL(writeFoundPath(QString)), SLOT(printCurrentPath(QString)));
-    connect(findThread.get(), SIGNAL(findFile(QString)), SLOT(genStringPathFile(QString)));
-
-    emit newFind();
+    connect(findThread.get(), SIGNAL(findFile(QString)), SLOT(genStringPathFile(QString)));    
 }
 
 void Controller::deleteThread()
