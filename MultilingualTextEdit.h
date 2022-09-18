@@ -12,6 +12,8 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event) override;
 public slots:
     void switchLanguage();
+private slots:
+    void onPasteTime();
 private:
     static QString undo;
     static QString redo;
@@ -20,6 +22,7 @@ private:
     static QString paste;
     static QString del;
     static QString selectAll;
+    static QString pasteTime;
 };
 
 #endif // MULTILINGUALTEXTEDIT_H
