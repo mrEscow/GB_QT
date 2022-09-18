@@ -1,6 +1,8 @@
 #ifndef FILESYSTEMVIEWER_H
 #define FILESYSTEMVIEWER_H
 
+#include "Controller.h"
+#include "qstandarditemmodel.h"
 #include <QObject>
 #include <QSharedPointer>
 #include <QFileSystemModel>
@@ -16,7 +18,8 @@ public:
             QPushButton* home,
             QPushButton* up,
             QPushButton* search,
-            QLineEdit* lineEdit,
+            QLineEdit* lineEditDir,
+            QLineEdit* lineEditFile,
             QListView* listView
             );
     ~FileSystemViewer();
@@ -32,7 +35,12 @@ private slots:
 
 signals:
     void openFile(QString newPath,bool isReadOnly);
-
+private slots:
+    void findFileSlot();
+    void changStatusLabel(QString);
+    void printFindFile(QString);
+signals:
+    void newStatusLabel(QString);
 private:
     QFileSystemModel *model;
     QString homePath;
@@ -40,8 +48,14 @@ private:
     QSharedPointer<QPushButton> homeButton;
     QSharedPointer<QPushButton> upButton;
     QSharedPointer<QPushButton> searchButton;
-    QSharedPointer<QLineEdit> lineEdit;
+    QSharedPointer<QLineEdit> lineEditDir;
+    QSharedPointer<QLineEdit> lineEditFile;
     QSharedPointer<QListView> listView;
+
+    Controller *controller;
+    QStringList fileList;
+    bool isItemModel;
+    QStandardItemModel *itemModel;
 };
 
 #endif // FILESYSTEMVIEWER_H

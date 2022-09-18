@@ -27,6 +27,9 @@ void MainWindow::setSettingsForThisWidgets()
     setWindowIcon(QIcon(":/Images/Icons/crown.png"));
     installEventFilter(this);
 
+    statusLabel = new QLabel(this);
+    this->statusBar()->addWidget(statusLabel);
+
     setEnablets(false);
 
     fileCreatorWidget.setWindowModality(Qt::ApplicationModal);
@@ -38,7 +41,8 @@ void MainWindow::setSettingsForThisWidgets()
                 ui->pushButtonHome,
                 ui->pushButtonUp,
                 ui->pushButtonSearch,
-                ui->lineEditNavigation,
+                ui->lineDir,
+                ui->lineFile,
                 ui->listView
                 );
 
@@ -89,6 +93,7 @@ void MainWindow::connects()
     connect(&parametersWidget, SIGNAL(changeHomeDirectory(QString)), fileSystemViwer, SLOT(setHomePath(QString)));
 
     connect(fileSystemViwer, SIGNAL(openFile(QString,bool)), this, SLOT(openFile(QString,bool)));
+    connect(fileSystemViwer, SIGNAL(newStatusLabel(QString)), this, SLOT(changStatusLabel(QString)));
 
     connect(ui->tabWidget, SIGNAL(tabBarClicked(int)),this, SLOT(addTab(int)));
     connect(ui->tabWidget, SIGNAL(currentChanged(int)),this, SLOT(changedTab(int)));
@@ -564,4 +569,9 @@ void MainWindow::setAlignment(Qt::Alignment alignment)
     textBlockFormat.setAlignment(alignment);
     cursor.mergeBlockFormat(textBlockFormat);
     senderTextEdit->setTextCursor(cursor);
+}
+
+void MainWindow::changStatusLabel(QString line)
+{
+    statusLabel->setText(line);
 }

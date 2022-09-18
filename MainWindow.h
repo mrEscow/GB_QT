@@ -77,6 +77,8 @@ private slots:
     void onAlignmentRight();
     void onAlignmentCenter();
     void setAlignment(Qt::Alignment alignment);
+private slots:
+    void changStatusLabel(QString);
 private:
     Ui::MainWindow *ui;
     QString filterForNameFile;
@@ -93,5 +95,7 @@ private:
     HtmlHighLighter htmlHighLighter;
     bool isHTML;
     QFont copyFont;
+
+    QLabel *statusLabel;
 };
 #endif // MAINWINDOW_H

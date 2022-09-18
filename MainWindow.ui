@@ -56,11 +56,28 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <widget class="QLineEdit" name="lineEditNavigation">
+           <widget class="QLineEdit" name="lineDir">
             <property name="minimumSize">
              <size>
               <width>0</width>
               <height>22</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineFile">
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
              </size>
             </property>
            </widget>

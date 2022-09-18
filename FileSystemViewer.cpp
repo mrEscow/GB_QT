@@ -1,18 +1,21 @@
 #include "FileSystemViewer.h"
-#include "qdebug.h"
+#include "Escow.h"
+//#include "qstandarditemmodel.h"
 
-FileSystemViewer::FileSystemViewer(
-        QPushButton *home,
+
+FileSystemViewer::FileSystemViewer(QPushButton *home,
         QPushButton *up,
         QPushButton *search,
-        QLineEdit *lineEdit,
+        QLineEdit *lineEditDir,
+        QLineEdit *lineEditFile,
         QListView *listView
         ) : QObject(nullptr)
 {
     homeButton.reset(home);
     upButton.reset(up);
     searchButton.reset(search);
-    this->lineEdit.reset(lineEdit);
+    this->lineEditDir.reset(lineEditDir);
+    this->lineEditFile.reset(lineEditFile);
     this->listView.reset(listView);
 
     model = new QFileSystemModel(this);
@@ -24,11 +27,18 @@ FileSystemViewer::FileSystemViewer(
     listView->setContextMenuPolicy(Qt::CustomContextMenu);
     listView->setModel(model);
 
+
+
     connect(homeButton.data(), SIGNAL(clicked()), this, SLOT(onHomeButton()));
     connect(upButton.data(), SIGNAL(clicked()), this, SLOT(onUpButton()));
     connect(searchButton.data(), SIGNAL(clicked()), this, SLOT(onSearchButton()));
 
     connect(listView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onDoublCliced(QModelIndex)));
+
+    controller = new Controller(this);
+    connect(controller, SIGNAL(changFindPath(QString)), SLOT(changStatusLabel(QString)));
+    connect(controller, SIGNAL(genPathOfFile(QString)), SLOT(printFindFile(QString)));
+    //connect(controller, SIGNAL((newFind())), infoText, SLOT(clear()));
 }
 
 FileSystemViewer::~FileSystemViewer()
@@ -40,7 +50,7 @@ void FileSystemViewer::setRootPathAndIndex(const QString &path){
     currentPath = path;
     model->setRootPath(currentPath);
     listView->setRootIndex(model->index(currentPath));
-    lineEdit->setText(currentPath);
+    lineEditDir->setText(currentPath);
 }
 
 void FileSystemViewer::setHomePath(const QString &path)
@@ -69,17 +79,26 @@ void FileSystemViewer::onUpButton()
 
 void FileSystemViewer::onSearchButton()
 {
-    QString testPath = lineEdit->text();
+    fileList.clear();
+
+    QString testPath = lineEditDir->text();
 
     if(QDir(testPath).exists()){
         setRootPathAndIndex(testPath);
+        findFileSlot();
     }
     else
-        lineEdit->setText(currentPath);
+        lineEditDir->setText(currentPath);
 }
 
 void FileSystemViewer::onDoublCliced(QModelIndex index)
 {
+    if(isItemModel){
+        QString filePath = index.data().toString();
+        emit openFile(filePath,false);
+        return;
+    }
+
     QFileInfo fileInfo = model->fileInfo(index);
 
     if(fileInfo.isDir())
@@ -87,4 +106,32 @@ void FileSystemViewer::onDoublCliced(QModelIndex index)
 
     if(fileInfo.isFile())
         emit openFile(fileInfo.absoluteFilePath(),false);
+}
+
+void FileSystemViewer::findFileSlot()
+{
+    QString fileName = lineEditFile->text();
+    if (fileName.length() == 0){
+        fileList.clear();
+        listView->setModel(model);
+        setRootPathAndIndex(homePath);
+        isItemModel = false;
+        return;
+    }
+    controller->startFind(lineEditDir->text() + "/", fileName);
+}
+void FileSystemViewer::changStatusLabel(QString line)
+{
+    emit newStatusLabel(line);
+}
+void FileSystemViewer::printFindFile(QString str)
+{
+    fileList << str;
+
+    QStandardItemModel *itemModel = new QStandardItemModel  (this);
+    for(const auto& namefile :fileList)
+        itemModel->appendRow(new QStandardItem(namefile));
+
+    listView->setModel(itemModel);
+    isItemModel = true;
 }

@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Controller.cpp \
     FileCreatorWidget.cpp \
     FileSystemViewer.cpp \
     HTMLHighLighter.cpp \
@@ -17,10 +18,12 @@ SOURCES += \
     OpenFile.cpp \
     ParametersWidget.cpp \
     Shortcut.cpp \
+    ThreadFinder.cpp \
     main.cpp \
     MainWindow.cpp
 
 HEADERS += \
+    Controller.h \
     Escow.h \
     FileCreatorWidget.h \
     FileSystemViewer.h \
@@ -30,7 +33,8 @@ HEADERS += \
     MultilingualTextEdit.h \
     OpenFile.h \
     ParametersWidget.h \
-    Shortcut.h
+    Shortcut.h \
+    ThreadFinder.h
 
 FORMS += \
     FileCreatorWidget.ui \
