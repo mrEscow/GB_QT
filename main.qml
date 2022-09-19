@@ -28,15 +28,27 @@ Window {
             model: listModel
             delegate: Rectangle {
                 height: 60
-                width: ListView.view.width
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: defMargin * 2
                 border.color: "black"
                 border.width: 3
                 color: "lightgray"
+                radius: 10
 
                 Text {
-                    anchors.centerIn: parent
+                    anchors.fill: parent
+                    anchors.margins: defMargin
                     text: model.text
                     font.pixelSize: 20
+                    font.bold: true
+                }
+                Text {
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.margins: defMargin / 2
+                    text: model.time
+                    font.pixelSize: 12
                     font.bold: true
                 }
             }
@@ -44,16 +56,20 @@ Window {
         ListModel {
             id: listModel
             ListElement {
-                text: "aaaa"
+                text: "Писать код"
+                time: "dd.mm.yyyy"
             }
             ListElement {
-                text: "bbbb"
+                text: "Писать код!"
+                time: "dd.mm.yyyy"
             }
             ListElement {
-                text: "cccc"
+                text: "Писать код!!!"
+                time: "dd.mm.yyyy"
             }
             ListElement {
-                text: "dddd"
+                text: "Писать код!!!!!"
+                time: "dd.mm.yyyy"
             }
         }
     }
@@ -72,7 +88,7 @@ Window {
             background: ButtonStyle {}
             onClicked: {
                 //textEdit.append("\nAdding text\n")
-                listModel.append(ListElement)
+                listModel.append("ListElement")
             }
         }
         Button {
