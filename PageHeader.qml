@@ -10,6 +10,7 @@ RowLayout {
         text: qsTr("ToDoList:")
         font.pixelSize: 40
         font.bold: true
+        color: "red"
     }
     implicitWidth: 200
     implicitHeight: 100

@@ -10,6 +10,8 @@ RowLayout {
     anchors.left: parent.left
     //anchors.margins: 15
 
+    signal newMessage(string msg)
+
     Button {
         id: button_text
         text: qsTr("Add Text")
@@ -18,7 +20,8 @@ RowLayout {
         background: ButtonStyle {}
         onClicked: {
             //textEdit.append("\nAdding text\n")
-            listModel.append("ListElement")
+            //listModel.append("ListElement")
+            newMessage("Write code!!!")
         }
     }
 //    Button {

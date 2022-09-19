@@ -23,7 +23,12 @@ Window {
         header: PageHeader {
         }
         footer: MessageEditor{
-            id: buttonsLayout
+            onNewMessage: {
+                var newMsg = {};
+                newMsg.text = msg;
+                newMsg.time = Qt.formatDate(new Date(),"dd.mm.yyyy")
+                listModel.append(newMsg);
+            }
         }
         background: Rectangle{
             color: bgColor
