@@ -1,7 +1,3 @@
-#include "MainWindow.h"
-
-#include <QApplication>
-
 /*
      1. Создать программу-органайзер, в которую можно будет вводить задачи.
         Каждая задача состоит из следующих пунктов:
@@ -20,11 +16,24 @@
         Использовать эту кнопку в первом задании.
 */
 
+#include <QResource>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-    return a.exec();
+    QResource::registerResource("./Resource.qrc");
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
+    const QUrl url(QStringLiteral("qrc:/QML/main.qml"));
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
+        &app, [url](QObject *obj, const QUrl &objUrl) {
+            if (!obj && url == objUrl)
+                QCoreApplication::exit(-1);
+        }, Qt::QueuedConnection);
+
+    engine.load(url);
+    return app.exec();
+
 }
