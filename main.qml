@@ -16,78 +16,31 @@ Window {
     readonly property color bgColor: "#0E1621"
     readonly property color textColor: "white"
 
-    Page {
-        id: page
+    ListModel {
+        id: listModel
+
+    }
+
+    StackView {
+        id: stackView
         anchors.fill: parent
+        initialItem: taskCreator
+    }
 
-        header: PageHeader {
-        }
-        footer: MessageEditor{
-            onNewMessage: {
-                var newMsg = {};
-                newMsg.text = msg;
-                newMsg.time = Qt.formatDate(new Date(),"dd.mm.yyyy")
-                listModel.append(newMsg);
-            }
-        }
-        background: Rectangle{
-            color: bgColor
-        }
-
-        ListView {
-            id: listView
-            anchors.fill: parent
-            spacing: defMargin
-
-            model: listModel
-            delegate: Rectangle {
-                height: 60
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: defMargin * 2
-                color: "lightgray"
-                radius: 10
-
-                Text {
-                    anchors.fill: parent
-                    anchors.margins: defMargin
-                    text: model.text
-                    font.pixelSize: 20
-                    font.bold: true
-                }
-                Text {
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    anchors.margins: defMargin / 2
-                    text: model.time
-                    font.pixelSize: 12
-                    font.bold: true
-                }
-            }
-        }
-        ListModel {
-            id: listModel
-            ListElement {
-                text: "Писать код"
-                time: "dd.mm.yyyy"
-            }
-            ListElement {
-                text: "Писать код!"
-                time: "dd.mm.yyyy"
-            }
-            ListElement {
-                text: "Писать код!!!"
-                time: "dd.mm.yyyy"
-            }
-            ListElement {
-                text: "Писать код!!!!!"
-                time: "dd.mm.yyyy"
-            }
+    TasksPage {
+        id: pageTask
+        visible: false
+        onButtonClicked: {
+            stackView.push(taskCreator);
         }
     }
 
-//    MessageEditor {
-//        id: buttonsLayout
-//    }
+    TaskCreator {
+        id: taskCreator
+        //visible: false
+        onButtonClicked: {
+            stackView.pop();
+        }
+    }
 }
 

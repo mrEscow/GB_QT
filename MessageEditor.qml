@@ -3,46 +3,132 @@ import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.3
 
-RowLayout {
-    id: buttonsLayout
-    //anchors.bottom: parent.bottom
-    anchors.right: parent.right
-    anchors.left: parent.left
-    //anchors.margins: 15
-
+Rectangle{
+    anchors.fill: parent
     signal newMessage(string msg)
+    anchors.margins: defMargin
+    ColumnLayout {
+        anchors.fill: parent
+        Rectangle {
+            color: bgColor
+            //implicitWidth: 200
+            implicitHeight: 30
+            anchors.margins: defMargin
+            Layout.alignment: Qt.AlignTop
+            Text {
+                text: "NewTask:"
+                color: "blue"
+                font.pixelSize: 15
+                font.bold: true
+                anchors.fill: parent
+                anchors.margins: defMargin
 
-    Button {
-        id: button_text
-        text: qsTr("Add Text")
-        font.pixelSize: 20
-        font.bold: true
-        background: ButtonStyle {}
-        onClicked: {
-            //textEdit.append("\nAdding text\n")
-            //listModel.append("ListElement")
-            newMessage("Write code!!!")
+            }
         }
-    }
-//    Button {
-//        id: button_color
-//        text: qsTr("Change Color")
-//        font.pixelSize: 20
-//        font.bold: true
-//        background: ButtonStyle {}
-//        onClicked: {
-//            rootWin.color = Qt.rgba(Math.random(), Math.random(), Math.random())
+        Rectangle {
+            color: panelColor
+            anchors.left: parent.left
+            anchors.right: parent.right
+            implicitWidth: 500
+            implicitHeight: 75
+            radius: 5
+            Layout.alignment: Qt.AlignTop
+            TextEdit{
+                id: textEdit
+                anchors.fill: parent
+                anchors.margins: defMargin
+                font.pixelSize: 20
+                font.bold: true
+            }
+        }
+        //--------------------------------------------------------
+        Rectangle {
+            color: bgColor
+            //implicitWidth: 200
+            implicitHeight: 30
+            anchors.margins: defMargin
+            Layout.alignment: Qt.AlignTop
+            Text {
+                text: "Data:"
+                color: "blue"
+                font.pixelSize: 15
+                font.bold: true
+                anchors.fill: parent
+                anchors.margins: defMargin
 
-//        }
-//    }
-    Button {
-        id: button_exit
-        text: qsTr("Exit")
-        font.pixelSize: 20
-        font.bold: true
-        background: ButtonStyle {}
-        onClicked: {
-            close()
+            }
+        }
+        Rectangle {
+            color: panelColor
+            anchors.left: parent.left
+            anchors.right: parent.right
+            implicitWidth: 500
+            implicitHeight: 75
+            radius: 5
+            Layout.alignment: Qt.AlignTop
+            TextEdit{
+                id: textEdit2
+                anchors.fill: parent
+                anchors.margins: defMargin
+                font.pixelSize: 20
+                font.bold: true
+            }
+        }
+        //--------------------------------------------------------
+        Rectangle {
+            color: bgColor
+            //implicitWidth: 200
+            implicitHeight: 30
+            anchors.margins: defMargin
+            Layout.alignment: Qt.AlignTop
+            Text {
+                text: "Prioritet:"
+                color: "blue"
+                font.pixelSize: 15
+                font.bold: true
+                anchors.fill: parent
+                anchors.margins: defMargin
+
+            }
+        }
+        Rectangle {
+            color: panelColor
+            anchors.left: parent.left
+            anchors.right: parent.right
+            implicitWidth: 500
+            implicitHeight: 75
+            radius: 5
+            Layout.alignment: Qt.AlignTop
+            TextEdit{
+                id: textEdit3
+                anchors.fill: parent
+                anchors.margins: defMargin
+                font.pixelSize: 20
+                font.bold: true
+            }
+        }
+        //--------------------------------------------------------
+        RowLayout {
+
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+//            implicitWidth: 200
+//            implicitHeight: 75
+            anchors.margins: defMargin * 2
+            Button {
+                id: button
+                text: qsTr("Add Task")
+                font.pixelSize: 18
+                font.bold: true
+                background: ButtonStyle {}
+                Layout.alignment: Qt.AlignRight
+                onClicked: {
+                    if(textEdit.text !== ""){
+                        newMessage(textEdit.text)
+                        textEdit.clear()
+                    }
+                }
+            }
         }
     }
 }

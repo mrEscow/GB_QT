@@ -4,5 +4,7 @@
         <file>ButtonStyle.qml</file>
         <file>MessageEditor.qml</file>
         <file>PageHeader.qml</file>
+        <file>TasksPage.qml</file>
+        <file>TaskCreator.qml</file>
     </qresource>
 </RCC>
