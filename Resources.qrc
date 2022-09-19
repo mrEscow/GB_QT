@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/QML">
         <file>main.qml</file>
+        <file>ButtonStyle.qml</file>
     </qresource>
 </RCC>

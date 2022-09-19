@@ -27,15 +27,20 @@ Window {
         anchors.right: parent.right
         anchors.margins: 15
 
+
         Button{
+            id: button_1
             text: qsTr("Add Text")
+            background: ButtonStyle {}
+
             onClicked: {
                 textEdit.append("\nAdding text\n")
             }
         }
         Button{
+            id: testButton
             text: qsTr("Change Color")
-
+            background: ButtonStyle {}
             onClicked: {
                 rootWin.color = Qt.rgba(Math.random(), Math.random(), Math.random())
 
@@ -43,18 +48,27 @@ Window {
         }
         Button{
             text: qsTr("Exit")
-
+            background: ButtonStyle {}
             onClicked: {
                 close()
             }
         }
+
+//        Rectangle {
+//            width: 100; height: 100
+//            gradient: Gradient {
+//                GradientStop { position: 0.0; color: "red" }
+//                GradientStop { position: 0.33; color: "yellow" }
+//                GradientStop { position: 1.0; color: "green" }
+//            }
+//        }
     }
 
-    Rectangle{
-        anchors.fill: buttonsLayout
-        border.color: "black"
-        border.width: 5
-        color: "transparent"
-    }
+//    Rectangle{
+//        anchors.fill: buttonsLayout
+//        border.color: "black"
+//        border.width: 5
+//        color: "transparent"
+//    }
 }
 
