@@ -20,6 +20,15 @@ Window {
         id: page
         anchors.fill: parent
 
+        header: PageHeader {
+        }
+        footer: MessageEditor{
+            id: buttonsLayout
+        }
+        background: Rectangle{
+            color: bgColor
+        }
+
         ListView {
             id: listView
             anchors.fill: parent
@@ -31,8 +40,6 @@ Window {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.margins: defMargin * 2
-                border.color: "black"
-                border.width: 3
                 color: "lightgray"
                 radius: 10
 
@@ -74,44 +81,8 @@ Window {
         }
     }
 
-    ColumnLayout {
-        id: buttonsLayout
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.margins: 15
-
-        Button {
-            id: button_text
-            text: qsTr("Add Text")
-            font.pixelSize: 20
-            font.bold: true
-            background: ButtonStyle {}
-            onClicked: {
-                //textEdit.append("\nAdding text\n")
-                listModel.append("ListElement")
-            }
-        }
-        Button {
-            id: button_color
-            text: qsTr("Change Color")
-            font.pixelSize: 20
-            font.bold: true
-            background: ButtonStyle {}
-            onClicked: {
-                rootWin.color = Qt.rgba(Math.random(), Math.random(), Math.random())
-
-            }
-        }
-        Button {
-            id: button_exit
-            text: qsTr("Exit")
-            font.pixelSize: 20
-            font.bold: true
-            background: ButtonStyle {}
-            onClicked: {
-                close()
-            }
-        }
-    }
+//    MessageEditor {
+//        id: buttonsLayout
+//    }
 }
 

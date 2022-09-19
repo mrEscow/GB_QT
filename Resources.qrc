@@ -2,5 +2,7 @@
     <qresource prefix="/QML">
         <file>main.qml</file>
         <file>ButtonStyle.qml</file>
+        <file>MessageEditor.qml</file>
+        <file>PageHeader.qml</file>
     </qresource>
 </RCC>
