@@ -8,7 +8,13 @@ Window {
     visible: true
     width: 640
     height: 480
-    title: qsTr("Hello World")
+    title: qsTr("ToDoList")
+
+    readonly property int defMargin: 10
+    readonly property color panelColor: "#17212B"
+    readonly property color bubbleColor: "#2b5278"
+    readonly property color bgColor: "#0E1621"
+    readonly property color textColor: "white"
 
     Page {
         id: page
@@ -17,8 +23,9 @@ Window {
         ListView {
             id: listView
             anchors.fill: parent
+            spacing: defMargin
 
-            model: ["aaaa", "bbbb", "cccc", "dddd"]
+            model: listModel
             delegate: Rectangle {
                 height: 60
                 width: ListView.view.width
@@ -28,10 +35,25 @@ Window {
 
                 Text {
                     anchors.centerIn: parent
-                    text: modelData
+                    text: model.text
                     font.pixelSize: 20
                     font.bold: true
                 }
+            }
+        }
+        ListModel {
+            id: listModel
+            ListElement {
+                text: "aaaa"
+            }
+            ListElement {
+                text: "bbbb"
+            }
+            ListElement {
+                text: "cccc"
+            }
+            ListElement {
+                text: "dddd"
             }
         }
     }
@@ -49,7 +71,8 @@ Window {
             font.bold: true
             background: ButtonStyle {}
             onClicked: {
-                textEdit.append("\nAdding text\n")
+                //textEdit.append("\nAdding text\n")
+                listModel.append(ListElement)
             }
         }
         Button {
