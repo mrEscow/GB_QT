@@ -22,8 +22,8 @@ Rectangle {
         GradientStop { position: 0.5; color: "#b00000" }
         GradientStop { position: 1.0; color: "#252525" }
     }
-    implicitWidth: 100
-    implicitHeight: 50
+    implicitWidth: 200
+    implicitHeight: 75
     gradient: parent.pressed ? pressedGradient :
               parent.hovered ? hoveredGradient :
               normalGradient

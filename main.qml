@@ -10,65 +10,69 @@ Window {
     height: 480
     title: qsTr("Hello World")
 
-    Rectangle{
-        TextEdit {
-            width: 240
-            text: "<b>Hello</b> <i>World!</i>"
-            font.family: "Helvetica"
-            font.pointSize: 14
-            color: "blue"
-            focus: true
-            id:textEdit
+    Page {
+        id: page
+        anchors.fill: parent
+
+        ListView {
+            id: listView
+            anchors.fill: parent
+
+            model: ["aaaa", "bbbb", "cccc", "dddd"]
+            delegate: Rectangle {
+                height: 60
+                width: ListView.view.width
+                border.color: "black"
+                border.width: 3
+                color: "lightgray"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: modelData
+                    font.pixelSize: 20
+                    font.bold: true
+                }
+            }
         }
     }
-    ColumnLayout{
+
+    ColumnLayout {
         id: buttonsLayout
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.margins: 15
 
-
-        Button{
-            id: button_1
+        Button {
+            id: button_text
             text: qsTr("Add Text")
+            font.pixelSize: 20
+            font.bold: true
             background: ButtonStyle {}
-
             onClicked: {
                 textEdit.append("\nAdding text\n")
             }
         }
-        Button{
-            id: testButton
+        Button {
+            id: button_color
             text: qsTr("Change Color")
+            font.pixelSize: 20
+            font.bold: true
             background: ButtonStyle {}
             onClicked: {
                 rootWin.color = Qt.rgba(Math.random(), Math.random(), Math.random())
 
             }
         }
-        Button{
+        Button {
+            id: button_exit
             text: qsTr("Exit")
+            font.pixelSize: 20
+            font.bold: true
             background: ButtonStyle {}
             onClicked: {
                 close()
             }
         }
-
-//        Rectangle {
-//            width: 100; height: 100
-//            gradient: Gradient {
-//                GradientStop { position: 0.0; color: "red" }
-//                GradientStop { position: 0.33; color: "yellow" }
-//                GradientStop { position: 1.0; color: "green" }
-//            }
-//        }
     }
-
-//    Rectangle{
-//        anchors.fill: buttonsLayout
-//        border.color: "black"
-//        border.width: 5
-//        color: "transparent"
-//    }
 }
 
