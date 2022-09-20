@@ -1,10 +1,12 @@
 <RCC>
     <qresource prefix="/QML">
         <file>main.qml</file>
-        <file>ButtonStyle.qml</file>
+        <file>ButtonStyleGradient.qml</file>
         <file>MessageEditor.qml</file>
         <file>PageHeader.qml</file>
         <file>TasksPage.qml</file>
         <file>TaskCreator.qml</file>
+        <file>DebugRectangle.qml</file>
+        <file>MyStyleCalendar.qml</file>
     </qresource>
 </RCC>

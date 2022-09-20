@@ -15,30 +15,16 @@ Page {
         color:  bgColor
 
     }
-//    footer: MessageEditor{
-//        id: pageFooter
-//        color:  bgColor
 
-//        onNewMessage: {
-//            var newMsg = {};
-//            newMsg.text = msg;
-//            newMsg.time = Qt.formatDate(new Date(),"dd.MM.yyyy")
-//            listModel.append(newMsg);
-//        }
-//    }
     footer: RowLayout {
         Button {
             id: button
             text: qsTr("Add Task")
-            font.pixelSize: 18
+            font.pixelSize: 20
             font.bold: true
-            background: ButtonStyle {}
+            background: ButtonStyleGradient {}
             Layout.alignment: Qt.AlignRight
             onClicked: {
-    //            if(textEdit.text !== ""){
-    //                newMessage(textEdit.text)
-    //                textEdit.clear()
-    //            }
                 root.buttonClicked();
             }
         }
@@ -61,7 +47,7 @@ Page {
             Text {
                 anchors.fill: parent
                 anchors.margins: defMargin
-                text: model.text
+                text: model.task
                 font.pixelSize: 20
                 font.bold: true
             }
@@ -72,6 +58,16 @@ Page {
                 text: model.time
                 font.pixelSize: 12
                 font.bold: true
+            }
+
+            Text {
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.margins: defMargin / 2
+                text: model.prog
+                font.pixelSize: 16
+                font.bold: true
+                color: "green"
             }
         }
     }

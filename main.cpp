@@ -18,11 +18,20 @@
 
 #include <QResource>
 #include <QGuiApplication>
+#include <QQmlContext>
 #include <QQmlApplicationEngine>
+#include <QStringListModel>
+#include "AppCore.h"
+
 
 int main(int argc, char *argv[])
 {
     QResource::registerResource("./Resource.qrc");
+    QCoreApplication::setOrganizationName("Escow company");
+    QCoreApplication::setApplicationName("TextEditor");
+
+    AppCore appCore;
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
@@ -32,6 +41,12 @@ int main(int argc, char *argv[])
             if (!obj && url == objUrl)
                 QCoreApplication::exit(-1);
         }, Qt::QueuedConnection);
+
+
+    //qmlRegisterType<AppCore>("Escow company", 1, 0, "AppCore");
+
+
+    engine.rootContext()->setContextProperty("appCore", &appCore);
 
     engine.load(url);
     return app.exec();

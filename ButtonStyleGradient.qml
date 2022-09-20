@@ -22,12 +22,12 @@ Rectangle {
         GradientStop { position: 0.5; color: "#b00000" }
         GradientStop { position: 1.0; color: "#252525" }
     }
-    implicitWidth: 200
-    implicitHeight: 75
+    implicitWidth: 100
+    implicitHeight: 50
     gradient: parent.pressed ? pressedGradient :
               parent.hovered ? hoveredGradient :
               normalGradient
-    radius: 20
+    radius: 15
     border.width: 2.0
     border.color: "#000000"
 }

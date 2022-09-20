@@ -1,18 +1,25 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.3
 
+
 Rectangle{
+    property TextEdit  textEdit: textEdit
+    property Slider slider: slider
+    property Rectangle rect: rect
     anchors.fill: parent
-    signal newMessage(string msg)
     anchors.margins: defMargin
     ColumnLayout {
+        id: columnLayout
         anchors.fill: parent
         Rectangle {
             color: bgColor
-            //implicitWidth: 200
-            implicitHeight: 30
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            implicitHeight: 1
             anchors.margins: defMargin
             Layout.alignment: Qt.AlignTop
             Text {
@@ -22,15 +29,15 @@ Rectangle{
                 font.bold: true
                 anchors.fill: parent
                 anchors.margins: defMargin
-
+                Layout.alignment: Qt.AlignTop
             }
         }
         Rectangle {
+            id: rect
             color: panelColor
-            anchors.left: parent.left
-            anchors.right: parent.right
-            implicitWidth: 500
-            implicitHeight: 75
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            implicitHeight: 2
             radius: 5
             Layout.alignment: Qt.AlignTop
             TextEdit{
@@ -39,13 +46,16 @@ Rectangle{
                 anchors.margins: defMargin
                 font.pixelSize: 20
                 font.bold: true
+                Layout.alignment: Qt.AlignTop
+                color: "yellow"
             }
         }
         //--------------------------------------------------------
         Rectangle {
             color: bgColor
-            //implicitWidth: 200
-            implicitHeight: 30
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            implicitHeight: 1
             anchors.margins: defMargin
             Layout.alignment: Qt.AlignTop
             Text {
@@ -58,31 +68,20 @@ Rectangle{
 
             }
         }
-        Rectangle {
+        MyStyleCalendar {
             color: panelColor
-            anchors.left: parent.left
-            anchors.right: parent.right
-            implicitWidth: 500
-            implicitHeight: 75
-            radius: 5
-            Layout.alignment: Qt.AlignTop
-            TextEdit{
-                id: textEdit2
-                anchors.fill: parent
-                anchors.margins: defMargin
-                font.pixelSize: 20
-                font.bold: true
-            }
         }
+
         //--------------------------------------------------------
         Rectangle {
             color: bgColor
-            //implicitWidth: 200
-            implicitHeight: 30
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            implicitHeight: 1
             anchors.margins: defMargin
             Layout.alignment: Qt.AlignTop
             Text {
-                text: "Prioritet:"
+                text: "Priority:"
                 color: "blue"
                 font.pixelSize: 15
                 font.bold: true
@@ -92,43 +91,47 @@ Rectangle{
             }
         }
         Rectangle {
+            id: spliterRect
             color: panelColor
-            anchors.left: parent.left
-            anchors.right: parent.right
-            implicitWidth: 500
-            implicitHeight: 75
+            Layout.fillWidth: true
+            implicitHeight: 30
             radius: 5
-            Layout.alignment: Qt.AlignTop
-            TextEdit{
-                id: textEdit3
+            RowLayout {
+                id: spliterLayout
                 anchors.fill: parent
-                anchors.margins: defMargin
-                font.pixelSize: 20
-                font.bold: true
-            }
-        }
-        //--------------------------------------------------------
-        RowLayout {
-
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-//            implicitWidth: 200
-//            implicitHeight: 75
-            anchors.margins: defMargin * 2
-            Button {
-                id: button
-                text: qsTr("Add Task")
-                font.pixelSize: 18
-                font.bold: true
-                background: ButtonStyle {}
-                Layout.alignment: Qt.AlignRight
-                onClicked: {
-                    if(textEdit.text !== ""){
-                        newMessage(textEdit.text)
-                        textEdit.clear()
+                Slider {
+                    id: slider
+                    from: 0
+                    stepSize: 1
+                    value: 10
+                    to: 10
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
+                Rectangle {
+                    implicitWidth: 20
+                    color: "transparent"
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Text {
+                        id: sliderValueText
+                        anchors.centerIn: parent
+                        font.pixelSize: 15
+                        font.bold: true
+                        text: slider.value
+                        color: "yellow"
                     }
                 }
             }
         }
+        //--------------------------------------------------------
+        Item {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            implicitHeight: 1
+        }
+        //--------------------------------------------------------
     }
 }
+
+
