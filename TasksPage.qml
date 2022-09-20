@@ -29,11 +29,25 @@ Page {
             color: bubbleColor
             radius: 10
 
+            Button {
+                anchors.fill: parent
+                background: Rectangle {
+                    anchors.margins: defMargin * 2
+                    radius: 10
+                    color: parent.pressed ? Qt.darker(bubbleColor) :
+                              parent.hovered ? Qt.lighter(bubbleColor) :
+                              bubbleColor
+                }
+                onDoubleClicked: {
+                    listModel.remove(index)
+                }
+            }
+
             Text {
                 anchors.fill: parent
                 anchors.margins: defMargin
                 text: model.task
-                font.pixelSize: 20
+                font.pixelSize: 18
                 font.bold: true
             }
             Text {
@@ -50,7 +64,7 @@ Page {
                 anchors.top: parent.top
                 anchors.margins: defMargin / 2
                 text: model.prog
-                font.pixelSize: 16
+                font.pixelSize: 12
                 font.bold: true
                 color: "green"
             }
