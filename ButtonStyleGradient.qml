@@ -24,6 +24,7 @@ Rectangle {
     }
     implicitWidth: 100
     implicitHeight: 50
+
     gradient: parent.pressed ? pressedGradient :
               parent.hovered ? hoveredGradient :
               normalGradient

@@ -8,4 +8,5 @@ Rectangle {
     border.width: 3
     border.color: "black"
     color: "transparent"
+    z: 1000
 }

@@ -6,7 +6,7 @@ import QtQuick.Layouts 1.3
 Page {
     id: root
     signal buttonClicked();
-    anchors.fill: parent
+    anchors.fill: stackView
     background: Rectangle{
         color: bgColor
     }
@@ -15,21 +15,6 @@ Page {
         color:  bgColor
 
     }
-
-    footer: RowLayout {
-        Button {
-            id: button
-            text: qsTr("Add Task")
-            font.pixelSize: 20
-            font.bold: true
-            background: ButtonStyleGradient {}
-            Layout.alignment: Qt.AlignRight
-            onClicked: {
-                root.buttonClicked();
-            }
-        }
-    }
-
     ListView {
         id: listView
         anchors.fill: parent
@@ -71,5 +56,15 @@ Page {
             }
         }
     }
-
+    footer:
+        PageFooter {
+        leftButtonName: "Exit"
+        onLeftButtonClicked: {
+            close();
+        }
+        rightButtonName: "AddTask"
+        onRightButtonClicked: {
+            root.buttonClicked();
+        }
+    }
 }

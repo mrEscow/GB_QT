@@ -8,5 +8,6 @@
         <file>TaskCreator.qml</file>
         <file>DebugRectangle.qml</file>
         <file>MyStyleCalendar.qml</file>
+        <file>PageFooter.qml</file>
     </qresource>
 </RCC>
