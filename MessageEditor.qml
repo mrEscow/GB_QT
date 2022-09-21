@@ -10,6 +10,8 @@ Rectangle{
     property TextEdit  textEdit: textEdit
     property Slider slider: slider
     property Rectangle rect: rect
+    color: "#ffffff"
+    border.color: "#ffffff"
     anchors.fill: parent
     anchors.margins: defMargin
     ColumnLayout {

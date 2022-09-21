@@ -6,9 +6,9 @@ import QtQuick.Layouts 1.3
 Window {
     id: rootWin
     visible: true
-    width: 300
-    height: 550
     title: qsTr("ToDoList")
+    width: 300
+    height: 500
     readonly property int defMargin: 10
     readonly property color panelColor: "#17212B"
     readonly property color bubbleColor: "#2b5278"

@@ -13,6 +13,7 @@ Rectangle {
     implicitWidth: 200
     implicitHeight: 80
     color: bgColor
+    //border.color: "#ffffff"
     RowLayout {
         anchors.fill: parent
         anchors.margins: defMargin *2
