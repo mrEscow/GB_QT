@@ -13,6 +13,7 @@ public:
 
     Q_INVOKABLE void setDate(const QString& task,const QString& date,const QString& priprity);
     Q_INVOKABLE QStringList getDates();
+    Q_INVOKABLE void removeDate(int index);
 
 private:
     void save();

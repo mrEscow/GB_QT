@@ -29,13 +29,17 @@ void AppCore::setDate(const QString &task, const QString &time, const QString &p
 
 QStringList AppCore::getDates()
 {
-
     QStringList dates;
 
     for(auto& conteiner: dateConteiners)
         dates << conteiner.getDatas();
 
     return dates;
+}
+
+void AppCore::removeDate(int index)
+{
+    dateConteiners.removeAt(index);
 }
 
 void AppCore::save()

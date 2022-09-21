@@ -39,6 +39,7 @@ Page {
                               bubbleColor
                 }
                 onDoubleClicked: {
+                    appCore.removeDate(index);
                     listModel.remove(index)
                 }
             }
