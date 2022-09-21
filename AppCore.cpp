@@ -2,17 +2,13 @@
 #include "qdebug.h"
 #include <QFile>
 #include <QDataStream>
-#include <QTextCodec>
-
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonValue>
-#include <QJsonParseError>
 
 AppCore::AppCore(QObject *parent) : QObject(parent)
 {
-    QTextCodec::setCodecForLocale( QTextCodec::codecForName( "UTF-8" ) );
     fileName = "Tasks.json";
     load();
 }
@@ -37,7 +33,7 @@ QStringList AppCore::getDates()
     return dates;
 }
 
-void AppCore::removeDate(int index)
+void AppCore::removeDate(const int& index)
 {
     dateConteiners.removeAt(index);
 }
@@ -52,13 +48,9 @@ void AppCore::save()
     QJsonArray jsonArray;
 
     for(auto& conteiner: dateConteiners){
-
-        //jsonArray.fromStringList(conteiner.getDatas());
-
         variantMap.insert("task", conteiner.getDatas()[0]);
         variantMap.insert("time", conteiner.getDatas()[1]);
         variantMap.insert("prog", conteiner.getDatas()[2]);
-
         jsonArray.append(QJsonObject::fromVariantMap(variantMap));
     }
 
