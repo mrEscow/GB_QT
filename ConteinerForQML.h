@@ -7,7 +7,9 @@ class ConteinerForQML
 {
 public:
     ConteinerForQML(const QString &task, const QString &time, const QString &prog);
-    QList<QString> getDatas();
+    QString getTask() const;
+    QString getTime() const;
+    QString getPprog() const;
 private:
     QString task;
     QString time;

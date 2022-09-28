@@ -13,3 +13,18 @@ QList<QString> ConteinerForQML::getDatas()
     QList<QString> list;
     return  list << task << time << prog;
 }
+
+QString ConteinerForQML::getTask() const
+{
+    return task;
+}
+
+QString ConteinerForQML::getTime() const
+{
+    return time;
+}
+
+QString ConteinerForQML::getPprog() const
+{
+    return prog;
+}
