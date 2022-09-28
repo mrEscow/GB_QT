@@ -10,12 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     AppCore.cpp \
-    ConteinerForQML.cpp \
+    Task.cpp \
     main.cpp
 
 HEADERS += \
     AppCore.h \
-    ConteinerForQML.h
+    Task.h
 
 FORMS +=
 

@@ -20,7 +20,7 @@ AppCore::~AppCore()
 
 void AppCore::setDate(const QString &task, const QString &time, const QString &prog)
 {
-     dateConteiners.push_back(ConteinerForQML(task,time,prog));
+     dateConteiners.push_back(Task(task,time,prog));
 }
 
 QStringList AppCore::getDates()
@@ -28,8 +28,7 @@ QStringList AppCore::getDates()
     QStringList dates;
 
     for(auto& conteiner: dateConteiners)
-        dates << conteiner.getDatas();
-
+        dates << conteiner.getTask() << conteiner.getTime() << conteiner.getProgress();
     return dates;
 }
 
@@ -48,9 +47,9 @@ void AppCore::save()
     QJsonArray jsonArray;
 
     for(auto& conteiner: dateConteiners){
-        variantMap.insert("task", conteiner.getDatas()[0]);
-        variantMap.insert("time", conteiner.getDatas()[1]);
-        variantMap.insert("prog", conteiner.getDatas()[2]);
+        variantMap.insert("task", conteiner.getTask());
+        variantMap.insert("time", conteiner.getTime());
+        variantMap.insert("prog", conteiner.getProgress());
         jsonArray.append(QJsonObject::fromVariantMap(variantMap));
     }
 
@@ -74,6 +73,6 @@ void AppCore::load()
         QString task = json.toObject()["task"].toString();
         QString time = json.toObject()["time"].toString();
         QString prog = json.toObject()["prog"].toString();
-        dateConteiners.push_back(ConteinerForQML(task,time,prog));
+        dateConteiners.push_back(Task(task,time,prog));
     }
 }

@@ -2,7 +2,7 @@
 #define APPCORE_H
 
 #include <QObject>
-#include "ConteinerForQML.h"
+#include "Task.h"
 
 class AppCore : public QObject
 {
@@ -19,7 +19,7 @@ private:
     void save();
     void load();
     QString fileName;
-    QList<ConteinerForQML> dateConteiners;
+    QList<Task> dateConteiners;
 };
 
 #endif // APPCORE_H
