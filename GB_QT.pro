@@ -11,11 +11,13 @@ CONFIG += c++17
 SOURCES += \
     AppCore.cpp \
     Task.cpp \
+    TaskModel.cpp \
     main.cpp
 
 HEADERS += \
     AppCore.h \
-    Task.h
+    Task.h \
+    TaskModel.h
 
 FORMS +=
 

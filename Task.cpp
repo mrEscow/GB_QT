@@ -1,16 +1,16 @@
 #include "Task.h"
 
 
-Task::Task(const QString &task, const QString &time, const QString &progress)
+Task::Task(const QString &text, const QString &time, const QString &progress)
 {
-    this->task = std::move(task);
+    this->text = std::move(text);
     this->time = std::move(time);
     this->prog = std::move(progress);
 }
 
-QString Task::getTask() const
+QString Task::getText() const
 {
-    return task;
+    return text;
 }
 
 QString Task::getTime() const

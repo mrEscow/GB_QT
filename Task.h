@@ -6,12 +6,12 @@
 class Task
 {
 public:
-    Task(const QString &task, const QString &time, const QString &prog);
-    QString getTask() const;
+    Task(const QString &text, const QString &time, const QString &prog);
+    QString getText() const;
     QString getTime() const;
     QString getProgress() const;
 private:
-    QString task;
+    QString text;
     QString time;
     QString prog;
 };

@@ -28,7 +28,7 @@ QStringList AppCore::getDates()
     QStringList dates;
 
     for(auto& conteiner: dateConteiners)
-        dates << conteiner.getTask() << conteiner.getTime() << conteiner.getProgress();
+        dates << conteiner.getText() << conteiner.getTime() << conteiner.getProgress();
     return dates;
 }
 
@@ -47,7 +47,7 @@ void AppCore::save()
     QJsonArray jsonArray;
 
     for(auto& conteiner: dateConteiners){
-        variantMap.insert("task", conteiner.getTask());
+        variantMap.insert("task", conteiner.getText());
         variantMap.insert("time", conteiner.getTime());
         variantMap.insert("prog", conteiner.getProgress());
         jsonArray.append(QJsonObject::fromVariantMap(variantMap));
