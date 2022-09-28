@@ -8,7 +8,6 @@
 */
 
 #include "MainWindow.h"
-#include "qdebug.h"
 #include <QApplication>
 #include <QTranslator>
 #include <QResource>
