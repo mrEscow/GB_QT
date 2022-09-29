@@ -40,7 +40,7 @@ Page {
                 }
                 onDoubleClicked: {
                     //appCore.removeDate(index);
-                    //taskModel.remove(index)
+                    taskModel.removeTask(index)
                 }
             }
 

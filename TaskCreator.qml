@@ -28,6 +28,7 @@ Page {
             root.buttonClicked();
         }
         rightButtonName: "AddTask"
+
         onRightButtonClicked: {
             if(msgEditor.textEdit.text === ""){
                 msgEditor.rect.border.color = "red"
@@ -42,7 +43,7 @@ Page {
             newMsg.prog = msgEditor.slider.value.toString();
             msgEditor.slider.value = 10;
 
-            appCore.setDate(newMsg.task,newMsg.time,newMsg.prog);
+            //appCore.setDate(newMsg.task,newMsg.time,newMsg.prog);
             taskModel.append(newMsg.task,newMsg.time,newMsg.prog);
             root.buttonClicked();
         }

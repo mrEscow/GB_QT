@@ -50,7 +50,15 @@ void TaskModel::append(const QString &text, const QString &time, const QString &
     beginInsertRows(QModelIndex(), tasks.size(), tasks.size());
         tasks.append(Task(text,time,progress));
     endInsertRows();
+
     emit dataChanged(createIndex(0,0), createIndex(tasks.size(),0));
+}
+
+void TaskModel::removeTask(const int &index)
+{
+    beginRemoveRows(QModelIndex(), index, index);
+        tasks.removeAt(index);
+    endRemoveRows();
 }
 
 bool TaskModel::updateTask()
