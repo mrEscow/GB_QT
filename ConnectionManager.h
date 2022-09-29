@@ -3,7 +3,6 @@
 #include <QObject>
 #include <memory>
 
-
 namespace DB
 {
 class ConnectionManager

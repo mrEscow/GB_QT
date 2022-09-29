@@ -11,16 +11,16 @@
 namespace DB{
 namespace
 {
-class DBCloser
-{
-public:
-    void operator()(QSqlDatabase* db)
+    class DBCloser
     {
-        db->close();
-        QSqlDatabase::removeDatabase(QSqlDatabase::defaultConnection);
-        delete db;
-    }
-};
+    public:
+        void operator()(QSqlDatabase* db)
+        {
+            db->close();
+            QSqlDatabase::removeDatabase(QSqlDatabase::defaultConnection);
+            delete db;
+        }
+    };
 }
 
 struct ConnectionManager::ConnectionManagerPrivate
