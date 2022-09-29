@@ -7,8 +7,14 @@
 #include <QJsonArray>
 #include <QJsonValue>
 
+#include "TaskModel.h"
+#include <QQmlEngine>
+
+
 AppCore::AppCore(QObject *parent) : QObject(parent)
 {
+    qmlRegisterType<TaskModel>("TaskModel",1,0,"TaskModel");
+
     fileName = "Tasks.json";
     load();
 }

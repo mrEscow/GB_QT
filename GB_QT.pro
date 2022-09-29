@@ -12,12 +12,14 @@ SOURCES += \
     AppCore.cpp \
     Task.cpp \
     TaskModel.cpp \
+    TaskReader.cpp \
     main.cpp
 
 HEADERS += \
     AppCore.h \
     Task.h \
-    TaskModel.h
+    TaskModel.h \
+    TaskReader.h
 
 FORMS +=
 

@@ -43,8 +43,7 @@ Page {
             msgEditor.slider.value = 10;
 
             appCore.setDate(newMsg.task,newMsg.time,newMsg.prog);
-
-            listModel.append(newMsg);
+            taskModel.append(newMsg.task,newMsg.time,newMsg.prog);
             root.buttonClicked();
         }
     }

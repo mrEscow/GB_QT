@@ -20,7 +20,7 @@ Page {
         anchors.fill: parent
         spacing: defMargin
 
-        model: listModel
+        model: taskModel
         delegate: Rectangle {
             height: 60
             anchors.left: parent.left
@@ -39,15 +39,15 @@ Page {
                               bubbleColor
                 }
                 onDoubleClicked: {
-                    appCore.removeDate(index);
-                    listModel.remove(index)
+                    //appCore.removeDate(index);
+                    //taskModel.remove(index)
                 }
             }
 
             Text {
                 anchors.fill: parent
                 anchors.margins: defMargin
-                text: model.task
+                text: model.text
                 font.pixelSize: 18
                 font.bold: true
             }
@@ -64,7 +64,7 @@ Page {
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.margins: defMargin / 2
-                text: model.prog
+                text: model.progress
                 font.pixelSize: 12
                 font.bold: true
                 color: "green"
