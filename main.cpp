@@ -42,11 +42,8 @@ int main(int argc, char *argv[])
                 QCoreApplication::exit(-1);
         }, Qt::QueuedConnection);
 
-
     //qmlRegisterType<AppCore>("Escow company", 1, 0, "AppCore");
-
-
-    engine.rootContext()->setContextProperty("appCore", &appCore);
+    //engine.rootContext()->setContextProperty("appCore", &appCore);
 
     engine.load(url);
     return app.exec();

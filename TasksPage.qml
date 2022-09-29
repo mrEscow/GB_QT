@@ -39,7 +39,6 @@ Page {
                               bubbleColor
                 }
                 onDoubleClicked: {
-                    //appCore.removeDate(index);
                     taskModel.removeTask(index)
                 }
             }

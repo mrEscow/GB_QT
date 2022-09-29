@@ -1,4 +1,4 @@
-QT       += core gui qml quick quickwidgets
+QT       += core gui qml quick quickwidgets sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     AppCore.cpp \
+    ConnectionManager.cpp \
     Task.cpp \
     TaskModel.cpp \
     TaskReader.cpp \
@@ -17,6 +18,8 @@ SOURCES += \
 
 HEADERS += \
     AppCore.h \
+    ConnectionManager.h \
+    DB_Types.h \
     Task.h \
     TaskModel.h \
     TaskReader.h
