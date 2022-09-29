@@ -5,7 +5,7 @@ namespace DB
 {
 enum class DB_Result
 {
-    Ok,
+    OK,
     FAIL
 };
 

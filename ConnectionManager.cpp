@@ -41,6 +41,11 @@ ConnectionManager &ConnectionManager::instance()
     return instance;
 }
 
+bool ConnectionManager::isValid() const
+{
+    return d->isValid;
+}
+
 ConnectionManager::ConnectionManager()
     : d{new ConnectionManagerPrivate}
 {

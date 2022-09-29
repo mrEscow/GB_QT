@@ -11,6 +11,9 @@ CONFIG += c++17
 SOURCES += \
     AppCore.cpp \
     ConnectionManager.cpp \
+    Executor.cpp \
+    Processor.cpp \
+    Selector.cpp \
     Task.cpp \
     TaskModel.cpp \
     TaskReader.cpp \
@@ -20,6 +23,9 @@ HEADERS += \
     AppCore.h \
     ConnectionManager.h \
     DB_Types.h \
+    Executor.h \
+    Processor.h \
+    Selector.h \
     Task.h \
     TaskModel.h \
     TaskReader.h
