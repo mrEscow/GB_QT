@@ -45,13 +45,19 @@ QVariant TaskModel::data(const QModelIndex &index, int role) const
         }
 }
 
-void TaskModel::append(const QString &text, const QString &time, const QString &progress)
+bool TaskModel::append(const QString &text, const QString &time, const QString &progress)
 {
-    beginInsertRows(QModelIndex(), tasks.size(), tasks.size());
-        tasks.append(Task(text,time,progress));
-    endInsertRows();
+    bool requestResult = taskManager.append(Task(text,time,progress));
 
-    emit dataChanged(createIndex(0,0), createIndex(tasks.size(),0));
+    if(requestResult){
+        beginInsertRows(QModelIndex(), tasks.size(), tasks.size());
+            tasks.append(Task(text,time,progress));
+        endInsertRows();
+
+        emit dataChanged(createIndex(0,0), createIndex(tasks.size(),0));
+    }
+
+    return requestResult;
 }
 
 void TaskModel::removeTask(const int &index)
@@ -59,13 +65,15 @@ void TaskModel::removeTask(const int &index)
     beginRemoveRows(QModelIndex(), index, index);
         tasks.removeAt(index);
     endRemoveRows();
+
+    emit dataChanged(createIndex(0,0), createIndex(tasks.size(),0));
 }
 
 bool TaskModel::updateTask()
 {
     bool requestResult{false};
     QList<Task> tasksResult;
-    std::tie(requestResult, tasksResult) = taskReader.requestTaskBrowse();
+    std::tie(requestResult, tasksResult) = taskManager.requestTaskBrowse();
     if(requestResult){
         tasks.swap(tasksResult);
         emit dataChanged(createIndex(0,0), createIndex(tasks.size(),0));

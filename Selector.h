@@ -4,7 +4,6 @@
 #include "DB_Types.h"
 #include <QString>
 #include <vector>
-#include <QVariantList>
 #include "Executor.h"
 
 namespace DB
@@ -12,7 +11,7 @@ namespace DB
 class Selector
 {
 public:
-    DB_Result selectAll(const QString& tableName, std::vector<QVariantList>& returnData);
+    std::pair<DB_Result,std::vector<DB_Entry>> selectAll(const QString& tableName);
 private:
     Executor executor;
 private:

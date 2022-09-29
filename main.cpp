@@ -27,8 +27,8 @@
 int main(int argc, char *argv[])
 {
     QResource::registerResource("./Resource.qrc");
-    QCoreApplication::setOrganizationName("Escow company");
-    QCoreApplication::setApplicationName("TextEditor");
+//    QCoreApplication::setOrganizationName("EscowCompany");
+//    QCoreApplication::setApplicationName("ToDoList");
 
     AppCore appCore;
 
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
                 QCoreApplication::exit(-1);
         }, Qt::QueuedConnection);
 
-    //qmlRegisterType<AppCore>("Escow company", 1, 0, "AppCore");
+    //qmlRegisterType<AppCore>("EscowCompany", 1, 0, "AppCore");
     //engine.rootContext()->setContextProperty("appCore", &appCore);
 
     engine.load(url);

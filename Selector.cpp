@@ -5,7 +5,7 @@
 namespace DB
 {
 
-DB_Result Selector::selectAll(const QString &tableName, std::vector<QVariantList> &returnData)
+std::pair<DB_Result,std::vector<DB_Entry>> Selector::selectAll(const QString &tableName)
 {
     QString query {generateQuery(tableName)};
 
@@ -13,9 +13,10 @@ DB_Result Selector::selectAll(const QString &tableName, std::vector<QVariantList
     QSqlQuery resultQuery;
     std::tie(result, resultQuery) = executor.execute(query);
 
+    std::vector<DB_Entry> returnData;
+
     if(result == DB_Result::OK)
     {
-        returnData.clear();
         while(resultQuery.next())
         {
             const QSqlRecord& entryRecord {resultQuery.record()};
@@ -28,12 +29,12 @@ DB_Result Selector::selectAll(const QString &tableName, std::vector<QVariantList
         }
     }
 
-    return result;
+    return {result,returnData};
 }
 
 QString Selector::generateQuery(const QString &tableName) const
 {
-    QString query {"SELECT rowid, * FROM " + tableName};
+    QString query = "SELECT rowid, * FROM " + tableName;
     return query;
 }
 

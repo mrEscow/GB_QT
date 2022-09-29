@@ -3,7 +3,7 @@
 
 #include <QAbstractListModel>
 #include "Task.h"
-#include "TaskReader.h"
+#include "TaskManager.h"
 
 class TaskModel : public QAbstractListModel
 {
@@ -15,11 +15,11 @@ public:
     int rowCount(const QModelIndex &parent = {}) const override;
     QVariant data(const QModelIndex &index = {} , int role = Qt::DisplayRole) const override;
 
-    Q_INVOKABLE void append(const QString &text, const QString &time, const QString &prog);
+    Q_INVOKABLE bool append(const QString &text, const QString &time, const QString &prog);
     Q_INVOKABLE void removeTask(const int& index);
 
 private:
-    TaskReader taskReader;
+    TaskManager taskManager;
     QList<Task> tasks;
     enum TaskRoles {
         TextRole = Qt::UserRole + 1, // номера для пользовотельских ролей начинаются с 256

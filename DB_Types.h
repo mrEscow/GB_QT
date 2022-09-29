@@ -1,5 +1,6 @@
-#ifndef DB_TYPES_H
-#define DB_TYPES_H
+#pragma once
+
+#include <QVariantList>
 
 namespace DB
 {
@@ -11,7 +12,7 @@ enum class DB_Result
 
 enum class DB_Tables
 {
-    CONTACTS
+    TASK
 };
 
 enum class DB_Stage
@@ -22,6 +23,8 @@ enum class DB_Stage
     ERROR_TABLES,
     ERROR_OPENING
 };
+
+using DB_Entry = QVariantList;
+using DB_Index = int;
 }
 
-#endif // DB_TYPES_H

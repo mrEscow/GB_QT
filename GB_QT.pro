@@ -12,23 +12,26 @@ SOURCES += \
     AppCore.cpp \
     ConnectionManager.cpp \
     Executor.cpp \
+    Manipulator.cpp \
     Processor.cpp \
     Selector.cpp \
     Task.cpp \
+    TaskManager.cpp \
     TaskModel.cpp \
-    TaskReader.cpp \
     main.cpp
 
 HEADERS += \
     AppCore.h \
     ConnectionManager.h \
+    DB_Mapper.h \
     DB_Types.h \
     Executor.h \
+    Manipulator.h \
     Processor.h \
     Selector.h \
     Task.h \
-    TaskModel.h \
-    TaskReader.h
+    TaskManager.h \
+    TaskModel.h
 
 FORMS +=
 
