@@ -44,6 +44,12 @@ ConnectionManager &ConnectionManager::instance()
 ConnectionManager::ConnectionManager()
     : d{new ConnectionManagerPrivate}
 {
+    const bool setupResult = d->setup();
+    d->isValid = setupResult;
+}
+
+ConnectionManager::~ConnectionManager()
+{
 }
 
 bool ConnectionManager::ConnectionManagerPrivate::setup()

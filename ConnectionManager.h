@@ -9,9 +9,8 @@ class ConnectionManager
 {
 public:
     Q_DISABLE_COPY(ConnectionManager);
-
+    ~ConnectionManager();
     static ConnectionManager& instance();
-
 private:
     ConnectionManager();
     struct ConnectionManagerPrivate;
