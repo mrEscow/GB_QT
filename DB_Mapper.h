@@ -6,11 +6,11 @@
 namespace DB
 {
 static const std::map<DB_Tables, QString> TableMapper {
-    {DB_Tables::TASK, "Task"}
+    {DB_Tables::TASKS, "Tasks"}
 };
 
 static const std::map<QString, QString> TableMapping {
-    {"Task","Text, Time, Progress"}
+    {"Tasks","Text, Time, Progress"}
 };
 
 }

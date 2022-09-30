@@ -17,10 +17,9 @@ std::pair<DB_Result, QSqlQuery> Executor::execute(const QString &queryText, cons
     }
 
     QSqlQuery query {queryText};
-    for(int i = 0; i < args.size(); i++){
-        qDebug() << args[i];
+    for(int i = 0; i < args.size(); i++)
         query.bindValue(i, args[i]);
-    }
+
     DB_Result result {DB_Result::OK};
 
     if(!query.exec() && query.lastError().isValid()){

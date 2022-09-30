@@ -28,7 +28,7 @@ std::pair<bool, QList<Task> > TaskManager::requestTaskBrowse()
 {
     DB::DB_Result result;
     std::vector<DB::DB_Entry> entries;
-    std::tie(result, entries) = processor->requestTableDate(DB::DB_Tables::TASK);
+    std::tie(result, entries) = processor->requestTableDate(DB::DB_Tables::TASKS);
 
     return {result == DB::DB_Result::OK, transform(entries)};
 }
@@ -42,7 +42,20 @@ bool TaskManager::append(Task task)
     entry.push_back(task.getTime());
     entry.push_back(task.getProgress());
 
-    result = processor->insertRowDate(DB::DB_Tables::TASK,entry);
+    result = processor->insertRowDate(DB::DB_Tables::TASKS, entry);
 
+    return result == DB::DB_Result::OK;
+}
+
+bool TaskManager::removeTask(const Task &task)
+{
+    DB::DB_Result result;
+    DB::DB_Entry entry;
+
+    entry.push_back(task.getText());
+    entry.push_back(task.getTime());
+    entry.push_back(task.getProgress());
+
+    result = processor->removeRowDate(DB::DB_Tables::TASKS, entry);
     return result == DB::DB_Result::OK;
 }

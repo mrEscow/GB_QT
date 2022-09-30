@@ -16,7 +16,7 @@ public:
     QVariant data(const QModelIndex &index = {} , int role = Qt::DisplayRole) const override;
 
     Q_INVOKABLE bool append(const QString &text, const QString &time, const QString &prog);
-    Q_INVOKABLE void removeTask(const int& index);
+    Q_INVOKABLE bool removeTask(const int& index);
 
 private:
     TaskManager taskManager;

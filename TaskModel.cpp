@@ -60,13 +60,20 @@ bool TaskModel::append(const QString &text, const QString &time, const QString &
     return requestResult;
 }
 
-void TaskModel::removeTask(const int &index)
+bool TaskModel::removeTask(const int &index)
 {
+    Task task = tasks[index];
+    bool requestResult = taskManager.removeTask(task);
+
+    if(requestResult){
     beginRemoveRows(QModelIndex(), index, index);
         tasks.removeAt(index);
     endRemoveRows();
 
     emit dataChanged(createIndex(0,0), createIndex(tasks.size(),0));
+    }
+
+    return requestResult;
 }
 
 bool TaskModel::updateTask()

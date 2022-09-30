@@ -2,6 +2,7 @@
 #include "Selector.h"
 #include "Manipulator.h"
 #include "DB_Mapper.h"
+#include <QDebug>
 
 namespace DB
 {
@@ -28,8 +29,13 @@ std::pair<DB_Result, std::vector<DB_Entry>> Processor::requestTableDate(DB_Table
 
 DB_Result Processor::insertRowDate(DB_Tables table, DB_Entry entry)
 {
-    d->manipulator.insertRow("Task",{{"X","X2","X3"}});
     const auto& result {d->manipulator.insertRow(TableMapper.at(table), entry)};
+    return result.first;
+}
+
+DB_Result Processor::removeRowDate(DB_Tables table, DB_Entry entry)
+{
+    const auto& result {d->manipulator.removeRow(TableMapper.at(table), entry)};
     return result.first;
 }
 }

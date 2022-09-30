@@ -12,7 +12,7 @@ enum class DB_Result
 
 enum class DB_Tables
 {
-    TASK
+    TASKS
 };
 
 enum class DB_Stage
