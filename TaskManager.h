@@ -16,7 +16,7 @@ public:
     TaskManager();
     ~TaskManager();
     std::pair<bool, QList<Task>> requestTaskBrowse();
-    bool append(Task task);
+    bool append(const Task& task);
     bool removeTask(const Task &task);
 private:
     std::unique_ptr<DB::Processor> processor;

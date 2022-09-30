@@ -45,7 +45,7 @@ QString Manipulator::generateInsertQuery(const QString &tableName, size_t record
 
 QString Manipulator::generateDeleteQuery(const QString &tableName, DB_Entry removeData) const
 {
-    QString query {"DELETE FROM " + tableName + " WHERE "};//  + QString::number(index + 1)};
+    QString query {"DELETE FROM " + tableName + " WHERE "};
     QString bindString = TableMapping.at(tableName);
 
     int count = 0;
