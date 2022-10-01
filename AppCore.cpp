@@ -4,7 +4,7 @@
 
 AppCore::AppCore(QObject *parent) : QObject(parent)
 {
-    qmlRegisterType<TaskModel>("TaskModel",1,0,"TaskModel");
+    qmlRegisterType<TaskModel>("EscowCompany",1,0,"TaskModel");
 }
 
 AppCore::~AppCore()

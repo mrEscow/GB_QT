@@ -6,6 +6,8 @@ import QtQuick.Layouts 1.3
 Page {
     id: root
     signal buttonClicked();
+
+    //property int currentIndex: -1
     anchors.fill: stackView
     background: Rectangle{
         color: bgColor
@@ -17,11 +19,14 @@ Page {
     }
     ListView {
         id: listView
+
         anchors.fill: parent
         spacing: defMargin
 
         model: taskModel
         delegate: Rectangle {
+
+            //property bool isCliced: false
             height: 60
             anchors.left: parent.left
             anchors.right: parent.right
@@ -29,18 +34,37 @@ Page {
             color: bubbleColor
             radius: 10
 
+
             Button {
                 anchors.fill: parent
                 background: Rectangle {
                     anchors.margins: defMargin * 2
                     radius: 10
-                    color: parent.pressed ? Qt.darker(bubbleColor) :
-                              parent.hovered ? Qt.lighter(bubbleColor) :
-                              bubbleColor
+                    color: {
+                        if(index === currentIndex)
+                            parent.pressed ? Qt.darker(bubbleColor) :
+                            parent.hovered ? Qt.lighter(bubbleColor) :
+                            Qt.lighter(bubbleColor)
+
+                        else
+                            parent.pressed ? Qt.darker(bubbleColor) :
+                            parent.hovered ? Qt.lighter(bubbleColor) :
+                            bubbleColor
+                    }
+
                 }
+                onClicked: {
+                    if(currentIndex === index)
+                        currentIndex = -1
+                    else
+                        currentIndex = index
+                }
+
                 onDoubleClicked: {
+                    currentIndex = -1
                     taskModel.removeTask(index)
                 }
+
             }
 
             Text {
@@ -67,18 +91,19 @@ Page {
                 font.pixelSize: 12
                 font.bold: true
                 color: "green"
-            }
+            }            
         }
     }
     footer:
         PageFooter {
-        leftButtonName: "Exit"
+        leftButtonName: "Exit"        
         onLeftButtonClicked: {
             close();
         }
-        rightButtonName: "AddTask"
+        rightButtonName: currentIndex === -1 ? "AddTask" : "Change"
+        rightButtonColor: currentIndex === -1 ? "Green" : "Yellow"
         onRightButtonClicked: {
-            root.buttonClicked();
+            root.buttonClicked(currentIndex);
         }
     }
 }

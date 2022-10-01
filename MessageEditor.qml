@@ -7,11 +7,10 @@ import QtQuick.Layouts 1.3
 
 
 Rectangle{
-    property TextEdit  textEdit: textEdit
-    property Slider slider: slider
+    property alias  textEdit: textEdit
+    property alias slider: slider
     property Rectangle rect: rect
-    color: "#ffffff"
-    border.color: "#ffffff"
+
     anchors.fill: parent
     anchors.margins: defMargin
     ColumnLayout {

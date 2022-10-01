@@ -7,6 +7,8 @@ Rectangle {
     id: root
     property string leftButtonName: "left"
     property string rightButtonName: "right"
+    property string leftButtonColor: "red"
+    property string rightButtonColor: "red"
     signal leftButtonClicked()
     signal rightButtonClicked()
 
@@ -22,7 +24,9 @@ Rectangle {
             text: qsTr(leftButtonName)
             font.pixelSize: 18
             font.bold: true
-            background: ButtonStyleGradient {}
+            background: ButtonStyleGradient {
+                color: leftButtonColor
+            }
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignLeft
             onClicked: {
@@ -33,7 +37,10 @@ Rectangle {
             text: qsTr(rightButtonName)
             font.pixelSize: 18
             font.bold: true
-            background: ButtonStyleGradient {}
+            background: ButtonStyleGradient {
+                color: rightButtonColor
+            }
+
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignRight
             onClicked: {

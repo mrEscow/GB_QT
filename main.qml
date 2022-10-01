@@ -2,7 +2,7 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.3
-import TaskModel 1.0
+import EscowCompany 1.0
 
 Window {
     id: rootWin
@@ -17,8 +17,10 @@ Window {
     readonly property color bgColor: "#0E1621"
     readonly property color textColor: "white"
 
+    property int currentIndex: -1;
+
     TaskModel {
-        id: taskModel
+        id: taskModel        
     }
 
     StackView {
@@ -31,6 +33,7 @@ Window {
         id: pageTask
         visible: false
         onButtonClicked: {
+            rootWin.currentIndex = currentIndex;
             stackView.push(taskCreator);
         }
     }
@@ -38,7 +41,7 @@ Window {
     TaskCreator {
         id: taskCreator
         visible: false
-        onButtonClicked: {
+        onButtonClicked: {            
             stackView.pop(pageTask);
         }
     }

@@ -7,7 +7,14 @@ Page {
     id: root
     signal buttonClicked();
     signal errorTask();
-    property string  date: Qt.formatDate(new Date(),"dd.MM.yyyy")
+    property string  date: {
+        if(currentIndex === -1)
+            Qt.formatDate(new Date(),"dd.MM.yyyy")
+        else{
+            console.log(Date.fromLocaleDateString(taskModel.currentTime(currentIndex)))
+            Qt.formatDate(new Date(taskModel.currentTime(currentIndex)),"dd.MM.yyyy")
+        }
+    }
     anchors.fill: stackView
     background: Rectangle{
         color: bgColor
@@ -18,6 +25,19 @@ Page {
     }
     MessageEditor{
         id: msgEditor
+
+        textEdit.text: {
+            if(currentIndex !== -1)
+                taskModel.currentText(currentIndex)
+            else
+                ""
+        }
+        slider.value: {
+            if(currentIndex !== -1)
+                taskModel.currentProgress(currentIndex);
+            else
+                0
+        }
         anchors.fill: parent
         color:  bgColor
     }
@@ -25,9 +45,11 @@ Page {
         PageFooter {
         leftButtonName: "Back"
         onLeftButtonClicked: {
+            currentIndex = -1;
             root.buttonClicked();
         }
-        rightButtonName: "AddTask"
+        rightButtonName: currentIndex === -1 ? "AddTask" : "Change"
+        rightButtonColor: currentIndex === -1 ? "Green" : "Yellow"
 
         onRightButtonClicked: {
             if(msgEditor.textEdit.text === ""){
@@ -37,13 +59,17 @@ Page {
             msgEditor.rect.border.color = "transporent"
 
             var newMsg = {};
-            newMsg.task = msgEditor.textEdit.text;
-            msgEditor.textEdit.clear();
+            newMsg.task = msgEditor.textEdit.text;           
             newMsg.time = date;
             newMsg.prog = msgEditor.slider.value.toString();
-            msgEditor.slider.value = 10;
 
-            taskModel.append(newMsg.task,newMsg.time,newMsg.prog);
+            if(currentIndex === -1)
+                taskModel.append(newMsg.task,newMsg.time,newMsg.prog);
+            else
+                taskModel.updateTask(currentIndex, newMsg.task,newMsg.time,newMsg.prog)
+
+            msgEditor.textEdit.clear();
+            currentIndex = -1;
             root.buttonClicked();
         }
     }

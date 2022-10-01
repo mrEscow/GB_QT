@@ -15,8 +15,12 @@ public:
     int rowCount(const QModelIndex &parent = {}) const override;
     QVariant data(const QModelIndex &index = {} , int role = Qt::DisplayRole) const override;
 
-    Q_INVOKABLE bool append(const QString &text, const QString &time, const QString &prog);
+    Q_INVOKABLE bool append(const QString &text, const QString &time, const QString &progress);
     Q_INVOKABLE bool removeTask(const int& index);
+    Q_INVOKABLE QString currentText(const int& index);
+    Q_INVOKABLE QString currentTime(const int& index);
+    Q_INVOKABLE double currentProgress(const int& index);
+    Q_INVOKABLE void updateTask(const int& index, const QString &text, const QString &time, const QString &progress);
 
 private:
     TaskManager taskManager;
