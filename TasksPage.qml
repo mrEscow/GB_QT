@@ -7,7 +7,6 @@ Page {
     id: root
     signal buttonClicked();
 
-    //property int currentIndex: -1
     anchors.fill: stackView
     background: Rectangle{
         color: bgColor
@@ -19,21 +18,17 @@ Page {
     }
     ListView {
         id: listView
-
         anchors.fill: parent
         spacing: defMargin
 
         model: taskModel
         delegate: Rectangle {
-
-            //property bool isCliced: false
-            height: 60
+            height: 18 + (_textEdit.lineCount * 18) + 18
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: defMargin * 2
             color: bubbleColor
             radius: 10
-
 
             Button {
                 anchors.fill: parent
@@ -68,30 +63,44 @@ Page {
             }
 
             Text {
-                anchors.fill: parent
-                anchors.margins: defMargin
+                id: _textEdit
+
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.right: _progress.left
+                anchors.bottom: _time.top
+                anchors.margins: defMargin / 2
+
                 text: model.text
+
                 font.pixelSize: 18
                 font.bold: true
+
+                wrapMode: Text.WordWrap
             }
             Text {
+                id: _time
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.margins: defMargin / 2
+                anchors.topMargin: defMargin
                 text: model.time
                 font.pixelSize: 12
                 font.bold: true
+                color: "yellow"
             }
 
             Text {
+                id: _progress
                 anchors.right: parent.right
                 anchors.top: parent.top
+
                 anchors.margins: defMargin / 2
                 text: model.progress
                 font.pixelSize: 12
                 font.bold: true
                 color: "green"
-            }            
+            }
         }
     }
     footer:

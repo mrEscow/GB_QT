@@ -5,14 +5,14 @@ import QtQuick.Layouts 1.3
 
 Page {
     id: root
+
+    property alias text: _msgEditor.textEdit
+    property alias time: _msgEditor.calendar
+    property alias progress: _msgEditor.slider
+
     signal buttonClicked();
     signal errorTask();
-    property string  date: {
-        if(currentIndex === -1)
-            Qt.formatDate(new Date(),"dd.MM.yyyy")
-        else
-            Qt.formatDate(taskModel.currentTime(currentIndex),"dd.MM.yyyy")
-    }
+
     anchors.fill: stackView
     background: Rectangle{
         color: bgColor
@@ -22,20 +22,7 @@ Page {
         color:  bgColor
     }
     MessageEditor{
-        id: msgEditor
-
-        textEdit.text: {
-            if(currentIndex !== -1)
-                taskModel.currentText(currentIndex)
-            else
-                ""
-        }
-        slider.value: {
-            if(currentIndex !== -1)
-                taskModel.currentProgress(currentIndex);
-            else
-                0
-        }
+        id: _msgEditor
         anchors.fill: parent
         color:  bgColor
     }
@@ -50,23 +37,22 @@ Page {
         rightButtonColor: currentIndex === -1 ? "Green" : "Yellow"
 
         onRightButtonClicked: {
-            if(msgEditor.textEdit.text === ""){
-                msgEditor.rect.border.color = "red"
+            if(text === ""){
+                _msgEditor.rect.border.color = "red"
                 return
             }
-            msgEditor.rect.border.color = "transporent"
+            _msgEditor.rect.border.color = "transporent"
 
             var newMsg = {};
-            newMsg.task = msgEditor.textEdit.text;           
-            newMsg.time = date;
-            newMsg.prog = msgEditor.slider.value.toString();
+            newMsg.task = text.toString();
+            newMsg.time = Qt.formatDate(new Date(time),"dd.MM.yyyy");
+            newMsg.prog = progress.toString();
 
             if(currentIndex === -1)
                 taskModel.append(newMsg.task,newMsg.time,newMsg.prog);
             else
                 taskModel.updateTask(currentIndex, newMsg.task,newMsg.time,newMsg.prog)
 
-            msgEditor.textEdit.clear();
             currentIndex = -1;
             root.buttonClicked();
         }

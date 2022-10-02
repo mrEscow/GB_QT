@@ -7,8 +7,9 @@ import QtQuick.Layouts 1.3
 
 
 Rectangle{
-    property alias  textEdit: textEdit
-    property alias slider: slider
+    property alias  textEdit: textEdit.text
+    property alias slider: slider.value
+    property alias calendar: _calendar.currentDate
     property Rectangle rect: rect
 
     anchors.fill: parent
@@ -41,14 +42,17 @@ Rectangle{
             implicitHeight: 2
             radius: 5
             Layout.alignment: Qt.AlignTop
-            TextEdit{
+            TextInput {
                 id: textEdit
                 anchors.fill: parent
                 anchors.margins: defMargin
-                font.pixelSize: 20
+                font.pixelSize: 18
                 font.bold: true
                 Layout.alignment: Qt.AlignTop
                 color: "yellow"
+
+                maximumLength: 50
+                wrapMode: Text.WrapAnywhere || Text.WordWrap
             }
         }
         //--------------------------------------------------------
@@ -70,7 +74,9 @@ Rectangle{
             }
         }
         MyStyleCalendar {
+            id: _calendar
             color: panelColor
+            //currentDate: date
         }
 
         //--------------------------------------------------------

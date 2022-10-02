@@ -34,8 +34,7 @@ std::pair<DB_Result, DB_Index> Manipulator::removeRow(const QString &tableName, 
 QString Manipulator::generateDeleteQuery(const QString &tableName, DB_Entry removeData) const
 {
     QString query {"DELETE FROM " + tableName + " WHERE "};
-    QString bindString = TableMapping.at(tableName);
-    bindString += generateBindString(tableName,removeData);
+    QString bindString = generateBindString(tableName,removeData);
     query += bindString;
     return query;
 }

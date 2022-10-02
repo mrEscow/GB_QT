@@ -34,6 +34,18 @@ Window {
         visible: false
         onButtonClicked: {
             rootWin.currentIndex = currentIndex;
+            if(currentIndex !== -1){
+                taskCreator.text = taskModel.currentText(currentIndex);
+                taskCreator.time = new Date(Date.fromLocaleString(Qt.locale(), taskModel.currentTime(currentIndex), "dd.MM.yyyy"));
+                taskCreator.progress = taskModel.currentProgress(currentIndex);
+            }
+            else {
+                taskCreator.text = "";
+                taskCreator.time = new Date();
+                taskCreator.progress = 5;
+            }
+
+
             stackView.push(taskCreator);
         }
     }
@@ -44,17 +56,6 @@ Window {
         onButtonClicked: {            
             stackView.pop(pageTask);
         }
-    }
-
-    Component.onCompleted: {
-//        var coreDates = appCore.getDates();
-//        for(var i = 0; i < coreDates.length;){
-//            var msg = {};
-//            msg.task = coreDates[i++];
-//            msg.time = coreDates[i++];
-//            msg.prog = coreDates[i++];
-            //taskModel.append(msg);
-//        }
     }
 }
 

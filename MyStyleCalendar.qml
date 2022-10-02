@@ -7,6 +7,8 @@ import QtQuick.Layouts 1.3
 
 
 Rectangle {
+
+    property alias currentDate: calendar.selectedDate
     color: panelColor
     Layout.fillWidth: true
     Layout.fillHeight: true
@@ -18,7 +20,6 @@ Rectangle {
     Calendar {
         id: calendar
         anchors.fill: parent
-
         style: CalendarStyle {
             background: Rectangle{
                 color:  panelColor
@@ -29,7 +30,6 @@ Rectangle {
             dayOfWeekDelegate: Rectangle {
                 color: panelColor
                 height: 10
-                //implicitHeight: Math.round(TextSingleton.implicitHeight * 2.25)
                 Label {
                     text: control.locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
                     anchors.centerIn: parent
@@ -38,12 +38,10 @@ Rectangle {
             }
             navigationBar: Rectangle {
             height: 15
-            //height: Math.round(TextSingleton.implicitHeight * 2.73)
             color: panelColor
 
             Rectangle {
                 color: panelColor
-                //color: Qt.rgba(1,1,1,0.6)
                 height: 1
                 width: parent.width
             }
@@ -53,7 +51,6 @@ Rectangle {
                 anchors.bottom: parent.bottom
                 height: 1
                 width: parent.width
-                //color: "#ddd"
             }
 
             Button {
@@ -63,9 +60,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 text: "<"
-                //source: "./assets/leftanglearrow.png"
                 onClicked: control.showPreviousMonth()
-                //color: "yellow"
                 font.bold: true
                 font.pixelSize: 16
 
@@ -79,7 +74,6 @@ Rectangle {
                 text: styleData.title
                 elide: Text.ElideRight
                 horizontalAlignment: Text.AlignHCenter
-                //font.pixelSize: TextSingleton.implicitHeight * 1.25
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: previousMonth.right
                 anchors.leftMargin: 2
@@ -95,9 +89,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
                 text: ">"
-                //source: "./assets/rightanglearrow.png"
                 onClicked: control.showNextMonth()
-                //color: "yellow"
                 font.bold: true
                 font.pixelSize: 16
                 background: Rectangle{
@@ -148,8 +140,5 @@ Rectangle {
                      }
                 }
 
-        onClicked: {
-            root.date = Qt.formatDate(new Date(calendar.selectedDate),"dd.MM.yyyy")
-        }
     }
 }
