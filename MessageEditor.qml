@@ -51,7 +51,7 @@ Rectangle{
                 Layout.alignment: Qt.AlignTop
                 color: "yellow"
 
-                maximumLength: 50
+                //maximumLength: 50
                 wrapMode: Text.WrapAnywhere || Text.WordWrap
             }
         }

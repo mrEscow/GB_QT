@@ -16,6 +16,8 @@ Page {
         color:  bgColor
 
     }
+    //contentItem:
+
     ListView {
         id: listView
         anchors.fill: parent
@@ -31,6 +33,7 @@ Page {
             radius: 10
 
             Button {
+                id: _button
                 anchors.fill: parent
                 background: Rectangle {
                     anchors.margins: defMargin * 2
@@ -60,6 +63,11 @@ Page {
                     taskModel.removeTask(index)
                 }
 
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: _button.clicked()
+                onDoubleClicked: _dialog.open()
             }
 
             Text {
@@ -101,7 +109,61 @@ Page {
                 font.bold: true
                 color: "green"
             }
-        }
+            Rectangle {
+                id: _rectDialog
+
+                anchors.fill: parent
+
+                anchors.margins: defMargin
+                width: listView.width
+                height: listView.height
+                z: -1
+
+                Dialog {
+                    id: _dialog
+                    width: parent.width
+
+                    background: Rectangle{
+                        color: Qt.lighter(bgColor)
+                    }
+
+                    header:
+                        Label{
+                        text:  "Delete a task?"
+                        font.pixelSize: 18
+                        font.bold: true
+                        color: "Red"
+                        horizontalAlignment: Text.AlignHCenter
+
+                    }
+
+                    contentItem:
+                        Label{
+                        text:  qsTr("Are you sure?")
+                        font.pixelSize: 18
+                        font.bold: true
+                        color: "Blue"
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+
+                    footer:
+                        DialogButtonBox {
+                        standardButtons: Dialog.Yes | Dialog.Cancel
+
+                        background: Rectangle{
+                            color: Qt.lighter(bgColor)
+                        }
+                    }
+
+                    onAccepted: {
+                        _button.doubleClicked();
+                    }
+                    onRejected: {
+                    }
+                }
+            }
+        }    
     }
     footer:
         PageFooter {
