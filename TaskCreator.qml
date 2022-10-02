@@ -10,10 +10,8 @@ Page {
     property string  date: {
         if(currentIndex === -1)
             Qt.formatDate(new Date(),"dd.MM.yyyy")
-        else{
-            console.log(Date.fromLocaleDateString(taskModel.currentTime(currentIndex)))
-            Qt.formatDate(new Date(taskModel.currentTime(currentIndex)),"dd.MM.yyyy")
-        }
+        else
+            Qt.formatDate(taskModel.currentTime(currentIndex),"dd.MM.yyyy")
     }
     anchors.fill: stackView
     background: Rectangle{
