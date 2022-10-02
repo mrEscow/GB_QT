@@ -93,15 +93,20 @@ double TaskModel::currentProgress(const int &index)
 
 void TaskModel::updateTask(const int &index, const QString &text, const QString &time, const QString &progress)
 {
+    Task oldTask = tasks[index];
+    Task newTask{text,time,progress};
+    bool requestResult = taskManager.updateTask(oldTask,newTask);
 
-    beginRemoveRows(QModelIndex(), index, index);
-        tasks.removeAt(index);
-    endRemoveRows();
-    beginInsertRows(QModelIndex(), tasks.size(), tasks.size());
-        tasks.insert(index,Task(text,time,progress));
-    endInsertRows();
+    if(requestResult){
+        beginRemoveRows(QModelIndex(), index, index);
+            tasks.removeAt(index);
+        endRemoveRows();
+        beginInsertRows(QModelIndex(), tasks.size(), tasks.size());
+            tasks.insert(index,Task(text,time,progress));
+        endInsertRows();
 
-    emit dataChanged(createIndex(0,0), createIndex(tasks.size(),0));
+        emit dataChanged(createIndex(0,0), createIndex(tasks.size(),0));
+    }
 }
 
 bool TaskModel::updateTask()

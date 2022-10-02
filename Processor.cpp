@@ -38,4 +38,10 @@ DB_Result Processor::removeRowDate(DB_Tables table, DB_Entry entry)
     const auto& result {d->manipulator.removeRow(TableMapper.at(table), entry)};
     return result.first;
 }
+
+DB_Result Processor::updareRowDate(DB_Tables table, DB_Entry oldEntry, DB_Entry newEntry)
+{
+    const auto& result {d->manipulator.updateRow(TableMapper.at(table), oldEntry, newEntry)};
+    return result.first;
+}
 }

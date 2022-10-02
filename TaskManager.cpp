@@ -56,3 +56,12 @@ bool TaskManager::removeTask(const Task &task)
     result = processor->removeRowDate(DB::DB_Tables::TASKS, entry);
     return result == DB::DB_Result::OK;
 }
+
+bool TaskManager::updateTask(const Task &oldTask, const Task &newTask)
+{
+    DB::DB_Result result;
+    DB::DB_Entry oldEntry = transform(oldTask);
+    DB::DB_Entry newEntry = transform(newTask);
+    result = processor->updareRowDate(DB::DB_Tables::TASKS, oldEntry, newEntry);
+    return result == DB::DB_Result::OK;
+}

@@ -27,6 +27,8 @@ std::pair<DB_Result, QSqlQuery> Executor::execute(const QString &queryText, cons
         result = DB_Result::FAIL;
     }
 
+    qDebug() << query.lastQuery();
+
     return {result, query};
 }
 }

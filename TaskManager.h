@@ -18,6 +18,7 @@ public:
     std::pair<bool, QList<Task>> requestTaskBrowse();
     bool append(const Task& task);
     bool removeTask(const Task &task);
+    bool updateTask(const Task &oldTask,const Task &newTask);
 private:
     std::unique_ptr<DB::Processor> processor;
 };
