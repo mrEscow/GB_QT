@@ -2,7 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QStringListModel>
+//#include <QStandardItemModel>
+//#include <QItemDelegate>
+#include <QListWidgetItem>
+#include "ChatMsg.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,13 +19,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void dealMessage(ChatMsg *messageW, QListWidgetItem *item, QString text, QString time, ChatMsg::User_Type type);
+    void dealMessageTime(QString curMsgTime);
+protected:
+    void resizeEvent(QResizeEvent *event);
+
 private slots:
     void onSendButton();
 
 private:
-    Ui::MainWindow* _ui;
-    QStringListModel* _model;
-    QStringList list;
+    Ui::MainWindow* m_ui;
 };
 
 #endif // MAINWINDOW_H
