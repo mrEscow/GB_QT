@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QStringListModel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,8 +16,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void onSendButton();
+
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow* _ui;
+    QStringListModel* _model;
+    QStringList list;
 };
 
 #endif // MAINWINDOW_H
