@@ -79,8 +79,6 @@ void MainWindow::onSendButton()
     m_ui->textEdit->setText("");
     QString time = QString::number(QDateTime::currentDateTime().toTime_t()); // Отметка времени
 
-//    bool isSending = true; // отправка
-
     dealMessageTime(time);
     ChatMsg* messageW = new ChatMsg(m_ui->_chatListWidget->parentWidget());
     QListWidgetItem* item = new QListWidgetItem(m_ui->_chatListWidget);
@@ -88,46 +86,7 @@ void MainWindow::onSendButton()
 
     m_ui->_chatListWidget->setCurrentRow(m_ui->_chatListWidget->count() - 1);
 
-//    if(m_ui->_chatListWidget->count() % 2) {
-//        if(isSending) {
-////            dealMessageTime(time);
-
-////            ChatMsg* messageW = new ChatMsg(m_ui->_chatListWidget->parentWidget());
-////            QListWidgetItem* item = new QListWidgetItem(m_ui->_chatListWidget);
-////            dealMessage(messageW, item, msg, time, ChatMsg::User_Me);
-//        } else {
-//            bool isOver = true;
-//            for(int i = m_ui->_chatListWidget->count() - 1; i > 0; i--) {
-//                ChatMsg* messageW = (ChatMsg*)m_ui->_chatListWidget->itemWidget(m_ui->_chatListWidget->item(i));
-//                if(messageW->text() == msg) {
-//                    isOver = false;
-//                    messageW->setTextSuccess();
-//                }
-//            }
-//            if(isOver) {
-//                dealMessageTime(time);
-
-//                ChatMsg* messageW = new ChatMsg(m_ui->_chatListWidget->parentWidget());
-//                QListWidgetItem* item = new QListWidgetItem(m_ui->_chatListWidget);
-//                dealMessage(messageW, item, msg, time, ChatMsg::User_Me);
-//                messageW->setTextSuccess();
-//            }
-//        }
-//    } else {
-//        if(msg != "") {
-//            dealMessageTime(time);
-
-//            ChatMsg* messageW = new ChatMsg(m_ui->_chatListWidget->parentWidget());
-//            QListWidgetItem* item = new QListWidgetItem(m_ui->_chatListWidget);
-//            dealMessage(messageW, item, msg, time, ChatMsg::User_She);
-//        }
-//    }
-
-
-    m_ui->_chatListWidget->setCurrentRow(m_ui->_chatListWidget->count() - 1);
-
     send(msg, qint8(TYPE_MSG::USUAL_MESSAGE));
-    //m_soket->writeDatagram(datagram,QHostAddress::Broadcast, port);
 }
 
 void MainWindow::send(QString str, qint8 type)
@@ -181,14 +140,6 @@ void MainWindow::dealMessageTime(QString curMsgTime)
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
-
-
-//    m_ui->textEdit->resize(this->width() - 20, this->height() - 20);
-//    //m_ui->textEdit->move(10, 10);
-
-//    m_ui->_sendMsgPushButton->move(m_ui->textEdit->width()+m_ui->textEdit->x() - m_ui->_sendMsgPushButton->width() - 10,
-//                         m_ui->textEdit->height()+m_ui->textEdit->y() - m_ui->_sendMsgPushButton->height() - 10);
-
 
     for(int i = 0; i < m_ui->_chatListWidget->count(); i++) {
         ChatMsg* messageW = (ChatMsg*)m_ui->_chatListWidget->itemWidget(m_ui->_chatListWidget->item(i));
