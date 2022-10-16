@@ -2,10 +2,9 @@
 #include "ui_MainWindow.h"
 #include <QDateTime>
 #include <QDebug>
+#include <QNetworkInterface>
 
 const quint16 port = 20000;
-
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,6 +16,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(m_soket, SIGNAL(readyRead()), SLOT(readFromSocket()));
     connect(m_ui->_sendMsgPushButton, SIGNAL(clicked()), SLOT(onSendButton()));
+
+    const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
+    for (const QHostAddress &address: QNetworkInterface::allAddresses())
+        if(address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost)
+            qDebug() << address.toString();
+
 }
 
 MainWindow::~MainWindow()

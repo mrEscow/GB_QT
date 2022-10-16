@@ -110,7 +110,7 @@ QSize ChatMsg::getRealString(QString src)
             nMaxWidth = m_textWidth;
             int size = m_textWidth / fm.width(" ");
             int num = fm.width(value) / m_textWidth;
-            int ttmp = num*fm.width(" ");
+            //int ttmp = num*fm.width(" ");
             num = ( fm.width(value) ) / m_textWidth;
             nCount += num;
             QString temp = "";
