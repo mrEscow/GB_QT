@@ -1,26 +1,14 @@
 #ifndef CHATCLIENT_H
 #define CHATCLIENT_H
 
-#include <QWidget>
-#include <QQuickWidget>
+#include <QObject>
 
-class ChatClient : public QWidget
+class ChatClient : public QObject
 {
     Q_OBJECT
-
 public:
-    ChatClient(QWidget *parent = nullptr);
+    ChatClient(QObject *parent = nullptr);
     ~ChatClient();
-
-
-private slots:
-
-protected:
-    void resizeEvent(QResizeEvent *event);
-
-private:
-    QQuickWidget* quickWidget;
-
 
 };
 
