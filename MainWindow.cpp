@@ -17,10 +17,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_soket, SIGNAL(readyRead()), SLOT(readFromSocket()));
     connect(m_ui->_sendMsgPushButton, SIGNAL(clicked()), SLOT(onSendButton()));
 
-    const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
-    for (const QHostAddress &address: QNetworkInterface::allAddresses())
-        if(address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost)
-            qDebug() << address.toString();
+//    const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
+//    for (const QHostAddress &address: QNetworkInterface::allAddresses())
+//        if(address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost)
+//            qDebug() << address.toString();
 
 }
 
