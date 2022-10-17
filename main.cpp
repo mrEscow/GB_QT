@@ -10,7 +10,6 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    ChatServer server;
     return a.exec();
 }

@@ -1,14 +1,55 @@
 #include "ChatServer.h"
+#include <QDataStream>
 
 const quint16 port = 55555;
 
-ChatServer::ChatServer(QWidget *parent)
-    : QWidget(parent)
+ChatServer::ChatServer()
 {
-
+    if(this->listen(QHostAddress::Any, port))
+        qDebug() << "Start listen!";
+    else
+        qDebug() << "Error listen!";
 }
 
 ChatServer::~ChatServer()
 {
 
+}
+
+void ChatServer::incomingConnection(qintptr handle)
+{
+    socket = new QTcpSocket;
+    socket->setSocketDescriptor(handle);
+    connect(socket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
+    connect(socket, SIGNAL(disconnected()), socket, SLOT(deleteLater()));
+
+    sockets.push_back(socket);
+    qDebug() << "Client connectd" << handle;
+}
+
+void ChatServer::slotReadyRead()
+{
+    socket = qobject_cast<QTcpSocket*>(sender());
+    QDataStream in(socket);
+    in.setVersion(QDataStream::Qt_5_15);
+    if(in.status() == QDataStream::Ok){
+        qDebug() << "read...";
+        QString msg;
+        in >> msg;
+        qDebug() << msg;
+        sendToClients(msg);
+    }
+    else
+        qDebug() << "DataStream error!";
+
+}
+
+void ChatServer::sendToClients(const QString &msg)
+{
+    byteArray.clear();
+    QDataStream out(&byteArray, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_15);
+    out << msg;
+    for(auto& client:sockets)
+        client->write(byteArray);
 }
