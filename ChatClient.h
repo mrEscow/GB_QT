@@ -2,6 +2,8 @@
 #define CHATCLIENT_H
 
 #include <QWidget>
+#include <QQuickWidget>
+
 class ChatClient : public QWidget
 {
     Q_OBJECT
@@ -13,8 +15,12 @@ public:
 
 private slots:
 
+protected:
+    void resizeEvent(QResizeEvent *event);
 
 private:
+    QQuickWidget* quickWidget;
+
 
 };
 
