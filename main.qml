@@ -1,21 +1,25 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
+import EscowCompany 1.0
 
 Rectangle {
     id: root
     width: 480
     height: 640
     visible: true
-
     color: "#e5ecef"
+
+    ChatClient {
+        id: chatClient
+    }
 
     property string login: "login"
     property string password: "password"
 
     // Javascript-функция для проверки данных
     function checkCredentials() {
-        if (login === loginTextField.text && password === passwordTextField.text)
+        if (chatClient.checkCredentials(loginTextField.text, passwordTextField.text))
             console.log("Удачный вход")
         else
             failAnimation.start();

@@ -2,6 +2,7 @@
 #define CHATCLIENT_H
 
 #include <QObject>
+#include <QTcpSocket>
 
 class ChatClient : public QObject
 {
@@ -9,7 +10,13 @@ class ChatClient : public QObject
 public:
     ChatClient(QObject *parent = nullptr);
     ~ChatClient();
-
+    Q_INVOKABLE bool checkCredentials(const QString& login, const QString& password);
+private slots:
+    void slotToServer(const QString& msg);
+    void slotReadyRead();
+private:
+    QTcpSocket *socket;
+    QByteArray byteArray;
 };
 
 #endif // CHATCLIENT_H
