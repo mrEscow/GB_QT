@@ -42,8 +42,8 @@ void ChatServer::slotReadyRead()
 
         QJsonDocument jsDoc = QJsonDocument::fromJson(msg.toLatin1());
         QJsonObject jsObj = jsDoc.object();
-        QString typeMsg = jsObj.value("typeMsg").toString();
 
+        QString typeMsg = jsObj.value("typeMsg").toString();
         qDebug() << "TypeMessege:" << typeMsg;
 
         if(typeMsg == "credentials"){
@@ -57,22 +57,10 @@ void ChatServer::slotReadyRead()
                 jsDoc.setObject(jsObj);
                 msg = QString::fromLatin1(jsDoc.toJson());
                 sendToClient(socket,msg);
-                socket->waitForReadyRead(200);
 
-                QString helloStr = "Добро пожаловать " + jsObj.value("login").toString();
-                QJsonObject jsObjHello {
-                    {"typeMsg","message"},
-                    {"login","Server"},
-                    {"who", "Server"},
-                    {"msg", helloStr},
-                    {"time",QTime::currentTime().toString()}
-                };
-                jsDoc.setObject(jsObjHello);
-                msg = QString::fromLatin1(jsDoc.toJson());
-                qDebug() << "Send message for all:" << helloStr;
-                for(auto& client: sockets)
-                    if(client->isValid())
-                        sendToClient(client, msg);
+                socket->waitForReadyRead(500);
+
+                serverMessage("Добро пожаловать " + jsObj.value("login").toString() + "!");
             }
             return;
         }
@@ -97,7 +85,6 @@ void ChatServer::slotReadyRead()
                 if(client->isValid() && client != socket)
                     sendToClient(client,msg);
         }
-        //sendToClients(msg);
     }
     else
         qDebug() << "DataStream error!";
@@ -111,17 +98,6 @@ void ChatServer::sendToClient(QTcpSocket* socket, const QString &msg)
     out.setVersion(QDataStream::Qt_5_15);
     out << msg;
     socket->write(byteArray);
-}
-
-void ChatServer::sendToClients(const QString &msg)
-{
-    byteArray.clear();
-    QDataStream out(&byteArray, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_15);
-    out << msg;
-    for(auto& client:sockets)
-        if(client->isValid())
-            client->write(byteArray);
 }
 
 bool ChatServer::credentials(const QJsonObject &jsObj)
@@ -140,4 +116,23 @@ bool ChatServer::credentials(const QJsonObject &jsObj)
     }
 
     return false;
+}
+
+void ChatServer::serverMessage(const QString &message)
+{
+    qDebug() << "Send message for all:" << message;
+
+    QJsonObject jsObjHello {
+        {"typeMsg","message"},
+        {"login","Server"},
+        {"who", "Server"},
+        {"msg", message},
+        {"time",QTime::currentTime().toString()}
+    };
+    QJsonDocument jsDoc(jsObjHello);
+    QString msg = QString::fromLatin1(jsDoc.toJson());
+
+    for(auto& client: sockets)
+        if(client->isValid())
+            sendToClient(client, msg);
 }

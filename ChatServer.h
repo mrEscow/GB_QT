@@ -14,15 +14,14 @@ public:
     ChatServer();
     ~ChatServer();
 
-// QTcpServer interface
 private slots:
     void incomingConnection(qintptr handle) override;
     void slotReadyRead();
 
 private:
     void sendToClient(QTcpSocket* socket, const QString& msg);
-    void sendToClients(const QString& msg);
     bool credentials(const QJsonObject& jsObj);
+    void serverMessage(const QString& message);
 
     QTcpSocket* socket;
     QVector<QTcpSocket*> sockets;
