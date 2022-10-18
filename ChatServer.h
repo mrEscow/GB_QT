@@ -1,6 +1,7 @@
 #ifndef CHATSERVER_H
 #define CHATSERVER_H
 
+#include "Client.h"
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QVector>
@@ -17,6 +18,7 @@ public:
 private slots:
     void incomingConnection(qintptr handle) override;
     void slotReadyRead();
+    void slotStateChange(QAbstractSocket::SocketState stage);
 
 private:
     void sendToClient(QTcpSocket* socket, const QString& msg);
@@ -24,7 +26,8 @@ private:
     void serverMessage(const QString& message);
 
     QTcpSocket* socket;
-    QVector<QTcpSocket*> sockets;
+    //QVector<QTcpSocket*> sockets;
+    QVector<Client> clients;
     QByteArray byteArray;
     QVector<QPair<QString,QString>> logins;
 };

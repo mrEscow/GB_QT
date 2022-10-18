@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     ChatServer.cpp \
+    Client.cpp \
     main.cpp
 
 HEADERS += \
-    ChatServer.h
+    ChatServer.h \
+    Client.h
 
 FORMS +=
 
