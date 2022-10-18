@@ -2,6 +2,7 @@
 #include <QDataStream>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QTime>
 
 const quint16 port = 55555;
 
@@ -43,16 +44,60 @@ void ChatServer::slotReadyRead()
         QJsonObject jsObj = jsDoc.object();
         QString typeMsg = jsObj.value("typeMsg").toString();
 
-        qDebug() << "TypeMassege:" << typeMsg;
-        if(typeMsg == "credentials")
+        qDebug() << "TypeMessege:" << typeMsg;
+
+        if(typeMsg == "credentials"){
+            qDebug() << "NewClient: { "
+                     << "Name:" << jsObj.value("login").toString()
+                     << "}";
+
             if(credentials(jsObj)){
+
                 jsObj.insert("msg","OK");
                 jsDoc.setObject(jsObj);
                 msg = QString::fromLatin1(jsDoc.toJson());
                 sendToClient(socket,msg);
-            }
+                socket->waitForReadyRead(200);
 
-        sendToClients(msg);
+                QString helloStr = "Добро пожаловать " + jsObj.value("login").toString();
+                QJsonObject jsObjHello {
+                    {"typeMsg","message"},
+                    {"login","Server"},
+                    {"who", "Server"},
+                    {"msg", helloStr},
+                    {"time",QTime::currentTime().toString()}
+                };
+                jsDoc.setObject(jsObjHello);
+                msg = QString::fromLatin1(jsDoc.toJson());
+                qDebug() << "Send message for all:" << helloStr;
+                for(auto& client: sockets)
+                    if(client->isValid())
+                        sendToClient(client, msg);
+            }
+            return;
+        }
+
+        if(typeMsg == "message"){
+            qDebug() << "Client: { "
+                     << "Name:" << jsObj.value("login").toString()
+                     << "Text:" << jsObj.value("msg").toString()
+                     << "Time:" << QTime::currentTime().toString() << "}";
+
+            jsObj.insert("time",QTime::currentTime().toString());
+            jsDoc.setObject(jsObj);
+            msg = QString::fromLatin1(jsDoc.toJson());
+            qDebug() << "Send this msg for this client";
+            sendToClient(socket, msg);
+
+            jsObj.insert("who","NotME");
+            jsDoc.setObject(jsObj);
+            msg = QString::fromLatin1(jsDoc.toJson());
+            qDebug() << "Send this msg for all clients";
+            for(auto& client:sockets)
+                if(client->isValid() && client != socket)
+                    sendToClient(client,msg);
+        }
+        //sendToClients(msg);
     }
     else
         qDebug() << "DataStream error!";
