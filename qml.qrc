@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>StartingPage.qml</file>
+        <file>ChatPage.qml</file>
+        <file>PageHeader.qml</file>
+        <file>DebugRectangle.qml</file>
+        <file>MyBubble.qml</file>
+        <file>TheirBubble.qml</file>
+        <file>ServerBubble.qml</file>
     </qresource>
 </RCC>

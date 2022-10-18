@@ -8,101 +8,79 @@ Rectangle {
     width: 480
     height: 640
     visible: true
-    color: "#e5ecef"
 
-    ChatClient {
-        id: chatClient
+    // Style
+    readonly property int defMargin: 10
+    // StyleColors
+    readonly property color bgColor: "#e5ecef"
+    readonly property color bgColorChat: "#0E1621"
+    readonly property color panelColor: "#17212B"
+    readonly property color bubbleColor: "#2b5278"
+
+    readonly property color textColor: "white"
+
+    ListModel{
+    id: listModel
+//        ListElement{
+//            who: "Server"
+//            name: "Server"
+//            text: "HELLO"
+//            time: "15:00"
+//        }
+//        ListElement{
+//            who: "ME"
+//            name: "Vasia"
+//            text: "Всем привет!\nКак дела?"
+//            time: "15:00"
+//        }
+//        ListElement{
+//            who: "NotME"
+//            name: "Petia"
+//            text: "Всем привет!\nКак дела?"
+//            time: "15:00"
+//        }
     }
 
-    property string login: "login"
-    property string password: "password"
+    ChatClient { id: chatClient }
 
-    // Javascript-функция для проверки данных
-    function checkCredentials() {
-        if (chatClient.checkCredentials(loginTextField.text, passwordTextField.text))
-            console.log("Удачный вход")
-        else
-            failAnimation.start();
-    }
+    Connections {
+        target: chatClient
+        onMessageFromServer: {
+            console.log("Новое сообщение!")
 
-    Rectangle {
-        id: credentials
-        color: "white"
-        anchors.centerIn: parent
-        radius: 5
-        width: 300
-        height: 250
-        property string textColor: "#535353"
+            console.log(who)
+            console.log(login)
+            console.log(text)
+            console.log(time)
 
-        Column { // аналог QVBoxLayout
-            anchors.fill: parent // объект занимает все пространство родителя
-            padding: 32 // отступы по 4 сторонам от родительского элемента
-            spacing: 32 // отступы между элементами
-            TextField {
-                id: loginTextField
-                anchors.horizontalCenter: parent.horizontalCenter
-                placeholderText: qsTr("Логин")
-                color: credentials.textColor
-                // onEnterPressed и onReturnPressed – две кнопки Enter на стандартной клавиатуре
-                Keys.onEnterPressed: checkCredentials()
-                Keys.onReturnPressed: checkCredentials()
+            listModel.append({
+                who: who,
+                name: login,
+                text: text,
+                time: time
+            });
+        }
 
-            }
-            TextField {
-                id: passwordTextField
-                echoMode: TextInput.Password // звездочки вместо пароля
-                anchors.horizontalCenter: parent.horizontalCenter
-                placeholderText: qsTr("Пароль")
-                color: credentials.textColor
-                Keys.onEnterPressed: checkCredentials()
-                Keys.onReturnPressed: checkCredentials()
-            }
-            Button {
-                id: submitButton
-                width: 200
-                height: 40
-                background: Rectangle {
-                    color: parent.down ? "#bbbbbb" :
-                    (parent.hovered ? "#d6d6d6" : "#f6f6f6")
-                }
-                text: qsTr("Вход")
-                anchors.horizontalCenter: parent.horizontalCenter
-                onClicked: checkCredentials()
-            }
+        onConectToChat:{
+            stackView.push(chatPage)
         }
     }
 
-    // анимации внутри ParallelAnimation будут выполнены параллельно
-    ParallelAnimation{
-        id: failAnimation
-        SequentialAnimation {
-            // Группа анимаций внутри SequentialAnimation будет выполнена последовательно
-            PropertyAnimation {
-                // Текст внутри полей логина и пароля моментально изменит цвет на темно-красный
-                targets: [loginTextField, passwordTextField]
-                property: "color"
-                to: "dark red"
-                duration: 0
-            }
-            PropertyAnimation {
-                // После этого за 400 миллисекунд вернется к обычному цвету
-                targets: [loginTextField, passwordTextField]
-                property: "color"
-                to: credentials.textColor
-                duration: 400
-            }
-        }
-        SequentialAnimation {
-            // Подложка secondaryFrame сместится на -5 пикселей относительно
-            // центра, затем передвинется на позицию +5, а потом вернётся в исходное положение.
-            // Произойдет “потрясывание” формы.
-            NumberAnimation { target: credentials; property:
-                "anchors.horizontalCenterOffset"; to: -5; duration: 50 }
-            NumberAnimation { target: credentials; property:
-                "anchors.horizontalCenterOffset"; to: 5; duration: 100 }
-            NumberAnimation { target: credentials; property:
-                "anchors.horizontalCenterOffset"; to: 0; duration: 50 }
-        }
+    StackView{
+        id: stackView
+        anchors.fill: parent
+        initialItem: startingPage
+        //initialItem: chatPage
+    }
+
+    StartingPage {
+        id: startingPage
+        visible: false
+    }
+
+    ChatPage {
+        id: chatPage
+        visible: false
     }
 }
 

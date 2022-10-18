@@ -21,8 +21,14 @@ ChatClient::~ChatClient()
 
 bool ChatClient::checkCredentials(const QString &login, const QString &password)
 {
-    if(login == "" && password == "")
+    if(isConnectToChat)
+        return true;
+
+    if(login == "" || password == "")
         return false;
+
+    this->login = login;
+    this->password = password;
 
     if(!socket->isValid())
         socket->connectToHost("escow.ru", port);
@@ -32,7 +38,6 @@ bool ChatClient::checkCredentials(const QString &login, const QString &password)
 
         QJsonObject jsObj {
             {"typeMsg","credentials"},
-            {"id",-1},
             {"login", login},
             {"password",password},
             {"msg",""}
@@ -41,7 +46,8 @@ bool ChatClient::checkCredentials(const QString &login, const QString &password)
         QString jsString = QString::fromLatin1(jsDoc.toJson());
 
         slotToServer(jsString);
-        while(socket->waitForReadyRead(200)){}
+
+        socket->waitForConnected(100);
 
         return isConnectToChat;
 
@@ -52,6 +58,21 @@ bool ChatClient::checkCredentials(const QString &login, const QString &password)
     }
 
     return true;
+}
+
+void ChatClient::sendMsg(const QString &text)
+{
+    QJsonObject jsObj {
+        {"typeMsg","message"},
+        {"login", login},
+        {"who" , "ME"},
+        {"msg",text},
+        {"time",""}
+    };
+    QJsonDocument jsDoc(jsObj);
+    QString jsString = QString::fromLatin1(jsDoc.toJson());
+
+    slotToServer(jsString);
 }
 
 void ChatClient::slotToServer(const QString &msg)
@@ -65,6 +86,8 @@ void ChatClient::slotToServer(const QString &msg)
 
 void ChatClient::slotReadyRead()
 {
+    //socket->waitForReadyRead(100);
+
     QDataStream in(socket);
     in.setVersion(QDataStream::Qt_5_15);
     if(in.status() == QDataStream::Ok){
@@ -77,15 +100,27 @@ void ChatClient::slotReadyRead()
         QString typeMsg = jsObj.value("typeMsg").toString();
 
         qDebug() << "TypeMassege:" << typeMsg;
+
         if(typeMsg == "credentials")
             if(jsObj.value("msg").toString() == "OK"){
                 isConnectToChat = true;
-                 qDebug() << "Credentials: OK!";
+                qDebug() << "Credentials: OK!";
+                emit conectToChat();
             }
+        if(typeMsg == "message"){
+            QString who = jsObj.value("who").toString();
+            QString login = jsObj.value("login").toString();
+            QString text = jsObj.value("msg").toString();
+            QString time = jsObj.value("time").toString();
+            if(who == "ME" || who == "NotME" || who == "Server"){
+                emit messageFromServer(who, login, text, time);
+            }
+        }
     }
     else {
         qDebug() << "QDataStream error!";
     }
+
 }
 
 
