@@ -4,6 +4,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QVector>
+///#include <QMap>
 
 class ChatServer : public QTcpServer
 {
@@ -19,11 +20,14 @@ private slots:
     void slotReadyRead();
 
 private:
+    void sendToClient(QTcpSocket* socket, const QString& msg);
     void sendToClients(const QString& msg);
+    bool credentials(const QJsonObject& jsObj);
 
     QTcpSocket* socket;
     QVector<QTcpSocket*> sockets;
     QByteArray byteArray;
+    QVector<QPair<QString,QString>> logins;
 };
 
 #endif // CHATSERVER_H
