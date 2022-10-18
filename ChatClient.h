@@ -15,6 +15,9 @@ private slots:
     void slotToServer(const QString& msg);
     void slotReadyRead();
 private:
+    QString login;
+    QString password;
+    bool isConnectToChat;
     QTcpSocket *socket;
     QByteArray byteArray;
 };
