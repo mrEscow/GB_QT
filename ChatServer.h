@@ -5,11 +5,19 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QVector>
-///#include <QMap>
+
 
 class ChatServer : public QTcpServer
 {
     Q_OBJECT
+private:
+    struct MSG{
+        QString TypeMsg;
+        QString Who;
+        QString Name;
+        QString Text;
+        QString Time;
+    };
 
 public:
     ChatServer();
@@ -22,6 +30,7 @@ private slots:
 
 private:
     void sendToClient(QTcpSocket* socket, const QString& msg);
+    void sendToClient(QTcpSocket* socket, const MSG& msg);
     bool credentials(const QJsonObject& jsObj);
     void serverMessage(const QString& message);
 
@@ -29,7 +38,8 @@ private:
     //QVector<QTcpSocket*> sockets;
     QVector<Client> clients;
     QByteArray byteArray;
-    QVector<QPair<QString,QString>> logins;
+    QVector<QPair<QString, QString>> logins;
+    QVector<MSG> stackMessanges;
 };
 
 #endif // CHATSERVER_H

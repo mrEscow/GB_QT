@@ -32,8 +32,8 @@ void ChatServer::incomingConnection(qintptr handle)
     Client newClient(socket);
 
     clients.push_back(newClient);
-
-    qDebug() << "Client connectd! ID:" << newClient.getUid() << "Handel:" << handle;
+    qDebug() << "================================================";
+    qDebug() << "New client connectd! ID:" << newClient.getUid() << "Handel:" << handle;
 }
 
 void ChatServer::slotReadyRead()
@@ -42,30 +42,30 @@ void ChatServer::slotReadyRead()
     QDataStream in(socket);
     in.setVersion(QDataStream::Qt_5_15);
     if(in.status() == QDataStream::Ok){
-        qDebug() << "read...";
+        //qDebug() << "read...";
         QString msg;
         in >> msg;
 
         QJsonDocument jsDoc = QJsonDocument::fromJson(msg.toLatin1());
         QJsonObject jsObj = jsDoc.object();
 
-        QString typeMsg = jsObj.value("typeMsg").toString();
+        QString typeMsg = jsObj.value("TypeMsg").toString();
         qDebug() << "TypeMessege:" << typeMsg;
 
         if(typeMsg == "credentials"){
             qDebug() << "NewClient: { "
-                     << "Name:" << jsObj.value("login").toString()
+                     << "Name:" << jsObj.value("Name").toString()
                      << "}";
 
             if(credentials(jsObj)){
                 for(auto& client: clients)
                     if(client.getSocket() == socket){
-                        client.setName(jsObj.value("login").toString());
-                        client.setLogin(jsObj.value("password").toString());
-                        client.setPassword(jsObj.value("login").toString());
+                        client.setName(jsObj.value("Name").toString());
+                        client.setLogin(jsObj.value("Login").toString());
+                        client.setPassword(jsObj.value("Password").toString());
                     }
 
-                jsObj.insert("msg","OK");
+                jsObj.insert("Text","OK");
                 jsDoc.setObject(jsObj);
                 msg = QString::fromLatin1(jsDoc.toJson());
 
@@ -73,30 +73,46 @@ void ChatServer::slotReadyRead()
 
                 socket->waitForReadyRead(500);
 
-                serverMessage("Добро пожаловать " + jsObj.value("login").toString() + "!");
+                QVectorIterator iterator(stackMessanges);
+                iterator.toBack();
+                quint8 countOldMassege = 0;
+                while(iterator.hasPrevious() && countOldMassege++ != 10)
+                    sendToClient(socket,iterator.previous());
+
+                serverMessage("Добро пожаловать " + jsObj.value("Name").toString() + "!");
+                qDebug() << "================================================";
             }
             return;
         }
 
         if(typeMsg == "message"){
+
             qDebug() << "Client: { "
-                     << "Name:" << jsObj.value("login").toString()
-                     << "Text:" << jsObj.value("msg").toString()
+                     << "Name:" << jsObj.value("Name").toString()
+                     << "Text:" << jsObj.value("Text").toString()
                      << "Time:" << QTime::currentTime().toString() << "}";
 
-            jsObj.insert("time",QTime::currentTime().toString());
+            jsObj.insert("Time", QTime::currentTime().toString());
             jsDoc.setObject(jsObj);
             msg = QString::fromLatin1(jsDoc.toJson());
             qDebug() << "Send this msg for this client";
             sendToClient(socket, msg);
 
-            jsObj.insert("who","NotME");
+            jsObj.insert("Who","NotME");
             jsDoc.setObject(jsObj);
             msg = QString::fromLatin1(jsDoc.toJson());
             qDebug() << "Send this msg for all clients";
             for(auto& client: clients)
                 if(client.getSocket()->isValid() && client.getSocket() != socket)
                     sendToClient(client.getSocket(),msg);
+
+            stackMessanges.push_back({
+                jsObj.value("TypeMsg").toString(),
+                jsObj.value("Who").toString(),
+                jsObj.value("Name").toString(),
+                jsObj.value("Text").toString(),
+                jsObj.value("Time").toString()
+            });
         }
     }
     else
@@ -130,19 +146,42 @@ void ChatServer::sendToClient(QTcpSocket* socket, const QString &msg)
     socket->write(byteArray);
 }
 
+void ChatServer::sendToClient(QTcpSocket *socket, const MSG &msg)
+{
+    QJsonObject jsObj{
+        {"TypeMsg", msg.TypeMsg},
+        {"Who", msg.Who},
+        {"Name", msg.Name},
+        {"Text", msg.Text},
+        {"Time", msg.Time}
+    };
+    QJsonDocument jsDoc(jsObj);
+
+    QString jsSrting = QString::fromLatin1(jsDoc.toJson());
+
+    byteArray.clear();
+    QDataStream out(&byteArray, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_15);
+    out << jsSrting;
+
+    socket->waitForReadyRead(100);
+    socket->write(byteArray);
+    socket->waitForReadyRead(100);
+}
+
 bool ChatServer::credentials(const QJsonObject &jsObj)
 {
-    QString login = jsObj.value("login").toString();
-    QString password = jsObj.value("password").toString();
+    QString login = jsObj.value("Login").toString();
+    QString password = jsObj.value("Password").toString();
 
-    QPair pair{login,password};
+    QPair pair{login, password};
     if(logins.contains(pair)){
         qDebug() << "Credentials OK";
-
         return true;
     }
     else{
         qDebug() << "Credentials BED push new client!";
+        logins.push_back(pair);
         return true;
     }
 
@@ -154,11 +193,11 @@ void ChatServer::serverMessage(const QString &message)
     qDebug() << "Send message for all:" << message;
 
     QJsonObject jsObjHello {
-        {"typeMsg", "message"},
-        {"login", "Server"},
-        {"who", "Server"},
-        {"msg", message},
-        {"time", QTime::currentTime().toString()}
+        {"TypeMsg", "message"},
+        {"Who", "Server"},
+        {"Name", "Server"},
+        {"Text", message},
+        {"Time", QTime::currentTime().toString()}
     };
     QJsonDocument jsDoc(jsObjHello);
     QString msg = QString::fromLatin1(jsDoc.toJson());
