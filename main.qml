@@ -3,7 +3,7 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import EscowCompany 1.0
 
-Rectangle {
+ApplicationWindow {
     id: root
     width: 480
     height: 640
@@ -19,27 +19,7 @@ Rectangle {
 
     readonly property color textColor: "white"
 
-    ListModel{
-    id: listModel
-//        ListElement{
-//            who: "Server"
-//            name: "Server"
-//            text: "HELLO"
-//            time: "15:00"
-//        }
-//        ListElement{
-//            who: "ME"
-//            name: "Vasia"
-//            text: "Всем привет!\nКак дела?"
-//            time: "15:00"
-//        }
-//        ListElement{
-//            who: "NotME"
-//            name: "Petia"
-//            text: "Всем привет!\nКак дела?"
-//            time: "15:00"
-//        }
-    }
+    ListModel{ id: listModel }
 
     ChatClient { id: chatClient }
 
@@ -49,13 +29,13 @@ Rectangle {
             console.log("Новое сообщение!")
 
             console.log(who)
-            console.log(login)
+            console.log(name)
             console.log(text)
             console.log(time)
 
             listModel.append({
                 who: who,
-                name: login,
+                name: name,
                 text: text,
                 time: time
             });

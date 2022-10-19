@@ -37,10 +37,13 @@ bool ChatClient::checkCredentials(const QString &login, const QString &password)
         qDebug() << "Connect to server!";
 
         QJsonObject jsObj {
-            {"typeMsg","credentials"},
-            {"login", login},
-            {"password",password},
-            {"msg",""}
+            {"TypeMsg","credentials"},
+            {"Who", ""},
+            {"Name", login},
+            {"Login", login},
+            {"Password",password},
+            {"Text",""},
+            {"Time",""}
         };
         QJsonDocument jsDoc(jsObj);
         QString jsString = QString::fromLatin1(jsDoc.toJson());
@@ -63,11 +66,11 @@ bool ChatClient::checkCredentials(const QString &login, const QString &password)
 void ChatClient::sendMsg(const QString &text)
 {
     QJsonObject jsObj {
-        {"typeMsg","message"},
-        {"login", login},
-        {"who" , "ME"},
-        {"msg",text},
-        {"time",""}
+        {"TypeMsg","message"},
+        {"Who" , "ME"},
+        {"Name", login},
+        {"Text", text},
+        {"Time", ""}
     };
     QJsonDocument jsDoc(jsObj);
     QString jsString = QString::fromLatin1(jsDoc.toJson());
@@ -97,23 +100,23 @@ void ChatClient::slotReadyRead()
 
         QJsonDocument jsDoc = QJsonDocument::fromJson(msg.toLatin1());
         QJsonObject jsObj = jsDoc.object();
-        QString typeMsg = jsObj.value("typeMsg").toString();
+        QString typeMsg = jsObj.value("TypeMsg").toString();
 
-        qDebug() << "TypeMassege:" << typeMsg;
+        qDebug() << "TypeMessage:" << typeMsg;
 
         if(typeMsg == "credentials")
-            if(jsObj.value("msg").toString() == "OK"){
+            if(jsObj.value("Text").toString() == "OK"){
                 isConnectToChat = true;
                 qDebug() << "Credentials: OK!";
                 emit conectToChat();
             }
         if(typeMsg == "message"){
-            QString who = jsObj.value("who").toString();
-            QString login = jsObj.value("login").toString();
-            QString text = jsObj.value("msg").toString();
-            QString time = jsObj.value("time").toString();
+            QString who = jsObj.value("Who").toString();
+            QString name = jsObj.value("Name").toString();
+            QString text = jsObj.value("Text").toString();
+            QString time = jsObj.value("Time").toString();
             if(who == "ME" || who == "NotME" || who == "Server"){
-                emit messageFromServer(who, login, text, time);
+                emit messageFromServer(who, name, text, time);
             }
         }
     }
